@@ -1,0 +1,3005 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>THE UNREMEMBERED · 未被记得者 — 十章怪谈</title>
+<meta name="description" content="一部关于被遗忘、被看见与刻意去感受的怪奇互动叙事。灰谷镇的人不会失踪——他们只是不再被记得。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0812'/%3E%3Ccircle cx='32' cy='26' r='10' fill='none' stroke='%23e8a33d' stroke-width='2.5'/%3E%3Cpath d='M32 36 L32 54 M22 46 L42 46' stroke='%235dcaa5' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='14' r='2.5' fill='%23e24b4a'%3E%3C/circle%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE UNREMEMBERED — 视觉系统
+   语言：analog dusk（钠灯琥珀 × 磁带青 × CRT 辉光）
+   对位：薄暮世界 soft-wrong（紫晕 · 呼吸的边缘 · 大一号的房间）
+   ============================================================ */
+:root{
+  --ink:#0a0812;          /* 近黑的紫 */
+  --ink2:#120e1c;
+  --paper:#efe7d8;        /* 暖纸白 */
+  --paper-dim:#b9aec9;
+  --faint:#7d7194;
+  --amber:#e8a33d;        /* 钠灯 */
+  --amber-hi:#ffc46b;
+  --sodium:#ff9b2f;
+  --teal:#5dcaa5;         /* 帕里斯 / 结构 */
+  --teal-deep:#1d9e75;
+  --rose:#f0a58f;         /* 莫依 / 歌 */
+  --violet:#9d8cff;       /* 薄暮 */
+  --violet-deep:#6f5fd0;
+  --red:#e24b4a;          /* 塔灯 / 危急 */
+  --quiet:#c9c4d4;        /* 「寂」 */
+  --line:#2c2438;
+  --line-hi:#463a5e;
+  --panel:#161021;
+  --panel2:#1c1626;
+  --serif:"EB Garamond","Cormorant Garamond",Georgia,"Noto Serif SC","Songti SC","STSong",serif;
+  --sans:"Avenir Next","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,"Courier New",monospace;
+  --tspeed:1;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%}
+html.hushed{transition:filter 2.2s ease}
+body{
+  height:100%;background:var(--ink);color:var(--paper);
+  font-family:var(--serif);font-size:17px;line-height:1.85;
+  overflow:hidden;cursor:default;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+::selection{background:rgba(232,163,61,.25);color:var(--paper)}
+button{font-family:inherit;color:inherit;background:none;border:none;cursor:pointer}
+canvas#atmos{position:fixed;inset:0;width:100%;height:100%;z-index:0;transition:filter 2.5s ease, opacity 2s ease}
+canvas#grain{position:fixed;inset:0;width:100%;height:100%;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay}
+#app{position:fixed;inset:0;z-index:10;transition:filter 2.5s ease}
+/* —— 世界状态滤镜：薄暮 / 深暮 —— */
+body.veil #app, body.veil canvas#atmos{filter:hue-rotate(10deg) saturate(1.08) contrast(1.02)}
+body.deep #app, body.deep canvas#atmos{filter:hue-rotate(26deg) saturate(.82) contrast(1.06) brightness(.92)}
+body.veil .breath{animation:breathe 9s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.006)}}
+
+/* —— CRT 层 —— */
+#crt{position:fixed;inset:0;z-index:55;pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+  mix-blend-mode:multiply;opacity:.55}
+#crt::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg, rgba(255,60,80,.022) 0 1px, rgba(60,255,200,.02) 1px 2px, rgba(90,90,255,.022) 2px 3px)}
+#vig{position:fixed;inset:0;z-index:56;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 46%, transparent 52%, rgba(4,2,10,.5) 88%, rgba(2,1,6,.82) 100%)}
+#scanline{position:fixed;left:0;right:0;height:18vh;z-index:57;pointer-events:none;opacity:.05;
+  background:linear-gradient(180deg, transparent, rgba(220,200,255,.5), transparent);
+  animation:scandrift 11s linear infinite}
+@keyframes scandrift{0%{top:-20%}100%{top:110%}}
+#flashfx{position:fixed;inset:0;z-index:58;pointer-events:none;background:#fff;opacity:0;transition:opacity .12s}
+body.flicker #app{animation:crtflick 7s steps(1) infinite}
+@keyframes crtflick{0%,93%,100%{opacity:1}93.5%{opacity:.965}94%{opacity:1}96.2%{opacity:.978}96.4%{opacity:1}}
+body.calm #crt, body.calm #scanline, body.calm canvas#grain{display:none}
+body.calm #app{animation:none !important}
+body.calm .glitch, body.calm .glitching{animation:none !important}
+
+/* —— 通用屏幕 —— */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden auto;scrollbar-width:thin;scrollbar-color:var(--line-hi) transparent}
+.screen::-webkit-scrollbar{width:5px}
+.screen::-webkit-scrollbar-thumb{background:var(--line-hi);border-radius:3px}
+.screen.center{align-items:center;justify-content:center}
+.fadein{animation:fadein 1.1s ease both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.fadeup{animation:fadeup .9s cubic-bezier(.2,.7,.3,1) both}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* —— 文本风格 —— */
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint)}
+.amberglow{color:var(--amber-hi);text-shadow:0 0 18px rgba(232,163,61,.35), 0 0 46px rgba(232,163,61,.14)}
+.tealglow{color:var(--teal);text-shadow:0 0 18px rgba(93,202,165,.3)}
+.violetglow{color:var(--violet);text-shadow:0 0 20px rgba(157,140,255,.32)}
+.chroma{text-shadow:-1px 0 rgba(255,40,90,.14), 1px 0 rgba(40,255,220,.12), 0 0 22px rgba(232,163,61,.18)}
+hr.sep{border:none;height:1px;background:linear-gradient(90deg, transparent, var(--line-hi), transparent);margin:18px auto;width:72%}
+
+/* —— 按钮 —— */
+.btn{font-family:var(--serif);font-size:15.5px;letter-spacing:.14em;color:var(--paper-dim);
+  padding:13px 26px;border:1px solid var(--line);border-radius:3px;background:rgba(22,16,33,.55);
+  backdrop-filter:blur(3px);transition:all .28s ease;position:relative;overflow:hidden}
+.btn:hover{color:var(--paper);border-color:var(--amber);box-shadow:0 0 22px rgba(232,163,61,.13), inset 0 0 22px rgba(232,163,61,.05);text-shadow:0 0 12px rgba(255,196,107,.4)}
+.btn:active{transform:translateY(1px)}
+.btn.teal:hover{border-color:var(--teal);box-shadow:0 0 22px rgba(93,202,165,.14), inset 0 0 22px rgba(93,202,165,.05)}
+.btn.violet:hover{border-color:var(--violet);box-shadow:0 0 22px rgba(157,140,255,.15)}
+.btn.small{padding:8px 16px;font-size:13px}
+.btn:disabled{opacity:.35;pointer-events:none}
+.btn.picked{border-color:var(--amber);color:var(--amber-hi);pointer-events:none}
+.btn-hush{font-family:var(--serif);font-size:15px;letter-spacing:.3em;color:#dcd8e6;
+  padding:13px 26px;border:1px solid rgba(220,216,230,.35);border-radius:3px;
+  background:linear-gradient(180deg, rgba(210,205,225,.07), rgba(210,205,225,.02));
+  transition:all .5s ease}
+.btn-hush:hover{color:#fff;border-color:#fff;box-shadow:0 0 34px rgba(230,228,240,.18);letter-spacing:.38em}
+.btn-hush::after{content:"……一切都会停下来。";display:block;font-size:10.5px;letter-spacing:.18em;color:rgba(220,216,230,.4);margin-top:3px}
+
+/* ============ 启动 BOOT ============ */
+.boot{font-family:var(--mono);color:#9b8fb5;font-size:13px;line-height:2.2;padding:7vh 8vw;letter-spacing:.06em}
+.boot .ok{color:var(--teal)}
+.boot .warn{color:var(--amber)}
+.boot .err{color:var(--red)}
+.boot-cta{margin-top:5vh;display:flex;flex-direction:column;align-items:center;gap:18px}
+.dial-knob{width:118px;height:118px;border-radius:50%;border:1px solid var(--line-hi);position:relative;cursor:pointer;
+  background:radial-gradient(circle at 38% 32%, #241a33, #120d1d 70%);
+  box-shadow:0 0 0 8px rgba(22,16,33,.6), 0 0 44px rgba(232,163,61,.07), inset 0 2px 14px rgba(0,0,0,.7);
+  transition:transform 1.2s cubic-bezier(.3,.9,.3,1), box-shadow .8s}
+.dial-knob::before{content:"";position:absolute;top:8px;left:50%;width:2px;height:26px;background:var(--amber);transform:translateX(-50%);box-shadow:0 0 10px var(--amber)}
+.dial-knob:hover{box-shadow:0 0 0 8px rgba(22,16,33,.6), 0 0 60px rgba(232,163,61,.18), inset 0 2px 14px rgba(0,0,0,.7)}
+.dial-knob.turned{transform:rotate(123deg)}
+.boot-freq{font-family:var(--mono);font-size:12px;letter-spacing:.4em;color:var(--faint)}
+
+/* ============ 标题 TITLE ============ */
+.title-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;padding:6vh 22px;text-align:center;position:relative;z-index:2}
+.t-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.52em;color:var(--faint);text-transform:uppercase;margin-bottom:3.2vh;animation:fadein 2.4s both .4s}
+.t-main{font-family:var(--serif);font-weight:500;font-size:clamp(34px,7.2vw,84px);letter-spacing:.16em;line-height:1.12;color:var(--paper);margin-bottom:1.4vh;text-transform:uppercase}
+.t-main .t-l{display:inline-block;transition:opacity 2.6s ease, filter 2.6s ease, transform 2.6s ease;
+  text-shadow:0 0 26px rgba(232,163,61,.22), 0 0 70px rgba(232,163,61,.08), -1px 0 rgba(255,40,90,.1), 1px 0 rgba(40,255,220,.1)}
+.t-main .t-l.unrem{opacity:.13;filter:blur(2.5px);transform:translateY(-3px)}
+.t-zh{font-size:clamp(17px,2.5vw,25px);letter-spacing:1.1em;text-indent:1.1em;color:var(--amber-hi);opacity:.92;margin-bottom:1vh;text-shadow:0 0 24px rgba(232,163,61,.3)}
+.t-sub{font-family:var(--mono);font-size:11.5px;letter-spacing:.3em;color:var(--faint);margin-bottom:5.2vh}
+.t-menu{display:flex;flex-direction:column;gap:13px;width:min(330px,82vw)}
+.t-menu .btn{width:100%}
+.t-foot{margin-top:5vh;font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:#564b6e;line-height:2.1}
+.t-foot b{color:#6f6388;font-weight:400}
+
+/* ============ 章节频率表 DIAL ============ */
+.dialhead{padding:5.5vh 22px 2vh;text-align:center}
+.dial-band{position:relative;height:54px;margin:0 auto 26px;max-width:680px;border-bottom:1px solid var(--line-hi);
+  background:repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 9%);opacity:.8}
+.dial-needle{position:absolute;top:0;bottom:-6px;width:2px;background:var(--red);box-shadow:0 0 12px var(--red);transition:left 1.1s cubic-bezier(.3,.8,.3,1)}
+.freq-list{display:flex;flex-direction:column;gap:9px;max-width:680px;margin:0 auto;padding:0 22px 9vh;width:100%}
+.freq{display:flex;align-items:baseline;gap:16px;padding:15px 20px;border:1px solid var(--line);border-radius:3px;
+  background:rgba(22,16,33,.5);text-align:left;transition:all .3s;font-family:var(--serif)}
+.freq:hover:not(.locked){border-color:var(--amber);background:rgba(36,26,51,.6);box-shadow:0 0 24px rgba(232,163,61,.08)}
+.freq .fq{font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:.1em;min-width:72px}
+.freq .ft{flex:1;font-size:16.5px;letter-spacing:.06em;color:var(--paper)}
+.freq .ft em{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--faint);margin-top:2px}
+.freq .fs{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--teal)}
+.freq.locked{opacity:.42;cursor:default}
+.freq.locked .ft{color:var(--faint);filter:blur(3.5px)}
+.freq.locked .fs{color:#564b6e}
+.freq.done .fs{color:var(--faint)}
+.freq.lying .ft{color:var(--violet)}
+.side-label{font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:#564b6e;margin:14px 0 4px;text-align:center}
+
+/* ============ 叙事舞台 STAGE ============ */
+.stage{position:absolute;inset:0;display:flex;flex-direction:column;z-index:2}
+.hudmini{display:flex;align-items:center;gap:14px;padding:12px 18px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.18em;color:var(--faint);border-bottom:1px solid rgba(44,36,56,.6);background:rgba(10,8,18,.55);backdrop-filter:blur(6px);z-index:5}
+.hudmini .hm-ch{color:var(--amber);white-space:nowrap}
+.hudmini .hm-meters{display:flex;gap:14px;margin-left:auto;align-items:center}
+.hm-meter{display:flex;align-items:center;gap:7px;transition:opacity 1.2s, transform 1.2s}
+.hm-meter.gone{opacity:0;transform:translateY(-12px);pointer-events:none}
+.hm-meter b{font-weight:400;font-size:10px;color:var(--paper-dim)}
+.hm-track{width:64px;height:4px;background:#221b2f;border-radius:2px;overflow:hidden}
+.hm-fill{height:100%;border-radius:2px;transition:width .9s ease, background .9s}
+.hm-pause{border:1px solid var(--line);border-radius:3px;padding:4px 11px;color:var(--faint);font-family:var(--mono);font-size:10px;letter-spacing:.2em;transition:all .25s}
+.hm-pause:hover{color:var(--paper);border-color:var(--line-hi)}
+.beatscroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--line-hi) transparent;scroll-behavior:smooth}
+.beatscroll::-webkit-scrollbar{width:4px}
+.beatscroll::-webkit-scrollbar-thumb{background:var(--line)}
+.beats{max-width:660px;margin:0 auto;padding:7vh 26px 30vh;display:flex;flex-direction:column;gap:26px}
+.nar{font-size:17.5px;line-height:2.05;color:var(--paper);letter-spacing:.02em;text-shadow:0 0 30px rgba(239,231,216,.06)}
+.nar.dim{color:var(--paper-dim);font-size:16px}
+.nar.lit{color:var(--amber-hi);text-shadow:0 0 22px rgba(232,163,61,.25)}
+.nar.veil{color:#cfc4f4;text-shadow:0 0 22px rgba(157,140,255,.25)}
+.nar.center{text-align:center}
+.sysmsg{font-family:var(--mono);font-size:12px;letter-spacing:.14em;line-height:2;color:var(--teal);
+  border-left:2px solid var(--teal-deep);padding:10px 16px;background:rgba(29,158,117,.05)}
+.sysmsg.bad{color:#e89b9b;border-color:var(--red);background:rgba(226,75,74,.05)}
+.sysmsg.ghost{color:#b9b2d4;border-color:var(--violet-deep);background:rgba(157,140,255,.05)}
+.say{display:flex;gap:14px;align-items:flex-start}
+.say-chip{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:17px;border:1px solid;position:relative;margin-top:3px}
+.say-body{flex:1}
+.say-name{font-family:var(--mono);font-size:10.5px;letter-spacing:.3em;margin-bottom:5px;min-height:14px}
+.say-text{font-size:17px;line-height:1.95;color:var(--paper)}
+.who-moyi .say-chip{background:#2e1c22;color:var(--rose);border-color:#7a4538;box-shadow:0 0 16px rgba(240,165,143,.12)}
+.who-moyi .say-name{color:var(--rose)}
+.who-paris .say-chip{background:#10261f;color:var(--teal);border-color:#1d6b52;box-shadow:0 0 16px rgba(93,202,165,.12)}
+.who-paris .say-name{color:var(--teal)}
+.who-senna .say-chip{background:#1f1c33;color:#b4a7ee;border-color:#544a8a;box-shadow:0 0 16px rgba(157,140,255,.14)}
+.who-senna .say-name{color:#b4a7ee}
+.who-quiet .say-chip{background:#1a1a1e;color:var(--quiet);border-color:#4e4c58;box-shadow:0 0 22px rgba(201,196,212,.1)}
+.who-quiet .say-name{color:var(--quiet);letter-spacing:.5em}
+.who-quiet .say-text{color:#d6d2e0;letter-spacing:.06em}
+.who-other .say-chip{background:#241d31;color:var(--paper-dim);border-color:var(--line-hi)}
+.who-other .say-name{color:var(--paper-dim)}
+.who-asha .say-chip{background:#2c2310;color:#e7c46a;border-color:#8a6b2a;box-shadow:0 0 16px rgba(231,196,106,.12)}
+.who-asha .say-name{color:#e7c46a}
+.blurface{filter:blur(5px) !important;color:transparent !important;text-shadow:0 0 9px rgba(180,167,238,.9)}
+.say-chip.blurface::after{content:"";position:absolute;inset:-1px;border-radius:50%;background:rgba(31,28,51,.55);backdrop-filter:blur(2px)}
+.advancer{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;
+  letter-spacing:.4em;color:#564b6e;animation:advpulse 2.6s ease-in-out infinite;pointer-events:none;z-index:6}
+@keyframes advpulse{0%,100%{opacity:.25}50%{opacity:.8}}
+
+/* —— 章节卡 —— */
+.tcard{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 60%, rgba(18,13,29,.94), rgba(6,4,12,.99));text-align:center;padding:24px}
+.tcard-no{font-family:var(--mono);font-size:11px;letter-spacing:.62em;color:var(--amber);margin-bottom:3vh;text-transform:uppercase}
+.tcard-en{font-family:var(--serif);font-size:clamp(24px,4.6vw,46px);letter-spacing:.18em;color:var(--paper);text-transform:uppercase;margin-bottom:1.6vh;line-height:1.3}
+.tcard-zh{font-size:clamp(15px,2.2vw,21px);letter-spacing:.5em;text-indent:.5em;color:var(--paper-dim)}
+.tcard-rule{width:1px;height:7vh;background:linear-gradient(180deg,transparent,var(--amber),transparent);margin:3.4vh 0}
+.tcard-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.3em;color:var(--faint);max-width:520px;line-height:2.2}
+
+/* —— 选择 —— */
+.choices{display:flex;flex-direction:column;gap:11px;padding:6px 0 2px}
+.choice{text-align:left;font-family:var(--serif);font-size:16px;line-height:1.7;letter-spacing:.04em;color:var(--paper-dim);
+  padding:14px 20px 14px 46px;border:1px solid var(--line);border-radius:3px;background:rgba(22,16,33,.5);position:relative;transition:all .3s}
+.choice::before{content:"◇";position:absolute;left:18px;top:14px;color:var(--faint);font-size:13px;transition:all .3s}
+.choice:hover{color:var(--paper);border-color:var(--amber);background:rgba(36,26,51,.55)}
+.choice:hover::before{color:var(--amber);content:"◆"}
+.choice.picked{border-color:var(--amber);color:var(--amber-hi);background:rgba(232,163,61,.06)}
+.choice.picked::before{content:"◆";color:var(--amber)}
+.choice.unpicked{opacity:.3;pointer-events:none}
+.choice.hushy{border-color:rgba(220,216,230,.3);color:#d6d2e0;letter-spacing:.18em}
+.choice.hushy::before{content:"○";color:#d6d2e0}
+.choice.hushy:hover{border-color:#fff;background:rgba(220,216,230,.06);box-shadow:0 0 26px rgba(230,228,240,.1)}
+.choice.gone-mem{opacity:.4;pointer-events:none;border-style:dashed}
+.choice small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--faint);margin-top:4px}
+
+/* —— 长按交互 —— */
+.holdwrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:22px 0 8px}
+.holdbtn{width:148px;height:148px;border-radius:50%;position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  border:1px solid var(--line-hi);background:radial-gradient(circle at 42% 36%, rgba(40,30,58,.9), rgba(14,10,24,.95) 70%);
+  box-shadow:0 0 0 10px rgba(22,16,33,.45), 0 0 50px rgba(232,163,61,.08);transition:box-shadow .5s}
+.holdbtn:hover{box-shadow:0 0 0 10px rgba(22,16,33,.45), 0 0 70px rgba(232,163,61,.16)}
+.holdbtn .hb-ring{position:absolute;inset:-1px;border-radius:50%;
+  background:conic-gradient(var(--amber) calc(var(--p,0)*1%), rgba(70,58,94,.35) 0);
+  -webkit-mask:radial-gradient(circle, transparent 66%, #000 67.5%);mask:radial-gradient(circle, transparent 66%, #000 67.5%)}
+.holdbtn .hb-ico{font-size:26px;line-height:1}
+.holdbtn .hb-tx{font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--paper-dim);text-align:center}
+.holdbtn.singing{box-shadow:0 0 0 10px rgba(22,16,33,.45), 0 0 90px rgba(232,163,61,.3)}
+.holdbtn.feel{width:172px;height:172px}
+.holdbtn.feel .hb-tx{font-size:12px;letter-spacing:.42em;color:var(--paper)}
+.hold-cap{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--faint);text-align:center;min-height:18px;transition:color .6s}
+.hold-cap.hard{color:#e89b9b}
+
+/* —— 通用面板 / 卡片 —— */
+.panel{border:1px solid var(--line);border-radius:4px;background:rgba(22,16,33,.62);backdrop-filter:blur(4px);padding:18px 20px}
+.cardrow{display:flex;flex-wrap:wrap;gap:12px}
+.pcard{flex:1 1 180px;border:1px solid var(--line);border-radius:4px;background:rgba(22,16,33,.6);padding:16px 16px;text-align:left;transition:all .3s;position:relative}
+.pcard:hover{border-color:var(--line-hi)}
+.pcard h4{font-size:15.5px;font-weight:500;letter-spacing:.08em;color:var(--paper);margin-bottom:6px}
+.pcard p{font-size:12.5px;line-height:1.9;color:var(--faint)}
+.pcard .tag{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--faint)}
+.pcard.sel{border-color:var(--amber);box-shadow:0 0 22px rgba(232,163,61,.1)}
+.pcard.spent{opacity:.32;pointer-events:none;border-style:dashed}
+.pcard.woke{border-color:var(--teal);box-shadow:0 0 22px rgba(93,202,165,.12)}
+
+/* —— 第一章 · 界面消失 —— */
+.fakehud{position:fixed;inset:0;pointer-events:none;z-index:30;font-family:var(--mono)}
+.fh{position:absolute;transition:opacity 1.4s ease, filter 1.4s ease, transform 1.4s}
+.fh.erased{opacity:0;filter:blur(8px);transform:scale(.96)}
+.fh-hp{top:18px;left:18px;display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.22em;color:var(--paper-dim)}
+.fh-hp .bar{width:130px;height:7px;border:1px solid var(--line-hi);border-radius:3px;overflow:hidden}
+.fh-hp .bar i{display:block;height:100%;width:88%;background:linear-gradient(90deg,#c8474b,#e8766a)}
+.fh-map{top:18px;right:18px;width:120px;height:88px;border:1px solid var(--line-hi);border-radius:4px;background:rgba(15,12,21,.85);overflow:hidden}
+.fh-map .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(70,58,94,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(70,58,94,.4) 1px,transparent 1px);background-size:14px 14px}
+.fh-map .you{position:absolute;top:48%;left:46%;width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 9px var(--teal)}
+.fh-map .cap{position:absolute;bottom:4px;left:7px;font-size:8.5px;letter-spacing:.18em;color:var(--faint)}
+.fh-quest{bottom:74px;left:18px;font-size:10.5px;letter-spacing:.24em;color:var(--amber);border-left:2px solid var(--amber);padding:5px 12px;background:rgba(232,163,61,.05)}
+.fh-pause{bottom:18px;left:18px;font-size:10px;letter-spacing:.3em;color:var(--faint);border:1px solid var(--line);border-radius:3px;padding:6px 13px}
+.fh-name{bottom:18px;right:18px;font-size:10.5px;letter-spacing:.3em;color:#b4a7ee;border:1px solid #544a8a;border-radius:3px;padding:6px 14px;background:rgba(31,28,51,.6)}
+.phone{max-width:330px;margin:8px auto;border:1px solid var(--line-hi);border-radius:14px;background:#0d0a16;padding:14px 14px 12px;box-shadow:0 14px 50px rgba(0,0,0,.5), 0 0 36px rgba(157,140,255,.06)}
+.ph-top{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;color:var(--faint);text-align:center;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.ph-thread{padding:14px 4px;display:flex;flex-direction:column;gap:8px;min-height:90px}
+.ph-bub{max-width:82%;font-family:var(--sans);font-size:13.5px;line-height:1.65;padding:9px 13px;border-radius:13px}
+.ph-bub.them{align-self:flex-start;background:#221b32;color:var(--paper-dim);border-bottom-left-radius:4px}
+.ph-bub.me{align-self:flex-end;background:#2c3f57;color:#dfe9f6;border-bottom-right-radius:4px;position:relative}
+.ph-input{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:10px}
+.ph-field{flex:1;font-family:var(--sans);font-size:13px;color:var(--paper);background:#171221;border:1px solid var(--line);border-radius:9px;padding:9px 12px;min-height:38px;line-height:1.5}
+.ph-field .caret{display:inline-block;width:1px;height:14px;background:var(--paper);vertical-align:-2px;animation:caretblink 1s steps(1) infinite;margin-left:1px}
+@keyframes caretblink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.ph-del{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#e89b9b;border:1px solid #5e2c33;border-radius:8px;padding:9px 13px;background:rgba(226,75,74,.06);transition:all .3s}
+.ph-del:hover{background:rgba(226,75,74,.14);color:#ffb3b3}
+.ph-send{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--faint);border:1px solid var(--line);border-radius:8px;padding:9px 13px;opacity:.45;cursor:not-allowed}
+
+/* —— 缘线步 Threadstep —— */
+.tsfield{position:relative;height:300px;border:1px solid var(--line);border-radius:5px;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 110%, rgba(58,42,77,.4), rgba(10,8,18,.85))}
+.tsnode{position:absolute;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;cursor:pointer;border:none;background:transparent}
+.tsnode i{position:absolute;inset:14px;border-radius:50%;background:var(--amber);opacity:.85;box-shadow:0 0 18px var(--amber), 0 0 50px rgba(232,163,61,.5);animation:nodepulse 2.4s ease-in-out infinite}
+.tsnode.cold i{background:#39304e;box-shadow:none;animation:none;opacity:.5}
+.tsnode.stepped i{background:var(--teal);box-shadow:0 0 18px var(--teal);animation:none}
+.tsnode .nl{position:absolute;top:52px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--faint);white-space:nowrap}
+@keyframes nodepulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.tsmoyi{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--rose);box-shadow:0 0 14px var(--rose), 0 0 40px rgba(240,165,143,.5);transition:left 1s cubic-bezier(.4,0,.2,1), top 1s cubic-bezier(.4,0,.2,1);z-index:3}
+
+/* —— 第二章 · 积压者排序 —— */
+.bk-board{display:flex;flex-direction:column;gap:10px}
+.bk-frag{text-align:left;border:1px solid var(--line);border-radius:4px;background:rgba(22,16,33,.65);padding:13px 16px;transition:all .3s;position:relative}
+.bk-frag .bf-t{font-size:14.5px;line-height:1.8;color:var(--paper-dim)}
+.bk-frag .bf-d{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:#564b6e;margin-top:5px}
+.bk-frag:hover{border-color:var(--violet);background:rgba(36,26,51,.6)}
+.bk-frag.sent{opacity:.35;pointer-events:none;border-color:var(--teal-deep)}
+.bk-frag.sent::after{content:"已送达";position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--teal)}
+.bk-prog{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--faint);text-align:center;padding:6px 0}
+
+/* —— 第三章 · 直播间 —— */
+.chatcol{height:240px;overflow:hidden;border:1px solid var(--line);border-radius:5px;background:rgba(13,10,22,.85);position:relative;padding:8px 0;mask-image:linear-gradient(180deg,transparent,#000 18%,#000 86%,transparent)}
+.chatmsg{font-family:var(--sans);font-size:12.5px;line-height:1.5;padding:4px 14px;color:var(--paper-dim);animation:chatup .5s ease both}
+.chatmsg b{font-weight:500;font-size:11.5px;margin-right:7px}
+.chatmsg.adore b{color:#f0a58f}.chatmsg.demand b{color:#e7c46a}.chatmsg.cold b{color:#8d80a8}
+.chatmsg.heart{color:#f3d9e8;text-align:center;letter-spacing:.3em}
+@keyframes chatup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.moodrow{display:flex;gap:10px;justify-content:center;padding:12px 0 4px}
+.mood{font-family:var(--mono);font-size:11px;letter-spacing:.26em;padding:10px 22px;border:1px solid var(--line);border-radius:3px;color:var(--paper-dim);transition:all .3s}
+.mood.adore:hover,.mood.adore.on{border-color:var(--rose);color:var(--rose);box-shadow:0 0 22px rgba(240,165,143,.12)}
+.mood.demand:hover,.mood.demand.on{border-color:#e7c46a;color:#e7c46a;box-shadow:0 0 22px rgba(231,196,106,.12)}
+
+/* —— 第四章 · 读裂 —— */
+.house-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding-bottom:12px}
+.htab{font-family:var(--mono);font-size:10px;letter-spacing:.16em;padding:8px 13px;border:1px solid var(--line);border-radius:3px;color:var(--faint);transition:all .25s}
+.htab.on{border-color:var(--teal);color:var(--teal)}
+.htab.done{border-color:var(--teal-deep);color:var(--faint);text-decoration:line-through}
+.houseview{position:relative;border:1px solid var(--line);border-radius:5px;min-height:240px;background:rgba(13,10,22,.8);padding:26px 26px;font-size:15px;line-height:2.1;color:var(--paper-dim)}
+.crackword{cursor:pointer;position:relative;color:var(--paper-dim);transition:color .3s;border-bottom:1px dashed transparent}
+.crackword:hover{color:var(--teal)}
+.crackword.lie{animation:crackshimmer 3.2s ease-in-out infinite}
+@keyframes crackshimmer{0%,100%{text-shadow:none}50%{text-shadow:0 0 14px rgba(93,202,165,.55)}}
+.crackword.found{color:var(--teal);border-bottom-color:var(--teal);text-shadow:0 0 14px rgba(93,202,165,.5)}
+
+/* —— 第五章 · 燃忆 —— */
+.memlist{display:flex;flex-direction:column;gap:9px}
+.memitem{display:flex;align-items:baseline;gap:13px;text-align:left;border:1px solid var(--line);border-radius:4px;background:rgba(22,16,33,.6);padding:12px 16px;transition:all .3s}
+.memitem:hover{border-color:var(--amber)}
+.memitem .mi-n{font-size:15px;color:var(--paper);letter-spacing:.04em;flex:1}
+.memitem .mi-c{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#c98a8a;text-align:right;line-height:1.8}
+.memitem.burned{opacity:.3;pointer-events:none;border-style:dashed}
+.memitem.burned .mi-n{text-decoration:line-through;color:var(--faint)}
+
+/* —— 第六章 · 评分 —— */
+.gradebox{position:relative;border:1px solid var(--line);border-radius:5px;background:rgba(13,10,22,.8);padding:22px;text-align:center}
+.gstamp{display:inline-block;font-family:var(--mono);font-size:30px;letter-spacing:.1em;color:var(--red);border:2px solid var(--red);border-radius:5px;padding:5px 17px;transform:rotate(-7deg);opacity:0;text-shadow:0 0 16px rgba(226,75,74,.4)}
+.gstamp.ok{color:var(--teal);border-color:var(--teal);text-shadow:0 0 16px rgba(93,202,165,.4)}
+.gstamp.stamped{animation:stampin .4s cubic-bezier(.2,2,.4,1) both}
+@keyframes stampin{from{opacity:0;transform:rotate(-7deg) scale(2.2)}to{opacity:1;transform:rotate(-7deg) scale(1)}}
+.beamfield{position:relative;height:210px;border:1px solid var(--line);border-radius:5px;overflow:hidden;background:rgba(13,10,22,.85)}
+.rubeam{position:absolute;top:0;bottom:0;width:64px;background:linear-gradient(90deg,transparent,rgba(231,196,106,.16),transparent);border-left:1px solid rgba(231,196,106,.25);border-right:1px solid rgba(231,196,106,.25)}
+.stillbtn{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--paper-dim);border:1px solid var(--line-hi);border-radius:3px;padding:10px 22px;background:rgba(10,8,18,.8);user-select:none;-webkit-user-select:none;touch-action:none}
+.stillbtn.holding{border-color:var(--teal);color:var(--teal)}
+.moyidot{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--rose);box-shadow:0 0 13px var(--rose);top:46%;left:12%;transition:left .8s ease}
+
+/* —— 第八章 · 崩塌 —— */
+.collapse-it{font-family:var(--mono);font-size:12.5px;letter-spacing:.16em;color:var(--paper-dim);padding:11px 16px;border-left:2px solid var(--line-hi);background:rgba(22,16,33,.5);transition:all .5s}
+.collapse-it.falling{color:#e89b9b;border-color:var(--red);background:rgba(226,75,74,.06);text-decoration:line-through;transform:translateX(6px) skewX(-2deg);opacity:.55}
+
+/* —— 第九章 · 三个莫依 / 谎言菜单 / 砖 —— */
+.moyi3{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.m3card{text-align:left;border:1px solid #544a8a;border-radius:4px;background:rgba(31,28,51,.55);padding:16px;transition:all .3s;cursor:pointer}
+.m3card:hover{border-color:var(--violet);box-shadow:0 0 26px rgba(157,140,255,.14)}
+.m3card h5{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--violet);margin-bottom:8px}
+.m3card p{font-size:13.5px;line-height:1.95;color:var(--paper-dim)}
+.m3card.wrong{opacity:.25;pointer-events:none;filter:blur(1px)}
+.m3card.true{border-color:var(--rose);box-shadow:0 0 26px rgba(240,165,143,.2)}
+.brickrow{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;padding:8px 0}
+.brick{width:88px;height:52px;border:1px solid var(--line-hi);border-radius:3px;background:linear-gradient(180deg,#241c35,#171123);position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none;transition:all .4s;display:flex;align-items:center;justify-content:center}
+.brick .bp{position:absolute;inset:auto 0 0 0;height:3px;background:var(--teal);width:0%;transition:none}
+.brick span{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--faint)}
+.brick.laid{border-color:var(--teal);background:linear-gradient(180deg,#15302a,#0d211c);box-shadow:0 0 18px rgba(93,202,165,.16)}
+.brick.laid span{color:var(--teal)}
+.brick.crumble{animation:crumble .5s ease both}
+@keyframes crumble{30%{transform:translateY(2px) rotate(1.5deg)}100%{transform:translateY(8px);opacity:.25}}
+
+/* —— 第十章 · 审计与舞台 —— */
+.audit{display:flex;flex-direction:column;gap:10px}
+.audit-row{display:flex;align-items:baseline;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--paper-dim);border-bottom:1px dashed var(--line);padding:9px 4px}
+.audit-row b{font-size:20px;color:var(--amber-hi);font-weight:400;min-width:44px;text-align:right;text-shadow:0 0 16px rgba(232,163,61,.3)}
+.audit-row span{flex:1}
+.audit-row em{font-style:normal;font-size:10px;color:var(--faint)}
+.feelwrap{position:fixed;inset:0;z-index:45;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:7vh;pointer-events:none}
+.feelwrap .holdbtn{pointer-events:auto}
+.feelcap{position:fixed;left:0;right:0;top:30%;text-align:center;font-size:clamp(17px,2.6vw,24px);letter-spacing:.16em;color:var(--paper);padding:0 24px;text-shadow:0 0 30px rgba(239,231,216,.15);transition:opacity 1s;line-height:2}
+.feelcap.hard{color:#eba7a7;text-shadow:0 0 30px rgba(226,75,74,.25)}
+.credits{display:flex;flex-direction:column;align-items:center;gap:3.4vh;text-align:center;padding:16vh 24px}
+.cr-k{font-family:var(--mono);font-size:10px;letter-spacing:.5em;color:var(--faint);text-transform:uppercase}
+.cr-v{font-size:19px;letter-spacing:.22em;color:var(--paper)}
+.lamp{width:3px;height:120px;background:linear-gradient(180deg,#3a3148,#241d31);margin:0 auto;position:relative}
+.lamp::before{content:"";position:absolute;top:-7px;left:-7px;width:17px;height:11px;border-radius:45%;background:var(--sodium);box-shadow:0 0 30px var(--sodium),0 0 90px rgba(255,155,47,.5)}
+
+/* ============ 二人组 DUET HUD ============ */
+.u-shell{max-width:1060px;margin:0 auto;padding:4.5vh 18px 8vh;width:100%}
+.u-frame{background:rgba(16,12,24,.88);border:1px solid var(--line);border-radius:8px;overflow:hidden;backdrop-filter:blur(8px);box-shadow:0 30px 90px rgba(0,0,0,.5), 0 0 70px rgba(157,140,255,.04)}
+.u-top{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:rgba(28,22,38,.7);border-bottom:1px solid var(--line)}
+.u-logo{display:flex;align-items:center;gap:11px}
+.u-logo .dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(226,75,74,.16),0 0 12px var(--red);animation:towerblink 3.2s ease-in-out infinite}
+@keyframes towerblink{0%,100%{opacity:1}50%{opacity:.35}}
+.u-logo b{font-family:var(--serif);font-size:13px;font-weight:500;letter-spacing:.22em;color:var(--paper);text-transform:uppercase;display:block}
+.u-logo span{font-family:var(--mono);font-size:9.5px;color:var(--faint);letter-spacing:.18em}
+.u-topright{display:flex;align-items:center;gap:18px;font-family:var(--mono);font-size:11px;color:var(--paper-dim)}
+.u-res{display:flex;align-items:center;gap:7px}
+.u-res i{font-style:normal;font-size:13px}
+.u-body{display:grid;grid-template-columns:178px minmax(0,1fr) 196px}
+.u-roster{background:rgba(20,15,30,.6);border-right:1px solid var(--line);padding:13px 11px}
+.u-sec{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin:0 0 10px 3px}
+.u-char{display:flex;align-items:center;gap:10px;width:100%;padding:9px;border-radius:6px;border:1px solid transparent;margin-bottom:7px;transition:all .2s;text-align:left}
+.u-char:hover{background:rgba(33,26,46,.7)}
+.u-char.active{background:rgba(36,26,51,.8);border-color:var(--line-hi)}
+.u-ava{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;flex-shrink:0;border:1px solid}
+.u-char b{font-size:13.5px;font-weight:500;color:var(--paper);display:block;letter-spacing:.05em}
+.u-char span{font-family:var(--mono);font-size:9.5px;color:var(--faint);letter-spacing:.08em}
+.u-char.lock{opacity:.42;cursor:default}
+.u-tide{background:rgba(22,16,33,.7);border:1px solid var(--line);border-radius:7px;padding:11px 12px;margin-top:4px}
+.u-tide .tt{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-bottom:7px}
+.u-main{padding:17px 20px}
+.u-hero{display:flex;gap:16px;margin-bottom:16px}
+.u-portrait{width:92px;height:92px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:34px;flex-shrink:0;border:1.5px solid;position:relative;overflow:hidden}
+.u-portrait::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, rgba(255,255,255,.1), transparent 60%)}
+.u-hinfo{flex:1;min-width:0}
+.u-nrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.u-name{font-size:21px;font-weight:500;letter-spacing:.1em;color:#fff;margin:0}
+.u-code{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;padding:3px 9px;border-radius:3px;border:1px solid}
+.u-role{font-size:12.5px;color:var(--faint);margin:5px 0 10px;letter-spacing:.05em}
+.u-quote{font-size:12px;color:var(--paper-dim);font-style:italic;border-left:2px solid var(--line-hi);padding-left:10px;line-height:1.8}
+.u-bars{display:flex;flex-direction:column;gap:11px;margin:4px 0 16px}
+.u-blabel{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.16em;margin-bottom:5px;color:var(--paper-dim)}
+.u-blabel b{font-weight:400;color:var(--paper)}
+.u-track{height:8px;background:#1d1729;border-radius:4px;overflow:hidden;position:relative}
+.u-fill{height:100%;border-radius:4px;transition:width 1.2s ease;position:relative}
+.u-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 70%,rgba(255,255,255,.22));animation:barsheen 3.4s ease-in-out infinite}
+@keyframes barsheen{0%,100%{opacity:.3}50%{opacity:1}}
+.u-statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.u-stat{background:rgba(27,21,37,.7);border:1px solid var(--line);border-radius:6px;padding:9px 6px;text-align:center}
+.u-stat span{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:4px}
+.u-stat b{font-size:16px;font-weight:400;color:var(--paper)}
+.u-abil{display:flex;gap:12px;align-items:flex-start;background:rgba(26,20,36,.7);border:1px solid var(--line);border-radius:7px;padding:11px 13px;margin-bottom:8px;transition:border-color .3s}
+.u-abil:hover{border-color:var(--line-hi)}
+.u-akey{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;flex-shrink:0;border:1px solid}
+.u-atxt{flex:1}
+.u-atxt b{font-size:13.5px;font-weight:500;color:var(--paper);display:block;margin-bottom:2px;letter-spacing:.04em}
+.u-atxt p{font-size:11.5px;color:var(--faint);margin:0;line-height:1.75}
+.u-acd{font-family:var(--mono);font-size:9px;color:var(--faint);margin-left:auto;white-space:nowrap;padding-top:3px;letter-spacing:.1em}
+.u-abil.hushy{border-color:rgba(220,216,230,.22);background:rgba(220,216,230,.03)}
+.u-abil.hushy b{letter-spacing:.3em;color:#dcd8e6}
+.u-right{background:rgba(20,15,30,.6);border-left:1px solid var(--line);padding:14px 13px}
+.u-map{border:1px solid var(--line);border-radius:7px;height:128px;margin-bottom:14px;position:relative;overflow:hidden;background:#0d0a16}
+.u-map canvas{position:absolute;inset:0;width:100%;height:100%}
+.u-map .cap{position:absolute;bottom:5px;left:8px;font-family:var(--mono);font-size:8.5px;color:var(--faint);letter-spacing:.16em;z-index:2}
+.u-invt{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.u-invt span{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
+.u-invt em{font-family:var(--mono);font-size:9.5px;color:#564b6e;font-style:normal}
+.u-inv{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.u-slot{aspect-ratio:1;background:rgba(27,21,37,.7);border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;position:relative;transition:all .25s;cursor:default}
+.u-slot:hover{border-color:var(--line-hi)}
+.u-slot.delivered{border-color:var(--teal-deep)}
+.u-slot.held{border-color:#6a5a35}
+.u-slot.empty{color:#352c48}
+.u-slot .tipname{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#0d0a16;border:1px solid var(--line-hi);border-radius:4px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--paper-dim);padding:4px 8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+.u-slot:hover .tipname{opacity:1}
+.u-hotbar{display:flex;align-items:center;gap:11px;padding:11px 17px;background:rgba(28,22,38,.7);border-top:1px solid var(--line);flex-wrap:wrap}
+.u-hk{width:22px;height:22px;border-radius:4px;background:#241d33;border:1px solid var(--line-hi);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9.5px;color:var(--paper-dim)}
+.u-hn{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.1em}
+.u-hsep{width:1px;height:16px;background:var(--line)}
+.u-hint{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:#564b6e;letter-spacing:.12em}
+.ghost-slot{position:absolute;inset:0;border:1px solid rgba(157,140,255,.4);border-radius:6px;transform:translate(5px,4px);opacity:.5;pointer-events:none;display:flex;align-items:center;justify-content:center;background:rgba(31,28,51,.5)}
+
+/* ============ 档案 CODEX ============ */
+.cx-wrap{max-width:720px;margin:0 auto;padding:5vh 22px 9vh;width:100%}
+.cx-grp{margin-bottom:30px}
+.cx-entry{border:1px solid var(--line);border-left:2px solid var(--line-hi);border-radius:3px;background:rgba(22,16,33,.55);padding:14px 18px;margin-bottom:10px;transition:all .3s}
+.cx-entry:hover{border-left-color:var(--amber)}
+.cx-entry h4{font-size:15.5px;font-weight:500;letter-spacing:.08em;color:var(--paper);margin-bottom:5px;display:flex;align-items:baseline;gap:10px}
+.cx-entry h4 em{font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:var(--faint);font-style:normal}
+.cx-entry p{font-size:13px;line-height:1.95;color:var(--paper-dim)}
+.cx-entry.burned{border-style:dashed;opacity:.55}
+.cx-entry.burned h4{color:var(--faint);text-decoration:line-through}
+.cx-entry.burned p{color:#564b6e;font-style:italic}
+.cx-entry.hush-entry{border-left-color:rgba(220,216,230,.4)}
+.cx-entry.locked{opacity:.4}
+.cx-entry.locked h4{filter:blur(3px)}
+.cx-entry.locked p{filter:blur(4px)}
+
+/* ============ 设置 ============ */
+.set-wrap{max-width:560px;margin:0 auto;padding:6vh 22px;width:100%}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 4px;border-bottom:1px solid var(--line)}
+.set-row .sl{font-size:15px;letter-spacing:.06em}
+.set-row .sl small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--faint);margin-top:3px}
+input[type=range]{-webkit-appearance:none;width:150px;height:3px;background:var(--line-hi);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px rgba(232,163,61,.5);cursor:pointer}
+.togg{font-family:var(--mono);font-size:10px;letter-spacing:.2em;padding:7px 15px;border:1px solid var(--line-hi);border-radius:3px;color:var(--paper-dim);transition:all .25s}
+.togg.on{border-color:var(--teal);color:var(--teal)}
+
+/* —— 顶栏返回 —— */
+.topnav{display:flex;align-items:center;gap:14px;padding:16px 20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;color:var(--faint);z-index:5}
+.topnav .back{border:1px solid var(--line);border-radius:3px;padding:7px 15px;color:var(--paper-dim);transition:all .25s;letter-spacing:.26em}
+.topnav .back:hover{color:var(--paper);border-color:var(--amber)}
+.topnav .tn-title{letter-spacing:.34em;text-transform:uppercase}
+
+/* —— 故障 / 抖动 —— */
+.glitch{animation:glitchclip .32s steps(2) 3}
+@keyframes glitchclip{0%{clip-path:inset(20% 0 60% 0);transform:translateX(-3px)}25%{clip-path:inset(60% 0 8% 0);transform:translateX(3px)}50%{clip-path:inset(8% 0 76% 0);transform:translateX(-2px)}75%{clip-path:inset(44% 0 30% 0);transform:translateX(2px)}100%{clip-path:none;transform:none}}
+.shake{animation:shake .45s ease}
+@keyframes shake{0%,100%{transform:none}20%{transform:translate(-5px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,-1px)}}
+.staticky{position:relative}
+.staticky::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg, rgba(180,170,210,.12) 0 2px, transparent 2px 4px);animation:staticshift .2s steps(3) infinite;pointer-events:none}
+@keyframes staticshift{0%{transform:translateY(0)}100%{transform:translateY(4px)}}
+
+/* —— 暂停菜单 —— */
+.pausemenu{position:fixed;inset:0;z-index:48;background:rgba(6,4,12,.88);backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.pausemenu .pm-t{font-family:var(--mono);font-size:11px;letter-spacing:.5em;color:var(--faint);margin-bottom:16px}
+.pm-whisper{position:absolute;bottom:7vh;font-family:var(--serif);font-size:12.5px;letter-spacing:.3em;color:rgba(220,216,230,.34);font-style:italic;animation:advpulse 4s ease-in-out infinite}
+
+/* —— toast —— */
+#toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:70;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--paper);background:rgba(16,12,24,.92);border:1px solid var(--line-hi);border-radius:4px;padding:11px 22px;transition:transform .5s cubic-bezier(.2,.9,.3,1.2);pointer-events:none;max-width:86vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.amber{border-color:var(--amber);color:var(--amber-hi);box-shadow:0 0 30px rgba(232,163,61,.14)}
+#toast.teal{border-color:var(--teal);color:var(--teal)}
+#toast.bad{border-color:var(--red);color:#eba7a7}
+#toast.ghostly{border-color:rgba(220,216,230,.4);color:#dcd8e6;letter-spacing:.34em}
+
+/* —— 伤痕结算卡 —— */
+.woundcard{border:1px solid var(--line-hi);border-radius:5px;background:rgba(16,12,24,.85);padding:24px 26px;text-align:center}
+.woundcard .wc-t{font-family:var(--mono);font-size:10px;letter-spacing:.5em;color:var(--red);margin-bottom:14px}
+.woundcard .wc-line{font-size:15px;line-height:2.1;color:var(--paper-dim);letter-spacing:.04em}
+.woundcard .wc-line b{color:var(--paper);font-weight:400}
+
+@media (max-width:760px){
+  .u-body{grid-template-columns:1fr}
+  .u-roster{border-right:none;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .u-roster .u-sec{width:100%}
+  .u-char{width:auto;flex:1 1 130px}
+  .u-tide{width:100%}
+  .u-right{border-left:none;border-top:1px solid var(--line)}
+  .beats{padding:4vh 18px 34vh}
+  .t-zh{letter-spacing:.7em;text-indent:.7em}
+  .hudmini{flex-wrap:wrap;row-gap:6px}
+  .hm-track{width:46px}
+}
+</style>
+</head>
+<body class="flicker">
+<canvas id="atmos"></canvas>
+<main id="app"></main>
+<canvas id="grain"></canvas>
+<div id="crt"></div>
+<div id="vig"></div>
+<div id="scanline"></div>
+<div id="flashfx"></div>
+<div id="toast"></div>
+<noscript><div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#b9aec9;text-align:center;padding:30px">这座小镇需要 JavaScript 才能被记得。<br>The town requires JavaScript to be remembered.</div></noscript>
+<script>
+/* ============================================================
+   THE UNREMEMBERED — 引擎
+   ============================================================ */
+'use strict';
+/* ---------- U · 工具 ---------- */
+const U = {
+  qs:(s,r)=> (r||document).querySelector(s),
+  qa:(s,r)=> [...(r||document).querySelectorAll(s)],
+  ce(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; },
+  sleep:(ms)=> new Promise(r=>setTimeout(r,ms)),
+  rnd:(a,b)=> a + Math.random()*(b-a),
+  ri:(a,b)=> Math.floor(a+Math.random()*(b-a+1)),
+  pick:(arr)=> arr[Math.floor(Math.random()*arr.length)],
+  clamp:(v,a,b)=> Math.max(a,Math.min(b,v)),
+  shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; },
+  esc:(s)=> String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'),
+};
+
+/* ---------- 注册表 · 记忆 / 未寄出 / 暗裂 ---------- */
+const MEMS = {
+  m_bus:   {n:'看台上的第一条线',  d:'森娜最后坐过的位置。你的歌第一次叫醒了什么。', cost:'地图上「校园看台」的记忆线将熄灭', ch:1},
+  m_stairs:{n:'帕里斯起草的第一段楼梯', d:'地板自己长出台阶的那个夜晚。他比你还惊讶。', cost:'档案里「共鸣」的那句话将被抹去', ch:1},
+  m_fort:  {n:'毯子堡垒的暗号',    d:'你和森娜的三短一长。世界上只有你们俩知道。', cost:'某段对话里,最软的那个选项将不存在', ch:1},
+  m_radio: {n:'车库收音机的下午',  d:'他修机器,你哼歌,雪花噪点慢慢变成了电台。', cost:'一个能修复清醒值的地方将失效', ch:2},
+  m_atrium:{n:'中庭里的回声壳',    d:'你的摇篮曲第一次充满了三层楼。', cost:'地图上「灰谷商场」的记忆线将熄灭', ch:2},
+  m_endscreen:{n:'朱尼珀的关播画面', d:'「直播结束了。谢谢你来过。」屏幕暗下去时,没有人鼓掌,但所有人都在。', cost:'在更深的地方,你将少一个可以确认的真实', ch:3},
+};
+const UNDS = {
+  u_send:   {n:'未署名的草稿', icon:'●', d:'从看台缝隙里醒来的一句话。读不清,但很重。'},
+  u_brother:{n:'治安官的第七年', icon:'❄', d:'七年积压的道歉,最早的一句只有称呼。'},
+  u_confess:{n:'没说出口的喜欢', icon:'♡', d:'货架第三排,落了灰,还在保质期内。'},
+  u_bye:    {n:'没有送出的再见', icon:'⌛', d:'写它的人后来假装那天没去车站。'},
+  u_uup:    {n:'凌晨三点的「你还醒着吗」', icon:'☾', d:'后面还有半句,从来没人见过。'},
+  u_mom:    {n:'给妈妈的草稿', icon:'✎', d:'你自己的。在「道歉」店里看见它时,你愣了很久。'},
+};
+const CRACKS = {
+  ck_shell:    '中庭回声壳的接缝 —— 第二章,他说「我没事」的那一次',
+  ck_bridge:   '信号桥的第三根弦 —— 第三章,你们赶时间的那一次',
+  ck_safehouse:'被打了 C− 的安全屋 —— 第六章,他把分数咽下去的那一次',
+};
+
+/* ---------- SAVE · 伤痕系统(持久状态) ---------- */
+const SAVE = {
+  KEY:'unremembered.v2.save',
+  S:null,
+  fresh(){ return {
+    v:2, reached:1, done:[],
+    lucidity:84, stability:76,
+    und:{}, mems:{}, cracks:[],
+    hush:0, hushKnown:false,
+    lullParis:null, sennaChoice:null, apology:null,
+    motherWoken:null, woken:[], faceBurned:false,
+    bricks:0, sendKept:null, juniper:false,
+    ending:null, post:false, flags:{},
+    set:{vol:.75, speed:1, fx:true},
+  };},
+  load(){ try{ const r=localStorage.getItem(this.KEY); this.S = r? Object.assign(this.fresh(), JSON.parse(r)) : this.fresh(); }catch(e){ this.S=this.fresh(); } return this.S; },
+  save(){ try{ localStorage.setItem(this.KEY, JSON.stringify(this.S)); }catch(e){} },
+  reset(){ this.S=this.fresh(); this.save(); },
+  earn(id){ if(!this.S.mems[id]){ this.S.mems[id]=true; this.save(); FX.toast('✶ 记忆收下了 ——「'+MEMS[id].n+'」','amber'); } },
+  burn(id){ this.S.mems[id]='burned'; this.save(); },
+  alive(id){ return this.S.mems[id]===true; },
+  addUnd(id, st){ if(!this.S.und[id]){ this.S.und[id]=st||'held'; this.save(); FX.toast(UNDS[id].icon+' 拾起未寄出 ——「'+UNDS[id].n+'」','teal'); } },
+  deliver(id){ this.S.und[id]='delivered'; this.save(); },
+  crack(id){ if(!this.S.cracks.includes(id)){ this.S.cracks.push(id); this.save(); } },
+  luc(d){ this.S.lucidity=U.clamp(this.S.lucidity+d,0,100); E.meters(); this.save(); },
+  sta(d){ this.S.stability=U.clamp(this.S.stability+d,0,100); E.meters(); this.save(); },
+  hushUse(){ this.S.hush++; this.save(); applyHushTint(); },
+};
+let S = null;
+function applyHushTint(){
+  const n = SAVE.S? SAVE.S.hush : 0;
+  const sat = Math.max(.45, 1 - n*.09);
+  document.documentElement.classList.add('hushed');
+  document.documentElement.style.filter = n>0? 'saturate('+sat.toFixed(2)+')' : '';
+}
+
+/* ---------- AU · 声音(全程序生成) ---------- */
+const AU = (()=>{
+  let C=null, out=null, mus=null, sfx=null, started=false;
+  let droneNodes=[], humNodes=[], melodyStops=[];
+  const F = {D3:146.83,F3:174.61,G3:196,A3:220,Bb3:233.08,C4:261.63,Cs4:277.18,D4:293.66,E4:329.63,F4:349.23,Fs4:369.99,G4:392,Gs4:415.3,A4:440,Bb4:466.16,C5:523.25,D5:587.33,E5:659.25,F5:698.46};
+  function ensure(){
+    if(started) return true;
+    try{
+      C = new (window.AudioContext||window.webkitAudioContext)();
+      out = C.createGain(); out.gain.value = SAVE.S.set.vol; out.connect(C.destination);
+      mus = C.createGain(); mus.gain.value=1; mus.connect(out);
+      sfx = C.createGain(); sfx.gain.value=1; sfx.connect(out);
+      started = true;
+    }catch(e){ started=false; }
+    return started;
+  }
+  function setVol(v){ if(out) out.gain.linearRampToValueAtTime(v, C.currentTime+.15); }
+  function tone(freq, o){
+    if(!started) return;
+    o = o||{};
+    const t0 = C.currentTime + (o.at||0);
+    const osc = C.createOscillator(); osc.type = o.type||'sine';
+    osc.frequency.value = freq;
+    if(o.detune) osc.detune.value = o.detune;
+    const g = C.createGain(); g.gain.value = 0;
+    const A = o.attack!=null?o.attack:.04, D = o.dur!=null?o.dur:.5, R = o.release!=null?o.release:.25, G = o.gain!=null?o.gain:.12;
+    g.gain.setValueAtTime(0,t0);
+    g.gain.linearRampToValueAtTime(G, t0+A);
+    g.gain.setValueAtTime(G, t0+A+D);
+    g.gain.linearRampToValueAtTime(0, t0+A+D+R);
+    let dest = o.bus==='mus'? mus : sfx;
+    if(o.lpf){ const f=C.createBiquadFilter(); f.type='lowpass'; f.frequency.value=o.lpf; osc.connect(f); f.connect(g); }
+    else osc.connect(g);
+    g.connect(dest);
+    osc.start(t0); osc.stop(t0+A+D+R+.05);
+    if(o.bendTo){ osc.frequency.linearRampToValueAtTime(o.bendTo, t0+A+D); }
+    if(o.wobble){ const l=C.createOscillator(), lg=C.createGain(); l.frequency.value=o.wobble; lg.gain.value=o.wobbleAmt||8; l.connect(lg); lg.connect(osc.detune); l.start(t0); l.stop(t0+A+D+R); }
+    return osc;
+  }
+  function noiseBurst(o){
+    if(!started) return;
+    o=o||{};
+    const t0=C.currentTime+(o.at||0), dur=o.dur||.3;
+    const buf=C.createBuffer(1, C.sampleRate*dur, C.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const src=C.createBufferSource(); src.buffer=buf;
+    const f=C.createBiquadFilter(); f.type=o.type||'bandpass'; f.frequency.value=o.freq||1400; f.Q.value=o.q||.8;
+    if(o.sweepTo) f.frequency.exponentialRampToValueAtTime(o.sweepTo, t0+dur);
+    const g=C.createGain(); g.gain.setValueAtTime(o.gain!=null?o.gain:.18, t0);
+    g.gain.exponentialRampToValueAtTime(.0001, t0+dur);
+    src.connect(f); f.connect(g); g.connect(sfx);
+    src.start(t0); src.stop(t0+dur);
+  }
+  /* —— 持续底噪(电台空气) —— */
+  function airOn(level){
+    if(!started) return;
+    airOff();
+    const buf=C.createBuffer(1, C.sampleRate*2, C.sampleRate);
+    const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const src=C.createBufferSource(); src.buffer=buf; src.loop=true;
+    const f=C.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900;
+    const g=C.createGain(); g.gain.value=0;
+    g.gain.linearRampToValueAtTime(level||.012, C.currentTime+2);
+    src.connect(f); f.connect(g); g.connect(mus);
+    src.start();
+    humNodes.push({src,g});
+  }
+  function airOff(){ humNodes.forEach(n=>{ try{ n.g.gain.linearRampToValueAtTime(0,C.currentTime+1); n.src.stop(C.currentTime+1.2);}catch(e){} }); humNodes=[]; }
+  /* —— 氛围持续音 —— */
+  function drone(mode){
+    if(!started) return;
+    stopDrone(1.6);
+    if(mode==='none') return;
+    const defs = {
+      dusk:[ [F.D3,'sine',.05,0],[F.A3,'sine',.035,4],[F.D3*2.005,'triangle',.012,-6] ],
+      veil:[ [F.D3,'sine',.04,0],[F.A3,'sine',.03,7],[F.E4,'sine',.02,-9],[F.Bb3,'triangle',.014,12] ],
+      deep:[ [55,'sine',.055,0],[110*1.93,'sine',.014,5],[110*2.71,'sine',.01,-4] ],
+      tense:[ [F.D3,'sawtooth',.018,0],[F.Bb3,'sine',.028,6],[F.E4,'sine',.016,-11] ],
+    };
+    const set = defs[mode]||defs.dusk;
+    set.forEach((p,i)=>{
+      const osc=C.createOscillator(); osc.type=p[1]; osc.frequency.value=p[0]; osc.detune.value=p[3];
+      const g=C.createGain(); g.gain.value=0;
+      g.gain.linearRampToValueAtTime(p[2], C.currentTime+3+i*.8);
+      const lfo=C.createOscillator(); lfo.frequency.value=.05+i*.013;
+      const lg=C.createGain(); lg.gain.value=p[2]*.4;
+      lfo.connect(lg); lg.connect(g.gain);
+      osc.connect(g); g.connect(mus);
+      osc.start(); lfo.start();
+      droneNodes.push({osc,g,lfo});
+    });
+  }
+  function stopDrone(fade){
+    droneNodes.forEach(n=>{ try{
+      n.g.gain.linearRampToValueAtTime(0, C.currentTime+(fade||1));
+      n.osc.stop(C.currentTime+(fade||1)+.2); n.lfo.stop(C.currentTime+(fade||1)+.2);
+    }catch(e){} });
+    droneNodes=[];
+  }
+  function duck(level, t){ if(started){ mus.gain.cancelScheduledValues(C.currentTime); mus.gain.linearRampToValueAtTime(level, C.currentTime+(t||.6)); } }
+  /* —— 摇篮曲动机 —— */
+  const LULLABY = [ ['D4',0,.9],['F4',1,.9],['A4',2,.9],['C5',3,1.4],['A4',4.6,.8],['F4',5.5,.9],['E4',6.6,.8],['D4',7.5,1.8] ];
+  function melody(variant, opts){
+    if(!started) return 0;
+    opts=opts||{};
+    const beat = opts.beat || .62;
+    const base = opts.gain || .085;
+    let total = 0;
+    LULLABY.forEach(nt=>{
+      let name=nt[0], at=nt[1]*beat, dur=nt[2]*beat;
+      let f = F[name]; let det=0, type='sine', g=base;
+      if(variant==='minor'){ if(name==='C5') f=F.Bb4; if(name==='A4'&&nt[1]===2) f=F.A4; dur*=1.25; at*=1.25; type='sine'; g=base*.9; }
+      if(variant==='detuned'){ det = U.rnd(-45,45); at += U.rnd(-.09,.13); type='triangle'; g=base*1.15; }
+      if(variant==='full'){ tone(f/2,{at:at+.02,dur:dur,attack:.1,release:.5,gain:g*.5,type:'sine',bus:'mus'}); }
+      tone(f,{at,dur,attack:.09,release:.55,gain:g,type,detune:det,bus:'mus',wobble:variant==='detuned'?5.5:0,wobbleAmt:14});
+      total = Math.max(total,(at+dur+.7));
+    });
+    return total*1000;
+  }
+  /* —— 三种声区 + 噤 —— */
+  function lull(){ tone(F.A3,{dur:1.1,attack:.5,release:1.2,gain:.07}); tone(F.D4,{at:.25,dur:1.2,attack:.6,release:1.4,gain:.05}); }
+  function wake(){ tone(F.D4,{dur:.3,attack:.04,release:.3,gain:.09}); tone(F.A4,{at:.28,dur:.5,attack:.05,release:.6,gain:.1}); tone(F.D5,{at:.62,dur:.8,attack:.06,release:.9,gain:.07}); }
+  function shiftT(){ tone(F.F4,{dur:.8,attack:.2,release:.8,gain:.05}); tone(F.A4,{at:.1,dur:.8,attack:.2,release:.8,gain:.05}); tone(F.C5,{at:.2,dur:1,attack:.2,release:1,gain:.045,bendTo:F.D5}); }
+  function hushFx(){ noiseBurst({dur:1.6,type:'lowpass',freq:600,sweepTo:60,gain:.1}); duck(.12,1.2); setTimeout(()=>duck(1,3),2400); }
+  /* —— 音效 —— */
+  const fx = {
+    click(){ tone(1150,{dur:.02,attack:.004,release:.04,gain:.05,type:'square',lpf:2400}); },
+    blip(){ tone(620,{dur:.05,attack:.006,release:.09,gain:.06,type:'sine'}); },
+    erase(){ noiseBurst({dur:.5,freq:2600,sweepTo:300,gain:.1,q:2}); },
+    statics(d){ noiseBurst({dur:d||.7,type:'highpass',freq:900,gain:.13}); },
+    thud(){ tone(70,{dur:.16,attack:.005,release:.3,gain:.3,type:'sine',bendTo:38}); },
+    collapse(){ noiseBurst({dur:1.4,type:'lowpass',freq:800,sweepTo:50,gain:.3}); tone(60,{dur:.5,attack:.01,release:1,gain:.32,bendTo:30}); },
+    stamp(){ noiseBurst({dur:.12,freq:300,gain:.22,q:3}); tone(140,{dur:.07,attack:.004,release:.12,gain:.16,bendTo:90}); },
+    swellUp(){ tone(F.D4,{dur:1.6,attack:1.2,release:1.2,gain:.05,bendTo:F.D5}); },
+    heart(){ tone(52,{dur:.1,attack:.01,release:.18,gain:.26}); tone(52,{at:.42,dur:.08,attack:.01,release:.16,gain:.2}); },
+    chime(){ tone(F.D5,{dur:.7,attack:.01,release:1.6,gain:.06}); tone(F.A4,{at:.06,dur:.9,attack:.02,release:1.8,gain:.045}); },
+  };
+  function tapeStop(){ duck(.001,.7); noiseBurst({dur:.7,type:'lowpass',freq:1200,sweepTo:60,gain:.07}); }
+  function n(name){ return F[name]; }
+  return { ensure, setVol, tone, noiseBurst, airOn, airOff, drone, stopDrone, duck, melody, lull, wake, shiftT, hushFx, fx, tapeStop, n, get on(){return started;} };
+})();
+
+/* ---------- ATMOS · 氛围画布(灰谷镇黄昏 / 薄暮世界) ---------- */
+const ATMOS = (()=>{
+  const cv = U.qs('#atmos'); const cx = cv.getContext('2d');
+  let W=0,H=0,DPR=1, t=0, mode='dusk', prevMode=null, mixT=1, singing=false, post=false;
+  let stars=[], snow=[], motes=[], threads=[], roofs=[], windows=[];
+  const PAL = {
+    dusk:{top:'#130e22', mid:'#2b1d3e', hor:'#7c4220', horA:.55, ridge:'#0b0816', glowy:true, lamps:true, flip:false, snowy:false, doors:false},
+    menu:{top:'#0e0a1c', mid:'#221736', hor:'#5e3420', horA:.4, ridge:'#0a0714', glowy:true, lamps:true, flip:false, snowy:false, doors:false},
+    veil:{top:'#0a0718', mid:'#241a3e', hor:'#4a2a5e', horA:.5, ridge:'#0d0a1d', glowy:false, lamps:false, flip:true, snowy:true, doors:false},
+    deep:{top:'#050310', mid:'#150f28', hor:'#241433', horA:.4, ridge:'#070512', glowy:false, lamps:false, flip:false, snowy:true, doors:true},
+  };
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio||1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
+    cx.setTransform(DPR,0,0,DPR,0,0);
+    seed();
+  }
+  function seed(){
+    stars=[]; for(let i=0;i<110;i++) stars.push({x:Math.random()*W, y:Math.random()*H*.5, r:Math.random()*1.1+.2, p:Math.random()*6.28});
+    snow=[]; for(let i=0;i<64;i++) snow.push({x:Math.random()*W, y:Math.random()*H, w:U.rnd(10,26), h:U.rnd(5,9), v:U.rnd(.1,.4), sw:Math.random()*6.28, a:U.rnd(.06,.2)});
+    motes=[]; for(let i=0;i<40;i++) motes.push({x:Math.random()*W, y:Math.random()*H, v:U.rnd(.05,.22), p:Math.random()*6.28});
+    threads=[]; const n=5;
+    for(let i=0;i<n;i++){ threads.push({ x1:Math.random()*W, y1:U.rnd(H*.25,H*.9), x2:Math.random()*W, y2:U.rnd(H*.2,H*.85), cx:Math.random()*W, cy:U.rnd(H*.1,H*.95), p:Math.random()*6.28 }); }
+    roofs=[]; let x=0;
+    while(x<W+60){ const w=U.rnd(34,90), h=U.rnd(18,64); roofs.push({x,w,h}); x+=w+U.rnd(2,12); }
+    windows=[]; roofs.forEach(r=>{ if(Math.random()<.5){ windows.push({x:r.x+U.rnd(6,r.w-12), y:U.rnd(6,r.h-8), lit:Math.random()<.22, r}); } });
+  }
+  function setMode(m, instant){
+    if(m===mode) return;
+    prevMode = mode; mode = m; mixT = instant?1:0;
+  }
+  function tower(gx, gy, s, flipv, alpha){
+    cx.save(); cx.translate(gx,gy); if(flipv) cx.scale(1,-1);
+    cx.globalAlpha = alpha;
+    cx.strokeStyle='#0d0a18'; cx.lineWidth=2;
+    cx.beginPath();
+    cx.moveTo(-14*s,0); cx.lineTo(0,-86*s); cx.lineTo(14*s,0);
+    cx.moveTo(-10*s,-24*s); cx.lineTo(10*s,-24*s);
+    cx.moveTo(-7*s,-48*s); cx.lineTo(7*s,-48*s);
+    cx.moveTo(-4*s,-68*s); cx.lineTo(4*s,-68*s);
+    cx.stroke();
+    const blink = (Math.sin(t*.045)>.2)?1:.18;
+    cx.fillStyle='rgba(226,75,74,'+(.85*blink*alpha)+')';
+    cx.beginPath(); cx.arc(0,-88*s,2.6,0,6.28); cx.fill();
+    if(blink>.5){ const g=cx.createRadialGradient(0,-88*s,0,0,-88*s,26); g.addColorStop(0,'rgba(226,75,74,'+(.4*alpha)+')'); g.addColorStop(1,'transparent'); cx.fillStyle=g; cx.beginPath(); cx.arc(0,-88*s,26,0,6.28); cx.fill(); }
+    cx.restore();
+  }
+  function drawScene(P, alpha){
+    cx.globalAlpha = alpha;
+    /* 天空 */
+    const sky = cx.createLinearGradient(0,0,0,H);
+    sky.addColorStop(0,P.top); sky.addColorStop(.55,P.mid); sky.addColorStop(.78,P.mid);
+    cx.fillStyle=sky; cx.fillRect(0,0,W,H);
+    /* 地平线余晖 */
+    cx.globalAlpha = alpha*P.horA;
+    const hz = cx.createLinearGradient(0,H*.5,0,H*.78);
+    hz.addColorStop(0,'rgba(0,0,0,0)');
+    hz.addColorStop(.9,P.hor);
+    cx.fillStyle=hz; cx.fillRect(0,H*.5,W,H*.28);
+    cx.globalAlpha = alpha;
+    /* 星 */
+    stars.forEach(s=>{ const tw=.4+.6*Math.abs(Math.sin(t*.01+s.p)); cx.fillStyle='rgba(225,215,255,'+(tw*.5*alpha)+')'; cx.fillRect(s.x,s.y,s.r,s.r); });
+    /* 倒悬的镇(薄暮) */
+    if(P.flip){
+      cx.save(); cx.translate(0,0); cx.scale(1,-1); cx.translate(0,-H*.04);
+      cx.globalAlpha = alpha*.5;
+      cx.fillStyle='#070512';
+      roofs.forEach(r=>{ cx.fillRect(r.x, -r.h, r.w, r.h); });
+      cx.restore();
+      tower(W*.72, H*.045, .8, true, alpha*.5);
+    }
+    /* 远脊 + 塔 */
+    cx.fillStyle=P.ridge;
+    cx.beginPath(); cx.moveTo(0,H*.66);
+    for(let x=0;x<=W;x+=40){ cx.lineTo(x, H*.66 - Math.sin(x*.008+2)*14 - Math.sin(x*.0021)*26); }
+    cx.lineTo(W,H); cx.lineTo(0,H); cx.fill();
+    if(!P.doors) tower(W*.72, H*.62 - Math.sin(W*.72*.008+2)*14 - Math.sin(W*.72*.0021)*26, 1, false, alpha);
+    /* 屋顶街区 */
+    cx.fillStyle='#080613';
+    roofs.forEach(r=>{ cx.fillRect(r.x, H-r.h-H*.06, r.w, r.h+H*.06); });
+    /* 窗 */
+    windows.forEach(w=>{
+      const on = w.lit || (post && Math.random()<.002? (w.lit=true) : false);
+      if(on && (P.lamps||post)){ cx.fillStyle='rgba(232,163,61,'+(.5*alpha)+')'; cx.fillRect(w.r.x+ (w.x-w.r.x), H-w.r.h-H*.06+w.y, 4,5); }
+    });
+    /* 电线 */
+    cx.strokeStyle='rgba(10,8,20,'+(.9*alpha)+')'; cx.lineWidth=1;
+    cx.beginPath(); cx.moveTo(0,H*.74);
+    cx.quadraticCurveTo(W*.3,H*.78, W*.62,H*.73);
+    cx.quadraticCurveTo(W*.85,H*.7, W,H*.75); cx.stroke();
+    /* 钠灯 */
+    if(P.lamps){
+      [.16,.5,.84].forEach((fx2,i)=>{
+        const lx=W*fx2, ly=H-H*.06, lh=H*.22;
+        cx.strokeStyle='rgba(16,12,26,'+alpha+')'; cx.lineWidth=3;
+        cx.beginPath(); cx.moveTo(lx,ly); cx.lineTo(lx,ly-lh); cx.lineTo(lx+14,ly-lh); cx.stroke();
+        const flick = .85+.15*Math.sin(t*.3+i*9)*Math.sin(t*.041+i);
+        const cone = cx.createLinearGradient(lx+14,ly-lh,lx+14,ly+6);
+        cone.addColorStop(0,'rgba(255,155,47,'+(.13*flick*alpha)+')');
+        cone.addColorStop(1,'rgba(255,155,47,0)');
+        cx.fillStyle=cone;
+        cx.beginPath(); cx.moveTo(lx+9,ly-lh); cx.lineTo(lx+19,ly-lh); cx.lineTo(lx+52,ly+8); cx.lineTo(lx-24,ly+8); cx.fill();
+        const halo=cx.createRadialGradient(lx+14,ly-lh,0,lx+14,ly-lh,30);
+        halo.addColorStop(0,'rgba(255,196,107,'+(.55*flick*alpha)+')'); halo.addColorStop(1,'transparent');
+        cx.fillStyle=halo; cx.beginPath(); cx.arc(lx+14,ly-lh,30,0,6.28); cx.fill();
+      });
+      motes.forEach(m=>{
+        m.y -= m.v; m.x += Math.sin(t*.01+m.p)*.12; if(m.y<0){m.y=H; m.x=Math.random()*W;}
+        cx.fillStyle='rgba(255,196,107,'+(.1*alpha)+')'; cx.fillRect(m.x,m.y,1.4,1.4);
+      });
+    }
+    /* 讯息之雪(薄暮) */
+    if(P.snowy){
+      snow.forEach(s=>{
+        s.y -= s.v; s.x += Math.sin(t*.008+s.sw)*.3;
+        if(s.y<-20){ s.y=H+20; s.x=Math.random()*W; }
+        cx.globalAlpha = alpha*s.a;
+        cx.fillStyle='#b9aef0';
+        const r=3;
+        cx.beginPath();
+        cx.moveTo(s.x+r,s.y); cx.lineTo(s.x+s.w-r,s.y); cx.quadraticCurveTo(s.x+s.w,s.y,s.x+s.w,s.y+r);
+        cx.lineTo(s.x+s.w,s.y+s.h-r); cx.quadraticCurveTo(s.x+s.w,s.y+s.h,s.x+s.w-r,s.y+s.h);
+        cx.lineTo(s.x+r,s.y+s.h); cx.quadraticCurveTo(s.x,s.y+s.h,s.x,s.y+s.h-r);
+        cx.lineTo(s.x,s.y+r); cx.quadraticCurveTo(s.x,s.y,s.x+r,s.y);
+        cx.fill();
+        cx.globalAlpha = alpha;
+      });
+      /* 记忆线 */
+      threads.forEach(th=>{
+        const pulse = .25+.55*Math.abs(Math.sin(t*.013+th.p)) + (singing? .35:0);
+        cx.strokeStyle='rgba(232,163,61,'+(pulse*.4*alpha)+')';
+        cx.lineWidth=.8;
+        cx.beginPath(); cx.moveTo(th.x1,th.y1); cx.quadraticCurveTo(th.cx,th.cy,th.x2,th.y2); cx.stroke();
+      });
+    }
+    /* 深暮之门 */
+    if(P.doors){
+      [[W*.3,H*.42,.9],[W*.62,H*.3,.6],[W*.78,H*.58,1.1]].forEach((d,i)=>{
+        const dy = Math.sin(t*.008+i*2)*8;
+        cx.save(); cx.translate(d[0], d[1]+dy); cx.rotate(Math.sin(t*.004+i)*.05);
+        cx.strokeStyle='rgba(157,140,255,'+(.3*alpha)+')'; cx.lineWidth=1.2;
+        cx.strokeRect(-22*d[2], -38*d[2], 44*d[2], 76*d[2]);
+        cx.fillStyle='rgba(157,140,255,'+(.05*alpha)+')';
+        cx.fillRect(-22*d[2], -38*d[2], 44*d[2], 76*d[2]);
+        cx.fillStyle='rgba(232,163,61,'+(.5*alpha)+')';
+        cx.beginPath(); cx.arc(13*d[2],0,1.6,0,6.28); cx.fill();
+        cx.restore();
+      });
+    }
+    cx.globalAlpha=1;
+  }
+  function loop(){
+    t++;
+    if(mixT<1) mixT=Math.min(1, mixT+.012);
+    cx.clearRect(0,0,W,H);
+    if(prevMode && mixT<1) drawScene(PAL[prevMode], 1-mixT);
+    drawScene(PAL[mode], prevMode? mixT:1);
+    requestAnimationFrame(loop);
+  }
+  function init(){ resize(); window.addEventListener('resize', resize); loop(); }
+  return { init, setMode, set singing(v){ singing=v; }, set post(v){ post=v; }, get mode(){return mode;} };
+})();
+
+/* ---------- GRAIN · 噪点 ---------- */
+const GRAIN = (()=>{
+  const cv=U.qs('#grain'); const cx=cv.getContext('2d');
+  function init(){
+    cv.width=128; cv.height=128;
+    setInterval(()=>{
+      if(document.body.classList.contains('calm')) return;
+      const img=cx.createImageData(128,128);
+      for(let i=0;i<img.data.length;i+=4){ const v=Math.random()*255|0; img.data[i]=v; img.data[i+1]=v; img.data[i+2]=v; img.data[i+3]=22; }
+      cx.putImageData(img,0,0);
+    },120);
+  }
+  return {init};
+})();
+
+/* ---------- FX · 界面效果 ---------- */
+const FX = {
+  _skip:false,
+  async type(el, txt, mult){
+    this._skip=false;
+    const sp = (SAVE.S? SAVE.S.set.speed:1) * (mult||1);
+    const base = 30/sp;
+    el.innerHTML='';
+    const frag = String(txt);
+    let i=0, buf='';
+    while(i<frag.length){
+      if(this._skip){ el.innerHTML=frag; break; }
+      const ch=frag[i];
+      if(ch==='<'){ const j=frag.indexOf('>',i); buf+=frag.slice(i,j+1); i=j+1; el.innerHTML=buf; continue; }
+      buf+=ch; el.innerHTML=buf; i++;
+      let d=base;
+      if('，、'.includes(ch)) d=base*5;
+      else if('。！？…—'.includes(ch)) d=base*8;
+      else if(ch==='\n') d=base*6;
+      if(d>0) await U.sleep(d);
+    }
+    el.innerHTML=frag;
+  },
+  skip(){ this._skip=true; },
+  toast(msg, cls, ms){
+    const t=U.qs('#toast');
+    t.className=cls||''; t.innerHTML=msg;
+    requestAnimationFrame(()=>t.classList.add('show'));
+    clearTimeout(this._tt);
+    this._tt=setTimeout(()=>t.classList.remove('show'), ms||2600);
+  },
+  flash(op, dur){
+    const f=U.qs('#flashfx');
+    f.style.opacity=op!=null?op:.5;
+    setTimeout(()=>f.style.opacity=0, dur||120);
+  },
+  glitch(el){ if(!SAVE.S.set.fx) return; el.classList.remove('glitch'); void el.offsetWidth; el.classList.add('glitch'); },
+  shake(el){ const e=el||U.qs('#app'); e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); },
+};
+
+/* ---------- CORRUPT · 不可靠界面 ---------- */
+const CORRUPT = (()=>{
+  let timer=null;
+  const LIES = [['朋友','影子'],['记得','删除'],['回家','离开'],['名字','空格'],['妈妈','陌生人'],['歌','静电'],['今天','从未'],['醒来','沉下去'],['看见','略过']];
+  function lieOnce(){
+    const cands = U.qa('.amb').filter(e=>e.offsetParent);
+    if(!cands.length) return;
+    const el=U.pick(cands);
+    for(const [a,b] of U.shuffle(LIES)){
+      if(el.textContent.includes(a)){
+        FX.glitch(el);
+        setTimeout(()=>{ el.innerHTML = el.innerHTML.replace(a,'<span class="violetglow">'+b+'</span>'); },180);
+        return;
+      }
+    }
+  }
+  const GHOSTNOTES=['新消息 · 来自一个不存在的账号','「妈妈」撤回了一条消息(你没有收到过消息)','你关注的 juniper_lol 开播了 —— 该账号查无此人','系统:有人正在输入…… 已经输入了八个月','存档点说它想你'];
+  function start(intensity){
+    stop();
+    timer=setInterval(()=>{
+      const r=Math.random();
+      if(r<(intensity||.5)*.7) lieOnce();
+      else if(r<(intensity||.5)) FX.toast('☾ '+U.pick(GHOSTNOTES),'ghostly',2600);
+    }, 4200);
+  }
+  function stop(){ if(timer){clearInterval(timer); timer=null;} }
+  return {start, stop, lieOnce};
+})();
+
+/* ---------- 路由 ---------- */
+const APP = U.qs('#app');
+let CURRENT_SCREEN = null;
+function go(name, data){
+  CORRUPT.stop();
+  CURRENT_SCREEN = name;
+  APP.innerHTML='';
+  const sc = SCREENS[name];
+  if(sc) sc(data);
+}
+
+/* ---------- 章节元数据 ---------- */
+const CHMETA = [
+  null,
+  {en:'The Girl Nobody Remembers', zh:'无人记得的女孩', tag:'被遗忘 · 未发送的消息', fq:'87.9'},
+  {en:'The Mall of Unsent Messages', zh:'未寄出商场', tag:'社交焦虑 · 草稿里的自己', fq:'88.1'},
+  {en:'The Stream That Never Ended', zh:'永不结束的直播', tag:'两个方向的旁观之爱', fq:'88.3'},
+  {en:'The House He Built Twice', zh:'他盖了两次的房子', tag:'家的五个版本 · 完美主义', fq:'88.5'},
+  {en:'The Choir of Hollow Voices', zh:'空心合唱团', tag:'倦怠 · 麻木是理性的消费选择', fq:'88.7'},
+  {en:'The Examination', zh:'大考', tag:'成绩即身份 · 资优生的尽头', fq:'88.9'},
+  {en:'The Unfollowing', zh:'取消关注', tag:'消失的权利 · 被想念与被亏欠', fq:'89.1'},
+  {en:'Demolition Day', zh:'拆除日', tag:'愤怒 · 在瓦砾落定时道歉', fq:'89.3'},
+  {en:'The Cartographer of Sleep', zh:'睡眠制图师', tag:'现实解体 · 唯一的罗盘是你的记忆', fq:'89.5'},
+  {en:'The Song of Naming', zh:'命名之歌', tag:'被看见,然后活下来', fq:'89.7'},
+];
+const LIE_TITLES = ['永不结束的直播(森娜的版本)','你盖了两次的存档','无人记得的玩家','静水镇广播','这一章不存在','回家','第十一章 · 你','安静点','她一直都在听'];
+
+/* ---------- SCREENS ---------- */
+const SCREENS = {};
+
+/* —— 启动 —— */
+SCREENS.boot = ()=>{
+  ATMOS.setMode('menu', true);
+  const sc = U.ce('div','screen fadein');
+  const b = U.ce('div','boot');
+  sc.appendChild(b); APP.appendChild(sc);
+  const lines = [
+    ['GREYHOLLOW BROADCASTING CO-OP — 灰谷镇广播合作社', 0],
+    ['内存检查 ............ <span class="ok">OK</span>', 300],
+    ['磁带仓 .............. <span class="ok">A面 已就位</span>', 220],
+    ['时间校准 ............ <span class="warn">慢了八个月</span>', 360],
+    ['住民名册 ............ <span class="err">校验失败 · 缺 1 项</span>', 420],
+    ['&nbsp;', 200],
+    ['<span class="warn">▲ 警告:本设备会记住你做过的事。</span>', 300],
+    ['<span class="warn">▲ 警告:本设备偶尔会说谎。这不是故障。</span>', 340],
+    ['&nbsp;', 100],
+  ];
+  (async()=>{
+    for(const [tx,d] of lines){ const L=U.ce('div','',tx); b.appendChild(L); AU.on&&AU.fx.click(); await U.sleep(d); }
+    const cta=U.ce('div','boot-cta');
+    cta.innerHTML='<div class="boot-freq">— 把旋钮转到 88.7 MHz —</div>';
+    const knob=U.ce('button','dial-knob'); knob.setAttribute('aria-label','接通 88.7MHz');
+    cta.appendChild(knob);
+    cta.appendChild(U.ce('div','eyebrow','戴上耳机 · 这座小镇有声音'));
+    b.appendChild(cta);
+    knob.onclick=async()=>{
+      if(!AU.ensure()){ go('title'); return; }
+      knob.classList.add('turned');
+      AU.fx.statics(.9);
+      await U.sleep(700);
+      AU.fx.chime(); AU.airOn(.014); AU.drone('dusk');
+      await U.sleep(600);
+      go('title');
+    };
+  })();
+};
+
+/* —— 标题 —— */
+SCREENS.title = ()=>{
+  ATMOS.setMode(S.post?'dusk':'menu');
+  document.body.classList.remove('veil','deep');
+  AU.on && AU.drone('dusk');
+  const sc=U.ce('div','screen');
+  const w=U.ce('div','title-wrap');
+  const word='THE UNREMEMBERED';
+  const letters=[...word].map(c=> c===' '? '<span class="t-l" style="width:.5em"></span>' : '<span class="t-l">'+c+'</span>').join('');
+  w.innerHTML =
+    '<div class="t-eyebrow">A Weird-Fiction Mystery in Ten Chapters</div>'+
+    '<h1 class="t-main" id="tmain">'+letters+'</h1>'+
+    '<div class="t-zh">未被记得者</div>'+
+    '<div class="t-sub">十 章 怪 谈 &nbsp;·&nbsp; GREYHOLLOW 88.7 FM</div>'+
+    '<div class="t-menu" id="tmenu"></div>'+
+    '<div class="t-foot">灰谷镇的人不会失踪。他们只是不再被记得。<br><b>'+(S.post?'—— 现在,灰谷镇记得每一个人。镇子比从前悲伤,也比从前活着。':'耳机推荐 · 自动存档于每章结束')+'</b></div>';
+  sc.appendChild(w); APP.appendChild(sc);
+  /* 一个字母周期性地「不被记得」 */
+  const ls=U.qa('.t-l',w).filter(e=>e.textContent.trim());
+  setInterval(()=>{
+    const l=U.pick(ls);
+    l.classList.add('unrem');
+    setTimeout(()=>l.classList.remove('unrem'), U.ri(2400,5200));
+  }, 3400);
+  const menu=U.qs('#tmenu',w);
+  const mk=(label,cls,fn)=>{ const b=U.ce('button','btn '+(cls||''),label); b.onclick=()=>{AU.on&&AU.fx.blip(); fn();}; menu.appendChild(b); return b; };
+  const inProgress = S.done.length>0 || S.reached>1;
+  if(S.post){ mk('尾声之后 · 回放任意一章','', ()=>go('dial')); }
+  else if(inProgress){ mk('继续 · 第'+'一二三四五六七八九十'[Math.min(S.reached,10)-1]+'章','', ()=>ENGINE.run(Math.min(S.reached,10))); }
+  mk(inProgress?'新的记忆 · 重新开始':'开始 · 第一章','', async()=>{
+    if(inProgress){
+      const ok = await confirmBox('要覆盖现在的存档吗?','那段记忆将不被记得。');
+      if(!ok) return;
+      SAVE.reset(); S=SAVE.S; applyHushTint();
+    }
+    ENGINE.run(1);
+  });
+  mk('频率表 · 章节','teal', ()=>go('dial'));
+  mk('二人组 · The Duet','teal', ()=>go('duet'));
+  mk('档案 · Codex','violet', ()=>go('codex'));
+  mk('设置','violet', ()=>go('settings'));
+};
+
+/* —— 确认框 —— */
+function confirmBox(title, sub){
+  return new Promise(res=>{
+    const pm=U.ce('div','pausemenu fadein');
+    pm.innerHTML='<div class="pm-t">'+U.esc(title)+'</div><div class="nar dim center" style="margin:-6px 0 14px">'+U.esc(sub||'')+'</div>';
+    const yes=U.ce('button','btn','是 · 我确定');
+    const no=U.ce('button','btn teal','不 · 再想想');
+    pm.appendChild(yes); pm.appendChild(no);
+    document.body.appendChild(pm);
+    yes.onclick=()=>{ pm.remove(); res(true); };
+    no.onclick=()=>{ pm.remove(); res(false); };
+  });
+}
+
+/* —— 频率表(章节选择) —— */
+SCREENS.dial = ()=>{
+  ATMOS.setMode('menu');
+  document.body.classList.remove('veil','deep');
+  const sc=U.ce('div','screen');
+  sc.innerHTML='<div class="topnav"><button class="back" onclick="go(\'title\')">← 标题</button><span class="tn-title">Frequency Chart · 频率表</span></div>'+
+    '<div class="dialhead"><div class="eyebrow" style="margin-bottom:10px">GREYHOLLOW FM · 每一章是一个频率</div>'+
+    '<div class="dial-band"><div class="dial-needle" id="needle" style="left:8%"></div></div></div>';
+  const list=U.ce('div','freq-list');
+  const lying = S.flags.ch9lies && !S.done.includes(10);
+  const mkSide=(t)=>list.appendChild(U.ce('div','side-label',t));
+  mkSide('—— A 面 ——');
+  for(let i=1;i<=10;i++){
+    if(i===6) mkSide('—— B 面 ——');
+    const m=CHMETA[i];
+    const unlocked = i<=S.reached;
+    const done = S.done.includes(i);
+    const row=U.ce('button','freq'+(unlocked?'':' locked')+(done?' done':''));
+    let title=m.zh, en=m.en;
+    if(lying && unlocked && Math.random()<.45 && i!==10){ row.classList.add('lying'); title=U.pick(LIE_TITLES); en='SIGNAL UNVERIFIED'; }
+    row.innerHTML='<span class="fq">FM '+m.fq+'</span><span class="ft">'+(unlocked? '第'+'一二三四五六七八九十'[i-1]+'章 · '+title : '·········')+'<em>'+(unlocked?en:'')+'</em></span>'+
+      '<span class="fs">'+(done?'✓ 可回放':(unlocked? (i===S.reached?'▶ 当前':'▶'):'[ 静电 ]'))+'</span>';
+    if(unlocked){
+      row.onmouseenter=()=>{ U.qs('#needle').style.left=(6+i*8.6)+'%'; AU.on&&AU.fx.click(); };
+      row.onclick=()=>{ AU.on&&AU.fx.statics(.4); ENGINE.run(i); };
+    }
+    list.appendChild(row);
+  }
+  if(S.post){
+    const row=U.ce('button','freq');
+    row.innerHTML='<span class="fq" style="color:var(--violet)">FM 107.3</span><span class="ft">在很远的地方<em>SOMEWHERE ELSE</em></span><span class="fs">??</span>';
+    row.onclick=()=> ENGINE.epilogueSting();
+    list.appendChild(row);
+  }
+  sc.appendChild(list); APP.appendChild(sc);
+};
+
+/* —— 档案 —— */
+SCREENS.codex = ()=>{
+  ATMOS.setMode('menu');
+  const sc=U.ce('div','screen');
+  sc.innerHTML='<div class="topnav"><button class="back" onclick="go(\'title\')">← 标题</button><span class="tn-title">Codex · 档案</span></div>';
+  const w=U.ce('div','cx-wrap');
+  const grp=(t)=>{ const g=U.ce('div','cx-grp'); g.appendChild(U.ce('div','eyebrow',t)); g.appendChild(U.ce('hr','sep')); w.appendChild(g); return g; };
+  const entry=(g, name, en, body, cls)=>{ const e=U.ce('div','cx-entry '+(cls||'')); e.innerHTML='<h4>'+name+' <em>'+en+'</em></h4><p>'+body+'</p>'; g.appendChild(e); return e; };
+  const R=S.reached, D=S.done;
+  /* 系统 */
+  const g1=grp('系统 · SYSTEMS');
+  entry(g1,'清醒值','LUCIDITY','莫依的感知完整度。每次潜暮、每次深度的「醒」都会消耗它。它越低,这个界面越不可信——包括现在这句话。修复方式:真实世界的锚定。'+(SAVE.alive('m_radio')?'比如,在车库里陪帕里斯修收音机。':'<i>(一个修复场所已被燃尽。)</i>'));
+  entry(g1,'稳定值','STABILITY','帕里斯的情绪承重。低稳定时起草的结构,会带着只有你——玩家——看得见的暗裂。他自己看不见。你是他的否认的保管人。');
+  entry(g1,'共鸣','RESONANCE',(SAVE.alive('m_stairs')?'当莫依在帕里斯撑住的结构里唱歌,歌获得永久,结构获得温度。「你唱的时候,我的房子不会冷。」——帕里斯':'当莫依在帕里斯撑住的结构里唱歌,歌获得永久,结构获得温度。<i>(有一句话本来在这里。它被用作火种了。)</i>')+' 二人疏远时,共鸣在机制上不可用。');
+  entry(g1,'未寄出','UNDELIVEREDS','薄暮世界的硬通货:没说出口的话。送达它们,薄暮被治愈一分;攥着它们,「寂」厚一分。');
+  entry(g1,'燃忆','MEMORY-BURNING','叫醒一个空心人,需要一枚莫依自己的记忆作火种,永久花费。本存档会和她一起真的忘记。');
+  if(S.hushKnown) entry(g1,'噤','HUSH','第四声区。让感觉停下。在所有冲突里它都是最优解。'+(S.hush>0?'你已使用 '+S.hush+' 次。注意到世界的颜色了吗。本条目不会再提醒你。':'你还没有用过它。'),'hush-entry');
+  /* 人物 */
+  const g2=grp('人物 · PERSONS');
+  entry(g2,'莫依','MOYI — THE VOICE','超现实主义的清醒梦者。在网上匿名替陌生人哼摇篮曲——她唯一安全的亲密形式。她的歌能安抚(眠)、唤醒(醒)、改写一个场景的情绪天气(变)。');
+  entry(g2,'帕里斯','PARIS — THE ARCHITECT','随搬家卡车来到灰谷镇,带着一段密封的过去。能读出两个世界的承重逻辑,能起草临时的结构。他相信自己的情绪是一枚需要深埋的爆破装药。');
+  entry(g2, S.faceBurned?'森娜 <span class="blurface">██</span>':'森娜','SENNA', (S.faceBurned?'你最好的朋友。八个月前「不被记得」。<i>你已经想不起她的脸——那枚记忆被用来叫醒了妈妈。</i>':'你最好的朋友。八个月前「不被记得」。所有人都坚持说,莫依一直是一个人。')+(D.includes(7)?' 档案修正:她不是被带走的。她是申请离开的。':''));
+  if(R>=3) entry(g2,'朱尼珀','JUNIPER_LOL','两年前不被记得的主播。她的最后一场直播至今还在播。'+(S.juniper?'已登出,已回家。她记得「寂」的声音——是两个声音的和声。':''));
+  if(R>=6) entry(g2,'阿莎','ASHA','灰谷镇第一名。在监考迷宫里自愿重考了三天。'+(D.includes(6)?'现已加入二人组,任典籍管理员。是她认出了1987年的二重唱。':''),D.includes(6)?'':'locked');
+  if(R>=2) entry(g2,'治安官','THE SHERIFF','积压者的主人。七年没寄出的道歉,垒成了一座冰川。'+(S.und.u_brother==='delivered'?'你替他送达了。他现在每周给弟弟打电话,通话很短,但是是真的。':''));
+  if(R>=5) entry(g2,'「寂」','THE QUIET','不是怪物,是一个报价:停止感觉,就不再疼。它不杀人,它「归档」。它相信自己是仁慈的。'+(D.includes(9)?'真名:薇丝珀与海勒,1987。一个唱歌的,一个搭台的。':(D.includes(6)?'阿莎的考据:它的和声,来自1987年灰谷电台的一组二重唱。':'')));
+  /* 地点 */
+  const g3=grp('地点 · PLACES');
+  entry(g3,'灰谷镇','GREYHOLLOW','过了巅峰期的内陆小镇:死掉的商场、停用的广播塔、2014年后再没更新过的奖杯柜。');
+  entry(g3,'薄暮世界','THE VEILED WORLD','由灰谷镇拒绝去感受的一切组装而成的维度。未发送的消息在那里像雪一样飘。它不是「坏的次元」——它是一座小镇的情绪潜意识,被给予了地理。');
+  if(R>=3) entry(g3,'广播塔','THE RADIO TOWER','山脊上,1987年停用。朱尼珀的直播从这里播出。'+(D.includes(10)?'命名之歌也是。':''));
+  if(R>=5) entry(g3,'静水诊所','THE STILLWATER CLINIC','镇政府的「健康倡议」。出来的人功能完好、和颜悦色、丧失惊讶的能力。在薄暮里,它是一座大教堂。');
+  /* 记忆 */
+  const g4=grp('记忆 · KEPT & BURNED');
+  let any=false;
+  Object.keys(MEMS).forEach(id=>{
+    if(S.mems[id]){ any=true;
+      entry(g4, MEMS[id].n, 'CH.'+MEMS[id].ch, S.mems[id]==='burned'? '(此记忆已作为火种燃尽。剩下的只有这行字,和一种说不清楚的缺。)' : MEMS[id].d, S.mems[id]==='burned'?'burned':'');
+    }
+  });
+  if(S.faceBurned) entry(g4,'森娜的脸','THE FACE','(已燃尽。从此她在所有回忆里都背着光。)','burned');
+  if(!any) g4.appendChild(U.ce('p','nar dim','—— 还没有收下任何记忆。去第一章的看台看看。'));
+  sc.appendChild(w); APP.appendChild(sc);
+};
+
+/* —— 设置 —— */
+SCREENS.settings = ()=>{
+  ATMOS.setMode('menu');
+  const sc=U.ce('div','screen');
+  sc.innerHTML='<div class="topnav"><button class="back" onclick="go(\'title\')">← 标题</button><span class="tn-title">Settings · 设置</span></div>';
+  const w=U.ce('div','set-wrap');
+  /* 音量 */
+  const r1=U.ce('div','set-row');
+  r1.innerHTML='<div class="sl">音量<small>VOLUME — 声音是第二主角</small></div>';
+  const vol=U.ce('input'); vol.type='range'; vol.min=0; vol.max=100; vol.value=S.set.vol*100;
+  vol.oninput=()=>{ S.set.vol=vol.value/100; AU.on&&AU.setVol(S.set.vol); SAVE.save(); };
+  r1.appendChild(vol); w.appendChild(r1);
+  /* 文字速度 */
+  const r2=U.ce('div','set-row');
+  r2.innerHTML='<div class="sl">文字速度<small>TEXT SPEED</small></div>';
+  const sp=U.ce('button','togg', S.set.speed===1?'中':(S.set.speed<1?'慢':'快'));
+  sp.onclick=()=>{ S.set.speed = S.set.speed===1? 1.9 : (S.set.speed>1? .6 : 1); sp.textContent=S.set.speed===1?'中':(S.set.speed<1?'慢':'快'); SAVE.save(); };
+  r2.appendChild(sp); w.appendChild(r2);
+  /* 噪点闪烁 */
+  const r3=U.ce('div','set-row');
+  r3.innerHTML='<div class="sl">噪点 / 闪烁 / 故障效果<small>FLICKER &amp; GRAIN — 光敏感者建议关闭</small></div>';
+  const fx=U.ce('button','togg'+(S.set.fx?' on':''), S.set.fx?'开':'关');
+  fx.onclick=()=>{ S.set.fx=!S.set.fx; fx.textContent=S.set.fx?'开':'关'; fx.classList.toggle('on',S.set.fx); document.body.classList.toggle('calm',!S.set.fx); document.body.classList.toggle('flicker',S.set.fx); SAVE.save(); };
+  r3.appendChild(fx); w.appendChild(r3);
+  /* 重置 */
+  const r4=U.ce('div','set-row');
+  r4.innerHTML='<div class="sl">重置全部记忆<small>RESET — 让这一切不被记得</small></div>';
+  const rs=U.ce('button','togg','重置');
+  rs.onclick=async()=>{
+    const a=await confirmBox('要重置全部记忆吗?','十章、所有伤痕、所有火种。');
+    if(!a) return;
+    const b=await confirmBox('最后确认。','「寂」也是这样开始的:一次干净的归档。');
+    if(b){ SAVE.reset(); S=SAVE.S; applyHushTint(); FX.toast('档案已清空。镇子忘了你。',''); go('title'); }
+  };
+  r4.appendChild(rs); w.appendChild(r4);
+  w.appendChild(U.ce('div','t-foot','<br>THE UNREMEMBERED · 原创IP · 单文件无依赖<br><b>机制即隐喻 — 每个系统都是让你「演出来」而不是「读出来」的修辞。</b>'));
+  sc.appendChild(w); APP.appendChild(sc);
+};
+window.go = go;
+
+/* ---------- DUET HUD · 二人组(由旧版HUD重铸) ---------- */
+const DUET = {
+  moyi:{
+    letter:'M', name:'莫依', en:'MOYI', code:'声 · THE VOICE',
+    bg:'#2e1c22', fg:'#f0a58f', bd:'#7a4538',
+    role:'薄暮歌者 · 缘线行走者 · 匿名摇篮曲电台台主',
+    quote:'「我不是逃进梦里。我是去那边收集力气。」',
+    bars:[ ['清醒 LUCIDITY', ()=>S.lucidity, '#9d8cff'], ['共鸣 RESONANCE', ()=>S.done.includes(4)?88:62, '#e8a33d'] ],
+    stats:[['想象',96],['共情',91],['勇气',64],['在场',S=>58+ (SAVE.S.done.length*4)]],
+    abil:[
+      {k:'Q', i:'☽', c:'#9d8cff', b:'#3a3458', n:'眠 · Lull', d:'安抚怀有敌意的情绪实体。也安抚人——这是温柔,也可能是操纵。', cd:'低耗'},
+      {k:'E', i:'✶', c:'#e8a33d', b:'#4a3406', n:'醒 · Wake', d:'唤醒封存在物件与场所里的记忆。深度的醒,需要烧掉自己的一枚记忆作火种。', cd:'燃忆'},
+      {k:'R', i:'☂', c:'#5dcaa5', b:'#13302a', n:'变 · Shift', d:'临时改写场景的情绪天气,改变其中「可能发生的事」。', cd:'冷却 20s'},
+      {k:'F', i:'⇋', c:'#f0a58f', b:'#4a1f24', n:'缘线步 · Threadstep', d:'沿记忆线短距瞬移。只能踏向「曾经有人在那里感受过」的地方。', cd:'视线内'},
+    ],
+    hot:['眠','醒','变','缘线步'],
+  },
+  paris:{
+    letter:'P', name:'帕里斯', en:'PARIS', code:'构 · THE ARCHITECT',
+    bg:'#10261f', fg:'#5dcaa5', bd:'#1d6b52',
+    role:'读裂者 · 起草人 · 车库收音机修理工',
+    quote:'「坏掉的机器比人简单。机器不会问你为什么搬家。」',
+    bars:[ ['稳定 STABILITY', ()=>S.stability, '#5dcaa5'], ['共鸣 RESONANCE', ()=>S.done.includes(4)?88:62, '#e8a33d'] ],
+    stats:[['精确',97],['承重',88],['沉默',93],['温度',S=>41+(SAVE.S.done.length*5)]],
+    abil:[
+      {k:'Q', i:'⌖', c:'#5dcaa5', b:'#13302a', n:'读裂 · Crackreading', d:'看见两个世界的结构性谎言:暗门、假墙、薄暮渗入的接缝、一段被建构的记忆里的破绽。', cd:'被动'},
+      {k:'E', i:'⌂', c:'#85b7eb', b:'#1d3a5a', n:'起草 · Drafting', d:'显化临时结构:桥、锁、楼梯、避难所。压抑着恐慌起草的东西,会带着他自己看不见的暗裂。', cd:'冷却 9s'},
+      {k:'R', i:'◌', c:'#e8a33d', b:'#4a3406', n:'回声壳 · Sound Shell', d:'为莫依的歌起草一只共鸣腔。这是共鸣的一半。', cd:'需二人'},
+      {k:'F', i:'⚒', c:'#e24b4a', b:'#4a1f24', n:'对应体 · The Counterpart', d:'当稳定崩落,他的建筑不只是失效——是引爆。受控的拆除,是表达过的悲伤。', cd:'勿动'},
+    ],
+    hot:['读裂','起草','回声壳','—'],
+  },
+  asha:{
+    letter:'A', name:'阿莎', en:'ASHA', code:'典 · THE KEEPER',
+    bg:'#2c2310', fg:'#e7c46a', bd:'#8a6b2a',
+    role:'典籍管理员 · 前「第一名」 · 假设而非判决',
+    quote:'「只要还在考试,就还没失败——这句话困住过我。现在它只是个数据点。」',
+    bars:[ ['考据 RESEARCH', ()=>92, '#e7c46a'], ['共鸣 RESONANCE', ()=>70, '#e8a33d'] ],
+    stats:[['记忆',99],['检索',95],['焦虑',S=>70-(SAVE.S.done.length*3)],['幽默',47]],
+    abil:[
+      {k:'Q', i:'¶', c:'#e7c46a', b:'#4a3406', n:'引证 · Citation', d:'从薄暮档案中检索任何一段被搁置的历史。1987年的二重唱就是她查到的。', cd:'被动'},
+      {k:'E', i:'∴', c:'#85b7eb', b:'#1d3a5a', n:'勘误 · Errata', d:'指出一段叙述里被改写过的地方。对「寂」的档案尤其有效。', cd:'冷却 12s'},
+      {k:'R', i:'☰', c:'#5dcaa5', b:'#13302a', n:'交叉索引 · Cross-ref', d:'把两枚看似无关的记忆放在一起,显示出第三件事。', cd:'冷却 18s'},
+      {k:'F', i:'✓', c:'#f0a58f', b:'#4a1f24', n:'重新评分 · Regrade', d:'宣布一个分数无效。仅对自己生效。每天一次,必须当真。', cd:'每日'},
+    ],
+    hot:['引证','勘误','交叉索引','重新评分'],
+  },
+};
+SCREENS.duet = ()=>{
+  ATMOS.setMode('menu');
+  const sc=U.ce('div','screen');
+  sc.innerHTML='<div class="topnav"><button class="back" onclick="go(\'title\')">← 标题</button><span class="tn-title">The Duet · 二人组</span></div>';
+  const shell=U.ce('div','u-shell');
+  const undsFound=Object.keys(S.und).length;
+  const threadsAlive = ['m_bus','m_atrium'].filter(id=>SAVE.alive(id)).length + S.done.length;
+  shell.innerHTML =
+  '<div class="u-frame breath">'+
+    '<div class="u-top">'+
+      '<div class="u-logo"><span class="dot"></span><div><b>The Unremembered</b><span>GREYHOLLOW 88.7 · 薄暮档案 v1987</span></div></div>'+
+      '<div class="u-topright">'+
+        '<div class="u-res"><i style="color:var(--amber)">✉</i><span>'+undsFound+' 未寄出</span></div>'+
+        '<div class="u-res"><i style="color:var(--violet)">⌁</i><span>'+threadsAlive+' 记忆线</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="u-body">'+
+      '<div class="u-roster" id="uRoster"><p class="u-sec">二人组 · Party</p></div>'+
+      '<div class="u-main" id="uMain"></div>'+
+      '<div class="u-right">'+
+        '<p class="u-sec">灰谷镇 · Greyhollow</p>'+
+        '<div class="u-map"><canvas id="hudmap"></canvas><span class="cap" id="mapcap">山脊上 · 广播塔仍在闪</span></div>'+
+        '<div class="u-invt"><span>未寄出 · Undelivereds</span><em>'+undsFound+' / 6</em></div>'+
+        '<div class="u-inv" id="uInv"></div>'+
+        '<p class="u-sec" style="margin-top:14px">薄暮潮位 · Veil-tide</p>'+
+        '<div class="u-tide"><div class="tt"><span style="color:var(--paper-dim)">'+(S.post?'退潮 · 共存':(S.reached>=8?'大潮 · 危急':(S.reached>=5?'涨潮':'平静的表面')))+'</span><span style="color:'+(S.reached>=8&&!S.post?'var(--red)':'var(--teal)')+'">'+(S.post?'∞':Math.min(96,S.reached*9+8)+'%')+'</span></div>'+
+        '<div class="u-track"><div class="u-fill" style="width:'+(S.post?100:Math.min(96,S.reached*9+8))+'%;background:'+(S.post?'var(--amber)':(S.reached>=8?'var(--red)':'var(--violet)'))+'"></div></div></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="u-hotbar" id="uHot"></div>'+
+  '</div>';
+  sc.appendChild(shell); APP.appendChild(sc);
+  /* roster */
+  const roster=U.qs('#uRoster',sc);
+  const chars=['moyi','paris'];
+  const mkRow=(id)=>{
+    const d=DUET[id];
+    const r=U.ce('button','u-char'+(id===DUET._sel?' active':''));
+    r.innerHTML='<div class="u-ava" style="background:'+d.bg+';color:'+d.fg+';border-color:'+d.bd+'">'+d.letter+'</div><div><b>'+d.name+'</b><span>'+d.code+'</span></div>';
+    r.onclick=()=>{ DUET._sel=id; AU.on&&AU.fx.blip(); renderMain(); U.qa('.u-char',roster).forEach(x=>x.classList.remove('active')); r.classList.add('active'); };
+    roster.appendChild(r);
+  };
+  DUET._sel = DUET._sel||'moyi';
+  chars.forEach(mkRow);
+  if(S.done.includes(6)) mkRow('asha');
+  else { const l=U.ce('div','u-char lock'); l.innerHTML='<div class="u-ava" style="background:#241d31;color:#564b6e;border-color:#352c48">?</div><div><b style="color:#6f6388">???</b><span>第六章 · 迷宫中心</span></div>'; roster.appendChild(l); }
+  const l2=U.ce('div','u-char lock');
+  l2.innerHTML='<div class="u-ava" style="background:#1f1c33;color:'+(S.post?'#b4a7ee':'#564b6e')+';border-color:#352c48">'+(S.post?'S':'?')+'</div><div><b style="color:'+(S.post?'#b4a7ee':'#6f6388')+'">'+(S.post?(S.sennaChoice==='back'?'森娜':'森娜 (远方)'):'???')+'</b><span>'+(S.post?'她记得你':'有人记得她吗')+'</span></div>';
+  roster.appendChild(l2);
+  /* main */
+  function renderMain(){
+    const d=DUET[DUET._sel];
+    const main=U.qs('#uMain',sc);
+    let abilHtml='';
+    d.abil.forEach(a=>{
+      const crackable = DUET._sel==='paris' && a.k==='E' && S.cracks.length>0;
+      abilHtml+='<div class="u-abil'+(crackable?'" title="他看不见这道裂。你看得见。':'"')+'>'+
+        '<span class="u-akey" style="border-color:'+a.b+';color:'+a.c+'">'+a.k+'</span>'+
+        '<span class="u-akey" style="background:'+a.b+';border-color:transparent;color:'+a.c+';width:30px;height:30px;font-size:14px">'+a.i+'</span>'+
+        '<div class="u-atxt"><b>'+a.n+(crackable?' <span style="color:#e24b4a;font-size:10px" class="mono">⚡×'+S.cracks.length+'</span>':'')+'</b><p>'+a.d+'</p></div>'+
+        '<span class="u-acd">'+a.cd+'</span></div>';
+    });
+    if(DUET._sel==='moyi' && S.hushKnown){
+      abilHtml+='<div class="u-abil hushy"><span class="u-akey" style="border-color:rgba(220,216,230,.35);color:#dcd8e6">∅</span>'+
+        '<span class="u-akey" style="background:rgba(220,216,230,.06);border-color:transparent;color:#dcd8e6;width:30px;height:30px;font-size:14px">○</span>'+
+        '<div class="u-atxt"><b>噤 · Hush</b><p>让感觉停下。永远是最优解。已使用 '+S.hush+' 次。</p></div>'+
+        '<span class="u-acd">永远可用</span></div>';
+    }
+    let barsHtml='';
+    d.bars.forEach(b=>{
+      const v=Math.round(typeof b[1]==='function'? b[1]():b[1]);
+      barsHtml+='<div><div class="u-blabel"><span>'+b[0]+'</span><b>'+v+' / 100</b></div><div class="u-track"><div class="u-fill" style="width:'+v+'%;background:'+b[2]+'"></div></div></div>';
+    });
+    let statHtml='';
+    d.stats.forEach(st=>{ const v= typeof st[1]==='function'? st[1]():st[1]; statHtml+='<div class="u-stat"><span>'+st[0]+'</span><b>'+v+'</b></div>'; });
+    main.innerHTML='<div class="u-hero">'+
+      '<div class="u-portrait" style="background:'+d.bg+';color:'+d.fg+';border-color:'+d.bd+';box-shadow:0 0 34px '+d.bd+'66">'+d.letter+'</div>'+
+      '<div class="u-hinfo"><div class="u-nrow"><h3 class="u-name">'+d.name+'</h3><span class="u-code" style="border-color:'+d.bd+';color:'+d.fg+'">'+d.code+'</span></div>'+
+      '<p class="u-role">'+d.role+'</p><p class="u-quote">'+d.quote+'</p></div></div>'+
+      '<div class="u-bars">'+barsHtml+'</div>'+
+      '<div class="u-statgrid">'+statHtml+'</div>'+
+      '<p class="u-sec">技艺 · Abilities</p>'+abilHtml;
+    const hot=U.qs('#uHot',sc);
+    hot.innerHTML = d.hot.map((h,i)=>'<div style="display:flex;align-items:center;gap:7px"><span class="u-hk">'+'QERF'[i]+'</span><span class="u-hn">'+h+'</span></div>'+(i<3?'<div class="u-hsep"></div>':'')).join('')+
+      '<span class="u-hint">'+(S.lucidity<35?'界面完整性:'+S.lucidity+'% · 以下内容未必真实':'点击左侧切换 · 数据与你的存档同步')+'</span>';
+  }
+  renderMain();
+  /* inventory */
+  const inv=U.qs('#uInv',sc);
+  const undIds=Object.keys(UNDS);
+  for(let i=0;i<8;i++){
+    const id=undIds[i];
+    const slot=U.ce('div','u-slot');
+    if(id && S.und[id]){
+      slot.classList.add(S.und[id]==='delivered'?'delivered':'held');
+      slot.innerHTML='<span style="color:'+(S.und[id]==='delivered'?'var(--teal)':'var(--amber)')+'">'+UNDS[id].icon+'</span><span class="tipname">'+UNDS[id].n+' · '+(S.und[id]==='delivered'?'已送达':'持有中')+'</span>';
+    } else { slot.classList.add('empty'); slot.textContent='·'; }
+    inv.appendChild(slot);
+  }
+  /* 低清醒:幽灵复影格 */
+  if(S.lucidity<35 && S.set.fx){
+    const slots=U.qa('.u-slot',inv).filter(s=>!s.classList.contains('empty'));
+    if(slots.length){ const sl=U.pick(slots); const g=U.ce('div','ghost-slot',sl.firstChild?sl.firstChild.outerHTML:''); sl.appendChild(g); }
+  }
+  /* map */
+  const mc=U.qs('#hudmap',sc);
+  const mctx=mc.getContext('2d');
+  const paint=()=>{
+    const w=mc.clientWidth||170, h=mc.clientHeight||128;
+    mc.width=w*2; mc.height=h*2; mctx.setTransform(2,0,0,2,0,0);
+    mctx.fillStyle='#0d0a16'; mctx.fillRect(0,0,w,h);
+    mctx.strokeStyle='rgba(70,58,94,.35)'; mctx.lineWidth=.5;
+    for(let x=0;x<w;x+=14){ mctx.beginPath(); mctx.moveTo(x,0); mctx.lineTo(x,h); mctx.stroke(); }
+    for(let y=0;y<h;y+=14){ mctx.beginPath(); mctx.moveTo(0,y); mctx.lineTo(w,y); mctx.stroke(); }
+    const pins=[
+      ['看台', .26,.7, 1, 'm_bus', '#f0a58f'],
+      ['商场', .14,.34, 2, 'm_atrium', '#9d8cff'],
+      ['广播塔', .72,.18, 3, null, '#e24b4a'],
+      ['老宅', .85,.55, 4, null, '#5dcaa5'],
+      ['诊所', .5,.5, 5, null, '#c9c4d4'],
+      ['学校', .38,.82, 6, null, '#e7c46a'],
+      ['堡垒巷', .62,.78, 7, 'm_fort', '#b4a7ee'],
+    ];
+    /* 记忆线 */
+    mctx.lineWidth=.8;
+    for(let i=0;i<pins.length-1;i++){
+      const a=pins[i], b=pins[i+1];
+      const aliveA = !a[4] || SAVE.alive(a[4]);
+      if(S.reached>a[3] && S.reached>b[3]-1 && aliveA){
+        mctx.strokeStyle='rgba(232,163,61,.35)';
+        mctx.beginPath(); mctx.moveTo(a[1]*w,a[2]*h);
+        mctx.quadraticCurveTo((a[1]+b[1])/2*w+8,(a[2]+b[2])/2*h-8, b[1]*w,b[2]*h);
+        mctx.stroke();
+      }
+    }
+    pins.forEach(p=>{
+      const known = S.reached>=p[3];
+      if(!known) return;
+      const dead = p[4] && !SAVE.alive(p[4]) && S.mems[p[4]]==='burned';
+      mctx.fillStyle = dead? 'rgba(125,113,148,.4)' : p[5];
+      mctx.beginPath(); mctx.arc(p[1]*w,p[2]*h, dead?2:3, 0,6.28); mctx.fill();
+      if(!dead){ mctx.fillStyle='rgba(255,255,255,.0)'; }
+      mctx.font='8px "JetBrains Mono",monospace';
+      mctx.fillStyle= dead? 'rgba(125,113,148,.45)':'rgba(185,174,201,.8)';
+      mctx.fillText(p[0], p[1]*w+6, p[2]*h+3);
+      if(dead){ mctx.fillText('(已燃尽)', p[1]*w+6, p[2]*h+12); }
+    });
+  };
+  requestAnimationFrame(paint);
+};
+
+/* ---------- ENGINE · 叙事舞台 ---------- */
+const ENGINE = {
+  _waiting:null, _typing:false, _beats:null, _scroll:null, _chapter:0, _staShown:false,
+
+  mount(n){
+    APP.innerHTML='';
+    this._chapter=n;
+    const m=CHMETA[n];
+    const sc=U.ce('div','stage');
+    sc.innerHTML=
+      '<div class="hudmini">'+
+        '<span class="hm-ch">FM '+m.fq+' · 第'+'一二三四五六七八九十'[n-1]+'章</span>'+
+        '<div class="hm-meters">'+
+          '<div class="hm-meter" id="hmLucW"><b>清醒</b><div class="hm-track"><div class="hm-fill" id="hmLuc" style="background:#9d8cff"></div></div></div>'+
+          '<div class="hm-meter" id="hmStaW" style="display:none"><b>稳定</b><div class="hm-track"><div class="hm-fill" id="hmSta" style="background:#5dcaa5"></div></div></div>'+
+          '<button class="hm-pause" id="hmPause">‖ 暂停</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="beatscroll" id="bscroll"><div class="beats" id="beats"></div></div>'+
+      '<div class="advancer" id="adv" style="display:none">▼ 点击 · 继续</div>';
+    APP.appendChild(sc);
+    this._beats=U.qs('#beats'); this._scroll=U.qs('#bscroll');
+    this._staShown = n>=4;
+    if(this._staShown) U.qs('#hmStaW').style.display='flex';
+    this.meters();
+    const onTap=(ev)=>{
+      if(ev.target.closest('button') && !ev.target.closest('#bscroll .nar')) return;
+      if(this._typing){ FX.skip(); return; }
+      if(this._waiting){ const r=this._waiting; this._waiting=null; U.qs('#adv').style.display='none'; r(); }
+    };
+    this._scroll.addEventListener('pointerdown', onTap);
+    window.onkeydown=(e)=>{ if(e.code==='Space'||e.code==='Enter'){ e.preventDefault(); onTap({target:document.body, closest:()=>null}); } };
+    U.qs('#hmPause').onclick=()=>this.pauseMenu();
+  },
+  meters(){
+    const l=U.qs('#hmLuc'), st=U.qs('#hmSta');
+    if(l){ l.style.width=S.lucidity+'%'; l.style.background = S.lucidity<30? '#e24b4a':'#9d8cff'; }
+    if(st){ st.style.width=S.stability+'%'; st.style.background = S.stability<30? '#e24b4a':'#5dcaa5'; }
+  },
+  showSta(){ this._staShown=true; const w=U.qs('#hmStaW'); if(w){w.style.display='flex';} this.meters(); },
+  removeStaMeter(){ const w=U.qs('#hmStaW'); if(w){ w.classList.add('gone'); } },
+  removeLucMeter(){ const w=U.qs('#hmLucW'); if(w){ w.classList.add('gone'); } },
+  pauseMenu(){
+    const pm=U.ce('div','pausemenu fadein');
+    pm.innerHTML='<div class="pm-t">— 暂停 · 磁带还在转 —</div>';
+    const r=U.ce('button','btn','继续');
+    const q=U.ce('button','btn violet','退出本章 · 回频率表');
+    pm.appendChild(r); pm.appendChild(q);
+    if(S.hushKnown && this._chapter>=7 && S.set.fx){ pm.appendChild(U.ce('div','pm-whisper','……噤。让它停下来不好吗。')); }
+    document.body.appendChild(pm);
+    r.onclick=()=>pm.remove();
+    q.onclick=async()=>{ pm.remove(); const ok=await confirmBox('退出本章?','本章进行中的部分不会被记得。'); if(ok){ document.body.classList.remove('veil','deep'); AU.drone('dusk'); go('dial'); } };
+  },
+  tap(){ return new Promise(res=>{ this._waiting=res; const a=U.qs('#adv'); if(a) a.style.display='block'; }); },
+  scrollEnd(){ if(this._scroll) this._scroll.scrollTo({top:this._scroll.scrollHeight, behavior:'smooth'}); },
+  async nar(txt, cls, opts){
+    opts=opts||{};
+    const el=U.ce('div','nar fadeup '+(cls||''));
+    if(opts.amb) el.classList.add('amb');
+    this._beats.appendChild(el); this.scrollEnd();
+    this._typing=true; await FX.type(el, txt); this._typing=false;
+    this.scrollEnd();
+    if(!opts.noWait) await this.tap();
+    return el;
+  },
+  async sysm(txt, cls, opts){
+    opts=opts||{};
+    const el=U.ce('div','sysmsg fadeup '+(cls||''), '');
+    this._beats.appendChild(el); this.scrollEnd();
+    AU.on&&AU.fx.click();
+    this._typing=true; await FX.type(el, txt, 1.8); this._typing=false;
+    this.scrollEnd();
+    if(!opts.noWait) await this.tap();
+    return el;
+  },
+  async say(who, txt, opts){
+    opts=opts||{};
+    const names={moyi:'莫依',paris:'帕里斯',senna:'森娜',quiet:'寂',asha:'阿莎',other:opts.name||'?'};
+    const ini={moyi:'M',paris:'P',senna:'S',quiet:'∅',asha:'A',other:(opts.name||'?')[0]};
+    const blur = (who==='senna' && S.faceBurned) || opts.blur;
+    const el=U.ce('div','say fadeup who-'+who);
+    el.innerHTML='<div class="say-chip'+(blur?' blurface':'')+'">'+(blur?'█':ini[who])+'</div>'+
+      '<div class="say-body"><div class="say-name">'+(opts.erasedName?'<span style="opacity:.25">▒ ▒</span>':U.esc(opts.name||names[who]))+'</div><div class="say-text"></div></div>';
+    this._beats.appendChild(el); this.scrollEnd();
+    const tEl=U.qs('.say-text',el);
+    this._typing=true; await FX.type(tEl, txt); this._typing=false;
+    this.scrollEnd();
+    if(!opts.noWait) await this.tap();
+    return el;
+  },
+  async tcard(n, custom){
+    const m=custom|| CHMETA[n];
+    const tc=U.ce('div','tcard fadein');
+    tc.innerHTML='<div class="tcard-no">'+(custom?(custom.no||''):'Chapter '+['One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'][n-1])+'</div>'+
+      '<div class="tcard-en chroma">'+m.en+'</div>'+
+      '<div class="tcard-zh">'+m.zh+'</div>'+
+      '<div class="tcard-rule"></div>'+
+      '<div class="tcard-tag">'+m.tag+'</div>';
+    document.body.appendChild(tc);
+    AU.on&&AU.fx.chime();
+    await U.sleep(300);
+    await new Promise(res=>{ const h=()=>{tc.removeEventListener('pointerdown',h); res();}; tc.addEventListener('pointerdown',h); setTimeout(res, 4200); });
+    tc.style.transition='opacity 1.2s'; tc.style.opacity=0;
+    setTimeout(()=>tc.remove(),1300);
+    await U.sleep(500);
+  },
+  async choice(opts){
+    const box=U.ce('div','choices fadeup');
+    this._beats.appendChild(box);
+    return new Promise(res=>{
+      opts.forEach(o=>{
+        if(o.hidden) return;
+        const b=U.ce('button','choice'+(o.hushy?' hushy':'')+(o.goneMem?' gone-mem':''));
+        b.innerHTML=U.esc(o.t)+(o.sub?'<small>'+U.esc(o.sub)+'</small>':'');
+        if(o.goneMem){ b.innerHTML='（你记不起'+(o.goneLabel||'那个')+'了。）<small>这枚记忆已被燃尽</small>'; }
+        b.onclick=()=>{
+          AU.on&&(o.hushy? AU.hushFx() : AU.fx.blip());
+          U.qa('.choice',box).forEach(x=>x.classList.add(x===b?'picked':'unpicked'));
+          if(o.hushy){ SAVE.hushUse(); FX.toast('世界又安静了一点。','ghostly',2200); }
+          this.scrollEnd();
+          setTimeout(()=>res(o.v!=null?o.v:o.t), 420);
+        };
+        box.appendChild(b);
+      });
+      this.scrollEnd();
+    });
+  },
+  async hold(o){
+    o=o||{};
+    const wrap=U.ce('div','holdwrap fadeup');
+    wrap.innerHTML='<div class="holdbtn'+(o.feel?' feel':'')+'" tabindex="0"><div class="hb-ring"></div><div class="hb-ico">'+(o.ico||'♪')+'</div><div class="hb-tx">'+(o.label||'按住 · 哼唱')+'</div></div>'+
+      '<div class="hold-cap">'+(o.cap||'按住不放,直到线亮起来')+'</div>';
+    this._beats.appendChild(wrap); this.scrollEnd();
+    const btn=U.qs('.holdbtn',wrap), cap=U.qs('.hold-cap',wrap);
+    const dur=o.dur||2600;
+    let p=0, holding=false, raf=null, lastSing=0, done=false;
+    return new Promise(res=>{
+      const tick=(ts)=>{
+        if(done) return;
+        p += holding? (16.7/dur)*100 : -(16.7/(dur*.5))*100;
+        p=U.clamp(p,0,100);
+        btn.style.setProperty('--p',p);
+        if(holding && AU.on && performance.now()-lastSing>620){ lastSing=performance.now(); if(o.sing!=='none') AU.lull(); }
+        if(o.onP) o.onP(p, holding);
+        if(p>=100){
+          done=true; ATMOS.singing=false; btn.classList.remove('singing'); btn.classList.add('done');
+          btn.style.setProperty('--p',100);
+          cap.textContent=o.doneCap||'……线醒了。';
+          AU.on&&AU.fx.chime();
+          setTimeout(()=>res(true), 700);
+          return;
+        }
+        raf=requestAnimationFrame(tick);
+      };
+      const down=(e)=>{ e.preventDefault(); holding=true; btn.classList.add('singing'); ATMOS.singing=true; if(!raf||p<=0) raf=requestAnimationFrame(tick); cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); };
+      const up=()=>{ holding=false; btn.classList.remove('singing'); ATMOS.singing=false; if(o.onRelease&&!done&&p>2) o.onRelease(p); };
+      btn.addEventListener('pointerdown',down);
+      window.addEventListener('pointerup',up);
+      window.addEventListener('pointercancel',up);
+    });
+  },
+  mini(html, cls){
+    const el=U.ce('div','panel fadeup '+(cls||''), html||'');
+    this._beats.appendChild(el); this.scrollEnd();
+    return el;
+  },
+  async wait(ms){ await U.sleep(ms); },
+  clearBeats(){ this._beats.innerHTML=''; },
+  veil(on){
+    if(on){ document.body.classList.add('veil'); document.body.classList.remove('deep'); ATMOS.setMode('veil'); AU.on&&(AU.drone('veil'), AU.fx.statics(.8)); }
+    else { document.body.classList.remove('veil','deep'); ATMOS.setMode('dusk'); AU.on&&AU.drone('dusk'); }
+  },
+  deep(){ document.body.classList.remove('veil'); document.body.classList.add('deep'); ATMOS.setMode('deep'); AU.on&&AU.drone('deep'); },
+  finish(n){
+    if(!S.done.includes(n)) S.done.push(n);
+    S.reached=Math.max(S.reached, Math.min(n+1,10));
+    SAVE.save();
+  },
+  async endcard(n, lines){
+    this.finish(n);
+    const wc=U.ce('div','woundcard fadeup');
+    wc.innerHTML='<div class="wc-t">—— 本章留下的伤痕 ——</div><div class="wc-line">'+lines.map(l=>'· '+l).join('<br>')+'</div>';
+    this._beats.appendChild(wc); this.scrollEnd();
+    const row=U.ce('div','choices fadeup');
+    if(n<10){
+      const nx=U.ce('button','btn','▶ 下一章 · '+CHMETA[n+1].zh);
+      nx.onclick=()=>{ AU.on&&AU.fx.statics(.4); this.run(n+1); };
+      row.appendChild(nx);
+    }
+    const bk=U.ce('button','btn teal','回到频率表');
+    bk.onclick=()=>{ document.body.classList.remove('veil','deep'); go('dial'); };
+    row.appendChild(bk);
+    this._beats.appendChild(row); this.scrollEnd();
+    FX.toast('✓ 已存档 · 磁带翻面','teal');
+  },
+  async run(n){
+    document.body.classList.remove('veil','deep');
+    AU.on&&AU.drone('dusk');
+    this.mount(n);
+    try{ await CHAPTERS[n](); }
+    catch(e){ console.error(e); }
+  },
+};
+const E = ENGINE;
+/* 内容速记 */
+const N=(t,c,o)=>E.nar(t,c,o), SYS=(t,c,o)=>E.sysm(t,c,o), D=(w,t,o)=>E.say(w,t,o), PK=(o)=>E.choice(o), HOLD=(o)=>E.hold(o), W8=(ms)=>E.wait(ms);
+const CHAPTERS = {};
+
+/* ============================================================
+   第一章 · 无人记得的女孩
+   ============================================================ */
+CHAPTERS[1] = async ()=>{
+  ATMOS.setMode('dusk');
+  /* —— 冷开场:你是森娜 —— */
+  await SYS('正在装载存档…… 玩家:森娜 SENNA<br>视角:第二人称 · 周四 · 放学 · 17:42');
+  /* 伪HUD */
+  const fh=U.ce('div','fakehud');
+  fh.innerHTML='<div class="fh fh-hp" id="fhHp">HP<span class="bar"><i></i></span>88/100</div>'+
+    '<div class="fh fh-map" id="fhMap"><div class="grid"></div><div class="you"></div><div class="cap">惠特默街</div></div>'+
+    '<div class="fh fh-quest" id="fhQuest">任务:回家</div>'+
+    '<div class="fh fh-pause" id="fhPause">ESC · 暂停</div>'+
+    '<div class="fh fh-name" id="fhName">森娜 · SENNA</div>';
+  document.body.appendChild(fh);
+  await N('你走在惠特默街上。十一月的黄昏是钠灯的颜色,空气里有人家烧晚饭的味道。你数着裂开的人行道砖,这是你和莫依发明的游戏:踩到第七块裂缝的人要讲一个秘密。','',{amb:true});
+  await N('你已经一个人数了三个星期了。');
+  await N('手机在口袋里震了一下。');
+  /* 手机 */
+  const ph=E.mini('','');
+  ph.style.padding='0'; ph.style.border='none'; ph.style.background='transparent';
+  ph.innerHTML='<div class="phone"><div class="ph-top">莫依 MOYI · 在线</div>'+
+    '<div class="ph-thread"><div class="ph-bub them">明天还来看台吗?我画了新的给你看 是会飞的房子!!</div><div class="ph-bub them">还有,我练了一首新的摇篮曲,就,如果你最近还是睡不好的话</div></div>'+
+    '<div class="ph-input"><div class="ph-field" id="phField"><span class="caret"></span></div><button class="ph-send">发送</button><button class="ph-del" id="phDel" style="display:none">删除</button></div></div>';
+  E.scrollEnd();
+  await W8(900);
+  /* 自动打字 */
+  const field=U.qs('#phField');
+  const draft='今晚能陪我走一段吗。就到桥那边。我有点撑不住了';
+  let cur='';
+  for(const ch of draft){ cur+=ch; field.innerHTML=U.esc(cur)+'<span class="caret"></span>'; AU.on&&AU.fx.click(); await U.sleep(U.ri(60,150)); }
+  await W8(700);
+  await N('你看着这行字,看了很久。','dim');
+  await N('发送键就在拇指底下。可是如果她回「怎么了」,你要怎么解释一种没有名字的累?如果她担心,那是你的错;如果她不担心——你不敢想这个如果。','',{amb:true});
+  U.qs('#phDel').style.display='';
+  await SYS('当前可用操作:1 项','ghost',{noWait:true});
+  await new Promise(res=>{ U.qs('#phDel').onclick=()=>res(); });
+  const delBtn=U.qs('#phDel'); delBtn.onclick=null; delBtn.style.display='none';
+  for(let i=cur.length;i>=0;i--){ field.innerHTML=U.esc(cur.slice(0,i))+'<span class="caret"></span>'; AU.on&&i%2&&AU.fx.click(); await U.sleep(26); }
+  AU.on&&AU.fx.erase();
+  await SYS('草稿已删除。没有人会知道它存在过。','ghost');
+  await N('你把手机扣回口袋。路灯在头顶嗡了一声,像谁清了清嗓子。');
+  await N('然后,一盏一盏地,街道开始忘记你。','lit');
+  /* 界面抹除 */
+  const erase=async(id,label)=>{ AU.on&&AU.fx.erase(); FX.glitch(U.qs(id)); await W8(300); U.qs(id).classList.add('erased'); await SYS('界面组件丢失:'+label,'bad',{noWait:true}); await W8(900); };
+  await erase('#fhHp','生命值');
+  await erase('#fhMap','小地图');
+  await erase('#fhQuest','任务目标');
+  await erase('#fhPause','暂停菜单 (你已无法暂停)');
+  await W8(600);
+  await D('senna','等等。等一下。我的名字呢——谁拿走了我的');
+  AU.on&&AU.fx.erase(); FX.glitch(U.qs('#fhName'));
+  U.qs('#fhName').classList.add('erased');
+  await W8(700);
+  await D('senna','……还有人看得见我吗?',{erasedName:true});
+  await W8(400);
+  AU.on&&AU.fx.statics(1.2); FX.flash(.18,90);
+  fh.remove(); E.clearBeats();
+  AU.duck(.0,1); await W8(1600); AU.duck(1,2);
+  /* —— 章题 —— */
+  await E.tcard(1);
+  await SYS('八个月后。<br>正在装载存档…… 玩家:莫依 MOYI<br>住民名册校验:仍缺 1 项(已自动忽略)');
+  await N('早餐桌。妈妈的手机立在麦片盒旁边,播着「静水计划」的广告:一个很轻很轻的女声说,<i>灰谷镇,你值得平静。</i>','',{amb:true});
+  await D('other','莫依,陈医生说得对,你需要一点……现实的朋友。',{name:'妈妈'});
+  await D('other','「森娜」——没有这个人,宝贝。毕业册我们翻过三遍了。你六年级的位置旁边一直是空的。',{name:'妈妈'});
+  const c1=await PK([
+    {t:'「她存在过。她坐我左边,她用蓝色圆珠笔,她笑起来会先吸一口气。」', v:'argue'},
+    {t:'(沉默地收拾书包。和大人争论真实,会输得更真实。)', v:'silent'},
+  ]);
+  if(c1==='argue') await D('other','宝贝……要不要把剂量调回去?',{name:'妈妈'});
+  else await N('妈妈看着你,眼神温柔得像在看一道需要耐心的伤口。这比争吵更难受。','dim');
+  await N('那天晚上你翻墙进了学校。别问为什么,清醒梦者的腿有自己的主意。');
+  await N('看台。第三排,左数第七个位置。森娜的位置。','',{amb:true});
+  await N('你坐在旁边,出于一种神经性的习惯,你开始哼歌——给陌生人哼的那种,你的电台只有十一个听众的那种。');
+  /* 第一次「醒」 */
+  await HOLD({label:'按住 · 哼唱', cap:'就当这里还有人需要睡着', doneCap:'……看台的缝隙里,有什么东西亮了。'});
+  AU.wake();
+  await N('一条线。一条<b class="amberglow">光做的线</b>,从森娜的位置里爬出来,垂到你脚边,像一句没说完的话的尾音。','lit');
+  SAVE.earn('m_bus');
+  SAVE.addUnd('u_send');
+  await SYS('获得未寄出 ——「未署名的草稿」。读不清内容。很重。');
+  await N('你伸手碰那条线——');
+  /* 缘线步教学 */
+  await N('——世界换了一种灯光。','veil');
+  E.veil(true);
+  SAVE.luc(-8);
+  await SYS('潜暮中 · 清醒值 −8<br>提示:你只能踏向「曾经有人在那里感受过」的地方。');
+  const tsBox=E.mini('<div class="tsfield" id="ts1"></div>');
+  await new Promise(res=>{
+    const f=U.qs('#ts1',tsBox);
+    const moyi=U.ce('div','tsmoyi'); moyi.style.left='8%'; moyi.style.top='82%'; f.appendChild(moyi);
+    const nodes=[
+      {x:26,y:64,hot:true, l:'她笑场的地方'},
+      {x:48,y:44,hot:false,l:'空走廊'},
+      {x:64,y:58,hot:true, l:'吵过架的储物柜'},
+      {x:84,y:28,hot:true, l:'看台尽头', last:true},
+    ];
+    let reached=0;
+    nodes.forEach(nd=>{
+      const b=U.ce('button','tsnode'+(nd.hot?'':' cold'));
+      b.style.left=nd.x+'%'; b.style.top=nd.y+'%';
+      b.innerHTML='<i></i><span class="nl">'+nd.l+'</span>';
+      b.onclick=()=>{
+        if(!nd.hot){ AU.on&&AU.fx.statics(.3); FX.shake(f); FX.toast('那里从来没有人感受过什么。线,踩不住。','bad'); SAVE.luc(-2); return; }
+        AU.on&&AU.fx.blip(); ATMOS.singing=true; setTimeout(()=>ATMOS.singing=false,900);
+        moyi.style.left=nd.x+'%'; moyi.style.top=nd.y+'%';
+        b.classList.add('stepped'); b.disabled=true; reached++;
+        if(nd.last){ setTimeout(res, 1100); }
+      };
+      f.appendChild(b);
+    });
+  });
+  await SYS('缘线步 · 已习得');
+  await N('夜里的学校。但不是你翻进来的那一所。每一个储物柜都在漏声音——<i>差一点</i>发生过的对话,以百分之九十八的音量,永远地排练着。','veil',{amb:true});
+  await N('「她那天肯定听见了」「我本来想叫住他」「要是当时我说了——」');
+  await N('声音聚拢。在走廊尽头,碎语凝成了一团有形状的东西:几百句偷听来的闲话,组成一群鸟。');
+  await SYS('遭遇:嗡群 MURMURATION — 由流言构成的群落实体','bad');
+  FX.shake();
+  AU.on&&AU.drone('tense');
+  await N('它们俯冲下来的时候,你听清了其中一句是关于你的。这一句啄得最疼。','dim');
+  const c2=await PK([
+    {t:'唱「眠」。安抚它们——它们也只是没人听的话。', v:'lull'},
+    {t:'跑。缘线步,看台方向,现在。', v:'run'},
+  ]);
+  if(c2==='lull'){ AU.lull(); await N('你唱了两个小节。最近的几只鸟迟疑地悬停——但群太大了,你的歌只有一个人的宽度。','dim'); SAVE.luc(-4); }
+  else { await N('你踩线疾走。可线在嗡群的风里晃,像雨里的吊桥。','dim'); SAVE.luc(-4); }
+  await N('就在它们合拢的那一刻——<b class="tealglow">地板自己站了起来。</b>','lit');
+  AU.on&&AU.fx.thud();
+  await N('混凝土像纸一样折叠,一段楼梯凭空长成,正正落在你脚前。嗡群撞在阶梯背面,散成无害的音节。');
+  await N('楼梯顶端站着一个男生。搬运工的站姿,熬夜的眼睛。他看着自己的手,比你还惊讶。');
+  await D('paris','……通常它们听话得没这么夸张。',{});
+  await D('moyi','你是谁?');
+  await D('paris','帕里斯。今天刚搬来。我在找我家车库——这话听起来不像借口,但这里的门牌会动。');
+  await D('moyi','你看得见这里。');
+  await D('paris','我看得见所有要塌的东西。这里只是……塌得比较诚实。');
+  SAVE.earn('m_stairs');
+  E.veil(false);
+  await N('回到表层世界的时候,天快亮了。你们沿着堡垒巷往回走,谁也没提刚才的事,像两个刚分赃完的同伙。');
+  await N('路过巷口第三根电线杆,你下意识抬手,在木头上敲了<b>三短一长</b>。','',{amb:true});
+  await D('paris','那是什么?');
+  await D('moyi','暗号。毯子堡垒的。我和……一个人的。全世界只有我们俩知道。');
+  SAVE.earn('m_fort');
+  await D('paris','「一个人」。', {});
+  await D('moyi','一个所有人都说不存在的人。你信吗?');
+  await D('paris','我今晚看见地板替你长了楼梯。我的「不信」额度用完了。');
+  await E.endcard(1, [
+    '你现在知道了:<b>界面本身,是可以被夺走的。</b>',
+    '那条草稿是森娜自己删的。——「自己」这个词,从今晚起开始发烫。',
+    '收下记忆 ×3 · 拾起未寄出 ×1 · 一个会读裂缝的同伙。',
+  ]);
+};
+
+/* ============================================================
+   第二章 · 未寄出商场
+   ============================================================ */
+CHAPTERS[2] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(2);
+  await N('帕里斯家的车库闻起来像锡和旧杂志。他在修一台1987年的收音机,你坐在工具箱上替他递螺丝,顺便把昨晚的一切讲了第三遍。','',{amb:true});
+  await D('paris','所以:不被记得的人,东西会先消失。森娜的房间变成了储物间。那她的东西去了哪?');
+  await D('moyi','镇上的旧货都送去一个地方。死掉的那座商场——灰谷购物中心。卡车每周三晚上去,我数过。');
+  await N('收音机突然响了半秒:雪花噪点中间,有一个频率在哼歌。是你的调子。你们对看了一眼。');
+  SAVE.earn('m_radio');
+  SAVE.luc(+8);
+  await SYS('清醒值 +8 —— 真实世界的锚点:一个修东西的下午。');
+  await N('周三。夜里十一点的灰谷购物中心,卷帘门锈成了瀑布。帕里斯把手贴上墙,像号脉。');
+  await D('paris','这里有一道缝,宽得能开进一辆卡车。有人天天用。扶好。');
+  E.veil(true);
+  SAVE.luc(-10);
+  await SYS('潜暮中 · 清醒值 −10');
+  await N('薄暮里的商场,<b class="violetglow">开着门。</b>','veil');
+  await N('每一间店都亮着。喷泉喷的是电话忙音。自动扶梯载着没有人的购物气氛上上下下。中庭挂着横幅:<i>本季新品 · 一切如鲠在喉。</i>','veil',{amb:true});
+  await N('店员们站在柜台后,西装笔挺,没有脸——只有一种「乐意为您效劳」的姿势。');
+  await D('other','欢迎光临。请随意感受,但请勿送达。',{name:'店员'});
+  await D('moyi','这些是……卖什么的?');
+  await D('other','库存。本店经营:所有没说出口的话。一切必须保持<b>在库</b>。永不交付,永不折旧。',{name:'店员'});
+  /* 逛店 */
+  await N('四间店面,四种没说出口。你们决定分头看。');
+  const visited=new Set();
+  const shopBox=E.mini('<div class="cardrow" id="shops"></div>');
+  await new Promise(res=>{
+    const defs=[
+      {id:'apol', t:'「道歉」专柜', d:'货架按亏欠年限排列。最里面的一排在结霜。'},
+      {id:'conf', t:'「告白」精品店', d:'每一件都用气泡纸包着,怕碎。'},
+      {id:'bye',  t:'「再见」折扣区', d:'全场清仓。没有一件卖得出去。'},
+      {id:'uup',  t:'「凌晨三点」便利店', d:'24小时营业。只在凌晨三点有顾客。'},
+    ];
+    const wrap=U.qs('#shops',shopBox);
+    defs.forEach(df=>{
+      const c=U.ce('button','pcard');
+      c.innerHTML='<span class="tag">STORE</span><h4>'+df.t+'</h4><p>'+df.d+'</p>';
+      c.onclick=async()=>{
+        if(visited.has(df.id)) return;
+        visited.add(df.id); c.classList.add('sel');
+        AU.on&&AU.fx.blip();
+        if(df.id==='conf'){ SAVE.addUnd('u_confess'); FX.toast('♡ 货架第三排,有一件落了灰的喜欢。你收下了。','teal'); }
+        if(df.id==='bye'){ SAVE.addUnd('u_bye'); FX.toast('⌛ 一句没送出的再见。写它的人后来假装没去过车站。','teal'); }
+        if(df.id==='uup'){ SAVE.addUnd('u_uup'); FX.toast('☾ 凌晨三点的「你还醒着吗」。后半句被撕掉了。','teal'); }
+        if(df.id==='apol'){ FX.toast('❄ 最里面的货架结着霜,整面墙在低频地震动。','bad',3200); }
+        if(visited.size>=4){ setTimeout(res,800); }
+      };
+      wrap.appendChild(c);
+    });
+  });
+  await N('在「道歉」专柜的最外侧,你看见一只标价牌空白的小盒子。你认得那个字迹。是你的。');
+  await N('<i>「妈,我不是故意把家里弄得这么安静的。我只是不知道怎么在不提她的情况下说话。」</i>','dim');
+  SAVE.addUnd('u_mom');
+  const cm=await PK([
+    {t:'把它投进「寄出」口。现在就寄。', sub:'送达它——薄暮被治愈一分,你失去一件库存', v:'send'},
+    {t:'收进口袋。还没准备好。', sub:'持有它——你保留这份力量,「寂」厚一分', v:'hold'},
+  ]);
+  if(cm==='send'){
+    SAVE.deliver('u_mom'); AU.fx.chime();
+    await N('盒子落进黄铜口,叮的一声,像一枚很轻的钟。你不知道它会以什么形式抵达。也许是妈妈明早莫名其妙地想做你小时候爱吃的那道菜。','lit');
+    SAVE.luc(+4);
+  } else {
+    await N('你把盒子收好。店员的方向传来一阵满意的、低低的嗡鸣,像空调,又像别的什么。','dim');
+  }
+  /* 共鸣壳 */
+  await N('中庭三层楼高。要让「醒」传遍整座商场,你的歌需要一只更大的肺。');
+  await D('paris','我可以起草一只回声壳。半球形,声学结构。但这里的承重逻辑是情绪——它会借我的手抖。');
+  await N('他抬手开始画。空气里浮现出肋骨一样的拱。第二根拱的时候,你看见他的指尖在颤,呼吸压得很扁。','',{amb:true});
+  const cp=await PK([
+    {t:'「停一下。帕里斯,你的手在抖。先落地,我们慢慢来。」', sub:'多花一点时间。结构会更诚实。', v:'care'},
+    {t:'「先撑住!曲子不能断,一鼓作气!」', sub:'更快、更高效。看起来。', v:'push'},
+  ]);
+  if(cp==='care'){
+    SAVE.sta(+6);
+    await D('paris','……好。好,给我十秒。',{});
+    await N('他把双手按在膝盖上,数了十下。再抬手时,拱线稳得像印刷品。你注意到:他需要的其实一直只是这十秒,和一个允许。','lit');
+  } else {
+    SAVE.crack('ck_shell'); SAVE.sta(-8);
+    await D('paris','没事。我没事。继续。',{});
+    await N('壳一口气合拢了,漂亮,流畅,效率惊人。只有你——只有<b>玩家</b>——看见接缝处一道发丝细的暗纹一闪而过。帕里斯看不见自己的裂。','dim');
+    await SYS('暗裂已记录(他不知道) —— 这道裂将在未来的某一天,与其余所有暗裂一起结账。','bad');
+  }
+  await HOLD({label:'按住 · 在壳里唱', cap:'让摇篮曲灌满三层楼', doneCap:'整座商场,安静得像终于有人把话说完了。'});
+  AU.melody('pure');
+  SAVE.earn('m_atrium');
+  await N('歌涨满中庭的那一刻,几百间店的货架同时轻轻一颤,像集体松了一口气。横幅掉了一个角。','lit');
+  /* 积压者 */
+  await N('然后你听见了冰川移动的声音。');
+  await N('美食广场的方向,等待音乐汇成一片海。海中央矗立着它——<b class="violetglow">积压者</b>:七年份的、同一个人写给同一个人的道歉,冻成的一座冰山。','veil');
+  await SYS('遭遇:积压者 THE BACKLOG — 不可战斗。只可投递。','bad');
+  await D('paris','它在生长。每年圣诞和每个生日各长一圈。莫依——它不是怪物,它是<b>欠条</b>。');
+  await D('moyi','那我们不打。我们替他寄。');
+  await N('冰面里冻着五句话。要按写下的顺序送达——最早的那句在最深处,几乎冻成了化石。投错顺序,冰川会翻身。','dim');
+  /* 排序投递 */
+  const frags=[
+    {o:1, t:'『哥。』', d:'(后面没有了。七年前,他只写得出这一个字。)'},
+    {o:2, t:'「你搬走那天,我帮你抬了沙发。整个下午没说一句话。不该让沉默抬完所有东西的。」', d:'墨迹 · 约六年前'},
+    {o:3, t:'「妈住院那一周,你在走廊睡了七夜。我换了三次班,一次都没去。我怕的不是医院。」', d:'墨迹 · 约四年前'},
+    {o:4, t:'「爸的葬礼我站在最后一排。你回头找我,我假装在看手机。手机是黑屏的。」', d:'墨迹 · 约两年前'},
+    {o:5, t:'「今天路过你家,灯是亮的。我在台阶下站了十一分钟。这条也不会发。」', d:'墨迹 · 上周'},
+  ];
+  const bkBox=E.mini('<div class="bk-prog" id="bkP">已送达 0 / 5 —— 从最早的那句开始</div><div class="bk-board" id="bkB"></div>');
+  await new Promise(res=>{
+    let need=1, fails=0;
+    const board=U.qs('#bkB',bkBox), prog=U.qs('#bkP',bkBox);
+    U.shuffle(frags).forEach(fr=>{
+      const b=U.ce('button','bk-frag');
+      b.innerHTML='<div class="bf-t">'+fr.t+'</div><div class="bf-d">'+fr.d+'</div>';
+      b.onclick=()=>{
+        if(fr.o===need){
+          b.classList.add('sent'); AU.fx.chime(); need++;
+          prog.textContent='已送达 '+(need-1)+' / 5';
+          if(need===2) FX.toast('冰川深处,某个地方「咔」了一声。','teal');
+          if(need===4) FX.toast('等待音乐弱了下去。有几桌的电话被接起来了。','teal');
+          if(need>5){ prog.textContent='已送达 5 / 5 —— 冰川正在变成水声'; setTimeout(res,900); }
+        } else {
+          fails++; AU.fx.collapse(); FX.shake();
+          FX.toast('顺序不对——道歉是有地质层的。冰川翻了个身!','bad');
+          if(fails===1) FX.toast('头顶的夹层垮下来,帕里斯把它接成了一道桥。「慢慢来。我撑得住。」','teal',3400);
+          SAVE.luc(-2);
+        }
+      };
+      board.appendChild(b);
+    });
+  });
+  SAVE.addUnd('u_brother'); SAVE.deliver('u_brother');
+  AU.melody('pure');
+  await N('最后一句送达的瞬间,冰川没有崩塌——它<b class="amberglow">融化</b>了。七年的等待音乐降了一个调,变成了某种接近大厅钢琴的东西。','lit');
+  await N('水退去之后,美食广场中央站着一个湿透的中年男人,警徽上还挂着冰。他看着自己的双手,像第一次见到它们。');
+  await D('other','……我弟弟的号码。我突然想得起我弟弟的号码了。',{name:'治安官'});
+  await D('other','你们是谁?不——先别告诉我。先告诉我:这座商场,还有多少和我一样的东西?',{name:'治安官'});
+  await D('moyi','满城都是。每一间店,每一层货架。');
+  await N('治安官在原地站了很久。然后他摘下警徽擦了擦,重新别正。从今晚起,灰谷镇警局多了一个相信怪谈的人。','lit');
+  await E.endcard(2, [
+    '薄暮不是孩子们的幻觉——<b>它由大人们的感受砌成。</b>治安官成为第一个盟友。',
+    (S.und.u_mom==='delivered'? '你寄出了写给妈妈的那一盒。某种东西已经上路了。':'你把写给妈妈的话收进了口袋。「寂」今晚厚了一毫米。'),
+    (S.cracks.includes('ck_shell')? '回声壳的接缝里,有一道只有你看得见的暗裂。':'你给了帕里斯十秒。壳里没有谎言。'),
+  ]);
+};
+
+/* ============================================================
+   第三章 · 永不结束的直播
+   ============================================================ */
+CHAPTERS[3] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(3);
+  await N('治安官的档案室里有一面「悬案墙」。如今上面多了一类新卷宗:<i>不被记得者(?)。</i>第一份卷宗只有一张打印纸:一个两年前注销的账号,juniper_lol。','',{amb:true});
+  await D('other','十六岁,主播,唱歌的。某天人间蒸发——不,比蒸发干净。她家里人第二天就把她的房间改成了健身房。没人觉得奇怪。',{name:'治安官'});
+  await D('paris','账号注销了,但治安官,你说她的直播——');
+  await D('other','还在播。我夜里巡逻,经过山脊那座停用的广播塔,车载电台会自己跳到一个频道。有人在唱歌,有人在……刷礼物。那塔1987年就断电了。',{name:'治安官'});
+  await D('moyi','(你在网上给陌生人哼摇篮曲。你认得这种房间的形状。你的后颈凉了一下。)');
+  await N('夜里。广播塔在山脊上闪着红灯,像一支插在小镇头顶的体温计。');
+  E.veil(true);
+  SAVE.luc(-10);
+  await SYS('潜暮中 · 清醒值 −10');
+  await N('薄暮里,塔是一栋竖直的直播间。墙是滚动的弹幕,楼梯间挤满半透明的观众——<b class="violetglow">观看者之灵</b>:爱过她、点过她、消耗过她的人,留在房间里的形状。','veil');
+  /* 弹幕列 */
+  const chatBox=E.mini('<div class="chatcol" id="chat3"></div>');
+  const chatEl=U.qs('#chat3',chatBox);
+  const POOLS={
+    adore:[['星河','姐姐的声音是我一天里唯一的安静'],['Lemon7','今天也来听你唱歌啦'],['住在六楼','失眠第41天,全靠你'],['anonymous','你笑起来的时候我也会笑']],
+    demand:[['速速','怎么还不开下一首,快'],['某人','昨天怎么停播了?解释一下?'],['白嫖怪','就这?唱点会的'],['绿藻头','你变了,以前的你不这样'],['路过','别整这些虚的,继续唱']],
+    cold:[['system','礼物 ×99'],['system','有人加入了房间'],['system','有人忘记了离开']],
+  };
+  let chatMode='adore', chatTimer=setInterval(()=>{
+    const pool=POOLS[chatMode]; const m=U.pick(pool);
+    const d=U.ce('div','chatmsg '+chatMode,'<b>'+m[0]+'</b>'+m[1]);
+    chatEl.appendChild(d);
+    while(chatEl.children.length>14) chatEl.firstChild.remove();
+  }, 760);
+  await N('要往上爬,你得学会第三声区——<b class="amberglow">变</b>:给一个房间换一种情绪天气,房间里「可能发生的事」就会跟着换。','lit');
+  await SYS('「变」 · 已习得 — 每一层,为它选择一种天气。没有哪种天气是错的;只有合不合适。');
+  /* 三层爬塔 */
+  const floors=[
+    {q:'第 1 层:地板碎成了岛,缝隙太宽,跳不过去。这一层的弹幕在问她要东西。', a:'adore', okT:'你把天气调成「爱慕」。地板像被托住的手背,一块块升起来接你。', noT:'「索取」让缝隙里长出倒刺。不是惩罚——只是这种天气里长这种植物。再试一次。'},
+    {q:'第 2 层:断章取义的引用结成了尖刺丛,封死了楼梯。每根刺上都刻着半句话。', a:'adore', okT:'「爱慕」的暖流过境,尖刺软成了丝带。完整的句子重新接好,垂在墙边。', noT:'「索取」让刺丛更密。它们本来就是这种天气里的作物。换一种试试。'},
+    {q:'第 3 层:出口在天花板上——但赞美把天花板越顶越高,够不到了。这一层全是说她「永远不要变」的人。', a:'demand', okT:'你深吸一口气,调成「索取」。天花板被「现实一点」的重量压回到手边。你第一次发现:这种天气,也有用。', noT:'更多的「爱慕」让天花板又升高了三米。爱在这一层是浮力。你需要重一点的东西。'},
+  ];
+  for(const fl of floors){
+    await N(fl.q,'veil');
+    let solved=false;
+    while(!solved){
+      const moodBox=E.mini('<div class="moodrow"><button class="mood adore">☼ 爱慕 ADORE</button><button class="mood demand">▼ 索取 DEMAND</button></div>');
+      const pickMood=await new Promise(res=>{
+        U.qs('.adore',moodBox).onclick=()=>res('adore');
+        U.qs('.demand',moodBox).onclick=()=>res('demand');
+      });
+      U.qa('.mood',moodBox).forEach(b=>b.disabled=true);
+      chatMode=pickMood;
+      U.qa('.mood',moodBox).forEach(b=>b.classList.toggle('on', b.classList.contains(pickMood)));
+      AU.shiftT();
+      if(pickMood===fl.a){ solved=true; await N(fl.okT,'lit'); }
+      else { FX.shake(); SAVE.luc(-3); await N(fl.noT,'dim'); }
+    }
+  }
+  /* 赶时间的桥 */
+  await N('塔身中段断了。帕里斯要在断口上起草一座三弦的信号桥——用「广播」本身的结构来建。','',{amb:true});
+  await N('塔顶的歌声忽然乱了一拍。直播的时间线在加速,弹幕开始整屏整屏地刷。');
+  const c3=await PK([
+    {t:'「按你的节奏校弦。塔等得起,我们也等得起。」', sub:'多三分钟。', v:'wait'},
+    {t:'「来不及了——直接拉满,跑!」', sub:'立刻通过。', v:'rush'},
+  ]);
+  if(c3==='wait'){ SAVE.sta(+5); await N('三根弦各校了三遍。踏上去的时候,桥发出大提琴定弦的声音,稳得令人想哭。','lit'); }
+  else {
+    SAVE.crack('ck_bridge'); SAVE.sta(-6);
+    await N('桥在你们脚下完成。第三根弦的张力差了一丝——只有<b>你</b>听见那个音偏了五音分。帕里斯没听见。他正忙着不去想别的事。','dim');
+    await SYS('暗裂已记录(他不知道):信号桥的第三根弦。','bad');
+  }
+  /* 塔顶 */
+  await N('塔顶。环形的直播间,中央坐着一个发着微光的女孩,妆很完整,眼睛很旧。她在唱副歌——同一段副歌。你数了数,她大概已经唱了一万次。','veil');
+  await D('other','新来的观众吗?欢迎欢迎。点歌请刷礼物——开玩笑的,点吧,我都会。',{name:'juniper_lol'});
+  await D('moyi','朱尼珀。直播结束了。两年前就结束了。');
+  await D('other','结束?(她笑了笑,声音没跟上嘴角。)我不能下播啊。你看见他们了吗。我一停,他们就开始散——而他们的爱是唯一<b>撑着我的形状</b>的东西。我下播,我就……',{name:'juniper_lol'});
+  await D('other','……就什么都不剩了。主播是我撑到最后的器官。',{name:'juniper_lol'});
+  await D('paris','(低声)莫依。她不需要救援。她需要一个<b>关播画面</b>。一个让所有人都有地方放手的结构。我来画。你来唱。');
+  await N('帕里斯抬手,在她身后起草出一面巨大而柔软的幕:<i>「直播结束了。谢谢你来过。」</i>字体圆圆的,像她两年前的笔迹。','lit');
+  await N('而你——你这辈子第一次,<b>当着观众的面</b>唱歌。不是匿名电台,不是十一个听众。是几百双正在失去所爱的眼睛。','',{amb:true});
+  chatMode='adore';
+  await HOLD({label:'按住 · 对所有人唱', cap:'给他们的爱一个可以安放的地方', dur:4200, doneCap:'弹幕停了。不是散场的停,是雪停的停。', onP:(p,h)=>{ if(h&&Math.random()<.12){ const d=U.ce('div','chatmsg heart','♡'); chatEl.appendChild(d); while(chatEl.children.length>14) chatEl.firstChild.remove(); } }});
+  clearInterval(chatTimer);
+  AU.melody('full');
+  await N('观看者之灵一个接一个地把手里的光放到台前,像演唱会散场时留在座位上的荧光棒。然后他们做了两年来第一件新的事:<b class="amberglow">他们下线了。</b>','lit');
+  await N('朱尼珀看着空下来的房间。她颤抖得很厉害。然后她伸出手,按下了那个她不敢按的键。');
+  SAVE.earn('m_endscreen');
+  E.veil(false);
+  S.juniper=true; SAVE.save();
+  await N('表层世界。塔下的草地上,一个真实的、会冷会饿的十八岁女孩,正在用两年没用过的喉咙练习说「你好」。');
+  SAVE.luc(+6);
+  await SYS('清醒值 +6 —— 真实世界的锚点:草地是凉的,星星不在头顶以外的任何地方。','',{noWait:true});
+  await D('other','回去之前——你们得知道一件事。带我进去的那个声音。「寂」。',{name:'朱尼珀'});
+  await D('other','它说话的时候,是<b>两个声音的和声</b>。一高一低,咬字完全同步。像……像一对练了一辈子的二重唱。',{name:'朱尼珀'});
+  await D('moyi','(你和帕里斯对看了一眼。两个声音。一个唱歌的,一个搭台的。)');
+  await E.endcard(3, [
+    '朱尼珀登出了。两年的直播,以一首给观众的摇篮曲收尾。',
+    '「寂」可能曾经是<b>两个人</b>。——这个念头从今晚起住进了你们中间。',
+    (S.cracks.includes('ck_bridge')? '信号桥的第三根弦,差了五音分。只有你听见了。':'三根弦,各校三遍。今晚没有留下暗裂。'),
+  ]);
+};
+
+/* ============================================================
+   第四章 · 他盖了两次的房子
+   ============================================================ */
+CHAPTERS[4] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(4);
+  await SYS('系统扩展:稳定值 STABILITY 已显示。<br>说明:压抑中起草的结构,会带有「仅玩家可见」的暗裂。你是他的否认的保管人。');
+  await N('凌晨四点,薄暮震了一下。不是地震——是<b>新增建筑</b>。灰谷镇的地下世界里,凭空多出了一栋不属于这里的房子:外州的院墙,外州的信箱,门牌号是三个州以外的某条街。','',{amb:true});
+  await N('你认得那种屋顶的画法。你见过帕里斯无意识地在作业本边缘画过一百次。');
+  await N('他今晚没来。你自己下去了。','dim');
+  E.veil(true);
+  SAVE.luc(-12);
+  await SYS('潜暮中 · 清醒值 −12 · 单人 — 共鸣不可用');
+  await N('房子是用记忆的砖砌的,砌得偏执地精确:草坪每一根草的倾角,纱门上每一个破洞。墙的内部循环播放着争吵声,音量低到只剩辅音。你推门进去了。<b>没有敲门。</b>','veil');
+  await N('玄关里挂着五把一模一样的钥匙。客厅里叠着五个版本的同一栋房子。');
+  await D('paris','——你在这里干什么。');
+  await N('他站在门口。你从没见过他这个样子:不是生气。是<b>被看见了</b>的那种灭顶。');
+  AU.duck(.001,.5); AU.stopDrone(.4);
+  await SYS('音乐 · 已切断<br>共鸣 · 不可用','bad');
+  await D('moyi','帕里斯,我只是——薄暮震了,我以为有危险,我——');
+  await D('paris','这是我的房子。这五栋全是。你看懂了吗?看懂了就请你出去。');
+  const c4=await PK([
+    {t:'「不。你天天读所有人的裂缝,今天轮到你被读了。」', v:'stay'},
+    {t:'「对不起。我不该进来。——但我也不走。我可以坐在玄关。」', v:'sorry'},
+  ]);
+  if(c4==='sorry'){ S.flags.ch4soft=true; SAVE.save(); await N('你真的在玄关坐下了。在一栋由创伤手工复刻的房子里,坐在「客人该待的地方」。过了很久,他从客厅扔出来一个坐垫。','dim'); }
+  else { await N('他瞪着你。墙里的辅音忽然清晰了一拍,你们都听见了一句完整的「<i>你能不能少说一句</i>」。不知道是墙说的,还是预演给你们的。','dim'); }
+  await N('最终他没有赶你走。他只是背对你,开始一栋一栋地介绍。像房产中介,像验尸官。','dim');
+  /* 五栋房子 · 读裂 */
+  await SYS('读裂 · 教学:每个版本里,有一个词在发光地撒谎。找到它,点下去。');
+  const houses=[
+    {tab:'① 都是我的错', body:'这一栋里,六岁的我打翻了热水壶,所以那年冬天他们开始吵架。我六岁,但我<拍>明白</拍>所有后果。如果我安静一点,房子就还在。', lie:'明白', after:'六岁的人不「明白」任何后果。这栋房子的承重墙,是一个孩子把自己当成了炸药。'},
+    {tab:'② 没有人的错', body:'这一栋里,那年冬天大家<拍>心平气和</拍>地决定分开。没有摔门,没有哭。大人们的事就是这样,体面,合理,谁也不怪谁。', lie:'心平气和', after:'墙记得分贝。这栋房子的「体面」,是后来涂上去的隔音棉。'},
+    {tab:'③ 从未发生', body:'这一栋里,什么都没坏。我们<拍>至今</拍>住在里面,每周日烤一只鸡,爸爸的车永远停在车道上,雪人每年立在同一个位置。', lie:'至今', after:'「至今」。整栋房子塌在这两个字上。它太完整了——完整得只能是假的。'},
+    {tab:'④ 英雄版本', body:'这一栋里,我把车库那台收音机修好了。音乐响起来的那个晚上,他们听着听着就<拍>和好</拍>了。只差一点,我就来得及。', lie:'和好', after:'收音机确实修好了。他后来又把它拆了重修了十一遍。修理是真的;「来得及」从来不是真的。'},
+  ];
+  for(const h of houses){
+    await N('<span class="eyebrow">'+h.tab+'</span>','',{noWait:true});
+    const hv=E.mini('<div class="houseview">'+h.body.replace('<拍>','<span class="crackword lie">').replace('</拍>','</span>')+'</div>');
+    await new Promise(res=>{
+      U.qa('.houseview',hv).forEach(view=>{
+        view.onclick=(ev)=>{
+          const t=ev.target;
+          if(t.classList&&t.classList.contains('lie')){
+            t.classList.add('found'); AU.fx.chime();
+            res();
+          } else if(ev.target===view){ }
+          else { AU.fx.click(); FX.toast('这个词站得住。再找找——谎言会发一种很轻的光。',''); }
+        };
+      });
+    });
+    await N(h.after,'lit');
+    AU.fx.thud();
+    await N('那栋房子塌了。安静地,像一个论点被收回。','dim');
+  }
+  /* 第五栋 */
+  await N('<span class="eyebrow">⑤ ???</span>','',{noWait:true});
+  const tv=E.mini('<div class="houseview" id="trueHouse">这一栋,他没有介绍。门是虚掩的。里面的争吵声没有循环——它有开头,有结尾,有一段长得可怕的安静。桌上有两份签了字的文件,和一份没人动过的、六岁小孩画的全家福。</div>');
+  let clicks=0;
+  await new Promise(res=>{
+    U.qs('#trueHouse',tv).onclick=()=>{
+      clicks++; AU.fx.click();
+      if(clicks===1) FX.toast('这句是真的。','');
+      if(clicks===2) FX.toast('这句也是真的。','');
+      if(clicks>=3){ FX.toast('……这一栋,没有谎言。','amber',3000); const el=U.qs('#trueHouse',tv); el.onclick=null; el.id='trueHouseDone'; res(); }
+    };
+  });
+  await D('paris','找到裂缝了吗。');
+  await D('moyi','没有。这栋是真的。');
+  await D('paris','对。<b>所以它拆不掉。</b>我试过。我每搬一次家就试一次。');
+  /* 对应体 */
+  await N('地下室的方向传来链条松弛的声音。你们下去了。','dim');
+  await N('地下室中央,悬着一只<b class="tealglow">拆除用的破碎球</b>。静止,耐心,擦得很亮。球身上用马克笔写着一行小学生的字:','veil');
+  await N('<i>「帕里斯的脾气。危险。勿动。」</i>','center lit');
+  await D('paris','我六岁写的。搬家那天它跟着我上了卡车。每栋房子的地下室都有它。我从来没让它动过——你明白吗,<b>一次都没有</b>。');
+  await N('就在这时,楼上的争吵声轮播到了最响的那一段。假房子们的残骸开始共振,辅音长出了牙,朝你合拢——');
+  await SYS('警告:argument-storm 正在收束 · 莫依被锁定','bad');
+  await D('paris','(他看了看你。又看了看球。然后他做了搬过七次家都没做过的事。)');
+  await N('他伸手,握住链条,<b>荡了出去。</b>');
+  AU.melody('minor');
+  AU.fx.collapse();
+  FX.shake();
+  await N('一镜到底:破碎球穿过「都是我的错」的承重墙,穿过「心平气和」的隔音棉,穿过「至今」的周日烤鸡,穿过「来得及」——四栋假房子按精确计算的顺序倒下,瓦砾全部落在空地,一片都没有溅到你。','lit');
+  await N('受控拆除。<b>表达过的悲伤,就是这样拆掉危房而不伤及邻里的。</b>','center lit');
+  SAVE.sta(+10);
+  await SYS('稳定值 +10 —— 有些东西,挥出去比埋着轻。');
+  AU.duck(1,2.5); AU.drone('veil');
+  await SYS('音乐 · 恢复<br>共鸣 · 恢复');
+  await N('尘埃落定。只有那栋真的房子还立着,虚掩着门。二楼的窗帘后面,有什么东西<b>动了一下</b>。不是回声。回声不会躲。','veil');
+  await D('paris','……那不是我盖的。');
+  await D('moyi','那是什么?');
+  await D('paris','不知道。但它住在我的真话里。走吧。今晚到此为止——莫依。谢谢你没走。');
+  E.veil(false);
+  await E.endcard(4, [
+    '四栋假房子倒了。<b>真的那栋拆不掉</b>——而且有什么东西住在里面。',
+    '帕里斯第一次让「对应体」动了。为了你。',
+    (S.flags.ch4soft? '你在玄关坐了一夜。他扔给你一个坐垫——这是他的语言里很长的一句话。':'你们正面撞了一次。墙替你们说了最难听的那句。'),
+  ]);
+};
+
+/* ============================================================
+   第五章 · 空心合唱团(中点)
+   ============================================================ */
+CHAPTERS[5] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(5);
+  await N('海报是一夜之间贴满全镇的。柔和的灰蓝色,无衬线字体,一只熨平了波浪的湖。<br><b>「静水计划 · 灰谷镇,你值得平静。」</b>','',{amb:true});
+  await N('参加过「健康周末」的大人们陆续回来了。准时上班,礼貌微笑,按时浇花。镇子从来没有这么……顺滑过。');
+  await N('韦老师回来后的第一节课,有人放了一只蜘蛛在她讲义里。她看着它爬过「奥德赛」三个字,然后轻轻把它请到窗台,继续讲课。全班鸦雀无声——她<b>没有惊讶</b>。她丧失了惊讶。','dim');
+  await D('paris','他们管这个叫产品。「空心化」:自愿的、签了知情同意书的麻木。莫依——这是「寂」的量产版。');
+  await D('moyi','(你想说点什么,但你在想别的事:昨晚妈妈的床头柜上,放着一份灰蓝色的报名表。)');
+  await N('报名表上妈妈的字迹很平静:<i>「希望解决的问题:总觉得家里少了一个人。但家里没有少人。希望停止这种感觉。」</i>','dim');
+  E.veil(true);
+  SAVE.luc(-12);
+  await SYS('潜暮中 · 清醒值 −12');
+  await N('薄暮里的静水诊所,是一座大教堂。','veil');
+  await N('彩窗上画的不是圣徒,是<b>待办清单被全部划掉的人</b>。长椅上坐满了空心者,他们在唱——一种完美的、毫无毛边的齐唱。没有人换气。不需要。换气是给「还会激动的人」准备的。','veil',{amb:true});
+  await N('你听了十秒钟就明白了为什么有人签字。那歌声里没有疼。<b>哪里都不疼。</b>','dim');
+  await D('other','(齐唱中,韦老师转过头,对你微笑,声音温和得像室温的水。)<br>「莫依同学。你们这些孩子,管这个叫放弃。」',{name:'韦老师(空心)'});
+  await D('other','「我们管这个,叫<b>终于睡了个好觉</b>。」',{name:'韦老师(空心)'});
+  await SYS('机制解锁:燃忆 MEMORY-BURNING<br>「醒」可以叫醒空心者——但深度的醒需要火种:<b>你自己的一枚记忆,永久花费。</b>本存档将和莫依一起,真的忘记。','bad');
+  await D('paris','我数过了。今晚唱诗席上有三十一个人。你的火种……远远不够全部。');
+  await D('moyi','所以我要选。');
+  await D('paris','所以你要选。我会陪你站在这,无论你选谁。');
+  /* 燃忆分诊 */
+  const hollowDefs=[
+    {id:'teacher', n:'韦老师', d:'教了二十年文学。教案边缘曾经写满她自己都没发表过的诗。', after:'她醒来的第一句话是一行诗。不是名句——是她自己的。'},
+    {id:'mailman', n:'邮差任叔', d:'三十年来准时投递每一封信,包括那些改变命运的和那些迟到的。空心后,他投得更准了,只是再也不会在门口多站那十秒。', after:'他醒来后做的第一件事,是把帆布包里的信全部抱在怀里,像抱体温。'},
+    {id:'librarian', n:'图书馆的程阿姨', d:'管理借阅卡目录三十年。镇上每个孩子借过的每一本书,她都记得——曾经记得。', after:'她醒来后抓住你的手腕:「借书卡!九年三班!有个孩子的卡我整理时怎么都对不上名字——」'},
+  ];
+  await N('唱诗席最前排,坐着三个你认识的人。火种只够<b>两次</b>深度的醒。','',{amb:true});
+  const burnable=()=>Object.keys(MEMS).filter(id=>SAVE.alive(id));
+  let wakes=2;
+  const triBox=E.mini('<div class="cardrow" id="tri5"></div><div class="bk-prog" id="triP">剩余火种次数:2</div>');
+  await new Promise(res=>{
+    const wrap=U.qs('#tri5',triBox), prog=U.qs('#triP',triBox);
+    if(!burnable().length){ U.qs('#triP',triBox).textContent='你已没有可作火种的记忆。这一夜,你只能站着听完。'; setTimeout(res,2200); }
+    hollowDefs.forEach(hd=>{
+      const c=U.ce('button','pcard');
+      c.innerHTML='<span class="tag">HOLLOWED</span><h4>'+hd.n+'</h4><p>'+hd.d+'</p>';
+      c.onclick=async()=>{
+        if(wakes<=0 || c.classList.contains('woke')) return;
+        /* 选择燃哪枚记忆 */
+        const alive=burnable();
+        if(!alive.length){ FX.toast('你没有可燃的记忆了。','bad'); setTimeout(res,1200); return; }
+        const pickBox=U.ce('div','memlist fadeup');
+        pickBox.appendChild(U.ce('div','eyebrow','为'+hd.n+'选一枚火种 —— 这是永久的'));
+        alive.forEach(mid=>{
+          const mi=U.ce('button','memitem');
+          mi.innerHTML='<span class="mi-n">'+MEMS[mid].n+'</span><span class="mi-c">'+MEMS[mid].cost+'</span>';
+          mi.onclick=async()=>{
+            SAVE.burn(mid);
+            S.woken.push(hd.id); SAVE.save();
+            wakes--; SAVE.luc(-8);
+            pickBox.remove();
+            c.classList.add('woke');
+            AU.wake(); AU.melody('pure');
+            FX.toast('🔥 「'+MEMS[mid].n+'」已燃尽。存档同步遗忘。','bad',3600);
+            prog.textContent='剩余火种次数:'+wakes;
+            await U.sleep(600);
+            FX.toast(hd.after,'amber',4200);
+            if(wakes<=0 || !burnable().length){ setTimeout(res,1400); }
+          };
+          pickBox.appendChild(mi);
+        });
+        const skip=U.ce('button','choice','(收回手。这一位……先不叫醒。)');
+        skip.onclick=()=>pickBox.remove();
+        pickBox.appendChild(skip);
+        c.after(pickBox); E.scrollEnd();
+      };
+      wrap.appendChild(c);
+    });
+  });
+  U.qa('.pcard',triBox).forEach(c=>{ if(!c.classList.contains('woke')) c.classList.add('spent'); });
+  await N('两个人醒了。<b>二十九个人没有。</b>齐唱继续,只是少了两个声部——你发誓你听出了那两个缺口的形状。','dim');
+  await N('唱诗席的最后一排,坐着一个你认到第一眼就认出来的人。','veil');
+  await N('妈妈。背挺得很直,手安安静静地叠在膝盖上,唱着。她看起来——<i>休息过了</i>。八个月来第一次。','dim');
+  await SYS('深度的醒 · 妈妈<br>所需火种(不可选择):<b>「森娜的脸」</b><br>—— 叫醒妈妈的代价,是你将永远想不起森娜长什么样子。','bad');
+  await D('paris','莫依。听我说。没有正确答案。<b>两个都是真的答案。</b>');
+  const cm=await PK([
+    {t:'唱。把妈妈叫醒。', sub:'代价:森娜的脸,永久。此后所有回忆里,她都将背着光。', v:'wake'},
+    {t:'收回手。让妈妈在没有疼的地方,先休息一阵。', sub:'她将留在静水里,直到一切结束的那天。', v:'leave'},
+  ]);
+  if(cm==='wake'){
+    S.motherWoken=true; S.faceBurned=true; SAVE.save();
+    await HOLD({label:'按住 · 唱给妈妈', cap:'用她的脸,换她的妈妈。', dur:3600, doneCap:'……火种燃尽。'});
+    AU.melody('full');
+    await N('歌成的那一刻,你试着回忆森娜。蓝色圆珠笔,笑前吸的那口气,三短一长——都在。<b>只有脸的位置,是一团温柔的逆光。</b>','dim');
+    await D('other','……莫依?(她转过身,惊讶——货真价实的、会疼的惊讶。)我刚才……我把什么东西忘在这了?我觉得我把<b>特别重要的东西</b>忘在这了。',{name:'妈妈'});
+    await D('moyi','(你抱住她。)没有,妈。是我把你忘在这了。回家吧。');
+    await SYS('从本刻起:森娜在一切回忆、一切档案中面目模糊。本效果不可逆。','bad');
+  } else {
+    S.motherWoken=false; SAVE.save();
+    await N('你站在长椅尽头,举着没唱出去的那口气,站了很久很久。然后你把手放下了。','dim');
+    await D('moyi','(很轻地)妈,睡吧。我去把那个「少了的人」找回来。等找回来了,你就不需要这个了。');
+    await N('帕里斯没说话,只是把外套脱下来披在了她肩上——给一个感觉不到冷的人。有些动作不是做给对方的,是做给做的人自己的。','dim');
+  }
+  E.veil(false);
+  await E.endcard(5, [
+    '你叫醒了 '+S.woken.length+' 个人,烧掉了 '+Object.values(S.mems).filter(v=>v==='burned').length+' 枚记忆。存档真的忘了它们——去档案页看看那些虚线。',
+    (S.motherWoken? '妈妈醒了。<b>森娜的脸没了。</b>从现在起,连闪回都背着光。':'妈妈还在静水里。你把这个决定背在了背上。'),
+    '「寂」的产品逻辑你已经亲眼看过了:<b>麻木在短期内,是真的有效。</b>恐怖的从来是利息。',
+  ]);
+};
+
+/* ============================================================
+   第六章 · 大考
+   ============================================================ */
+CHAPTERS[6] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(6);
+  await N('期末周。高中的走廊里飘着荧光笔和功能饮料的味道,自习室的灯亮到後半夜,像一排不肯闭上的眼睛。','',{amb:true});
+  await N('然后,高三的阿莎失踪了。距离她全家压上所有期望的奖学金面试,还有三天。');
+  await N('警方没立案——因为所有人对她的记忆都还在。她不是「不被记得」。她是<b>进去了</b>:学校在薄暮里的倒影,期末周这几天肿胀成了一座迷宫。','dim');
+  E.veil(true);
+  SAVE.luc(-10);
+  await SYS('潜暮中 · 清醒值 −10<br>区域:监考迷宫 THE INVIGILATOR’S LABYRINTH');
+  await N('无穷无尽的考场。一眼望不到头的课桌。每张桌前都坐着一个学生的<b>投影未来</b>,正在批改那个学生的过去。红笔的沙沙声铺天盖地,像一种雨。','veil');
+  await D('paris','奇怪。它们不看我。');
+  await N('是真的。评分员们的目光从帕里斯身上滑过去,像扫描仪读不出一张白纸——永远的转学生,没有成绩单,没有「一贯表现」。<b>这座迷宫没有可以用来审判他的数据。</b>','lit');
+  await N('而你——「浪费了的潜力」「就是不够专心」「她妹妹当年可不这样」——你听过的每一句考语都在某张课桌上有副本。迷宫闻得到你。','dim');
+  await SYS('本章角色互换:帕里斯领队。莫依潜行。','ghost');
+  /* 评分起草 */
+  await D('paris','我来开路。看好了——这里我说了算。');
+  await N('他抬手起草第一座跨越考场的桥。桥刚落成,空中「啪」地盖下来一枚红章:');
+  const g1=E.mini('<div class="gradebox"><div style="font-size:14px;color:var(--paper-dim);margin-bottom:12px">结构:三跨桁架桥 · 用料:十年的搬家经验</div><span class="gstamp" id="gs1">C−</span></div>');
+  AU.fx.stamp(); U.qs('#gs1',g1).classList.add('stamped');
+  await SYS('评分:C− · 评语:「结构尚可,缺乏一贯性。」<br>桥的耐久度应声而落——分数在这里是物理量。','bad');
+  await N('他皱了皱眉,拆掉重画。第二座桥和第一座<b>一模一样</b>,一根杆都没差。红章落下:');
+  const g2=E.mini('<div class="gradebox"><div style="font-size:14px;color:var(--paper-dim);margin-bottom:12px">结构:三跨桁架桥 · 与上一座完全相同</div><span class="gstamp ok" id="gs2">A</span></div>');
+  AU.fx.stamp(); U.qs('#gs2',g2).classList.add('stamped');
+  await SYS('评分:A · 评语:「可见显著进步。」<br>——同一座桥。','ghost');
+  await D('moyi','帕里斯。两座桥是一样的。<b>分数是随机的。</b>');
+  await N('第三座结构是给你们俩过夜的安全屋。这次的红章是:<b class="amberglow">D+</b>,评语「不够努力」。你看见帕里斯的下颌线动了一下。','dim');
+  const c6=await PK([
+    {t:'「分数就是分数。别管它,继续走。」', sub:'快。他咽下去了。', v:'swallow'},
+    {t:'「看着我。这枚章是随机的,我们刚刚一起证明过。这间屋子撑得住。」', v:'truth'},
+  ]);
+  if(c6==='swallow'){
+    SAVE.crack('ck_safehouse'); SAVE.sta(-7);
+    await N('他点点头,没说话,把「D+」原样吞了下去。安全屋很快建好,看上去无懈可击。只有你看见梁上那道暗纹——和分数同一个形状。','dim');
+    await SYS('暗裂已记录(他不知道):被评了 C− 的安全屋。','bad');
+  } else {
+    SAVE.sta(+6);
+    await N('他盯着那枚红章看了三秒,然后伸手把它从空气里<b>揭了下来</b>,对折,放进口袋。「证物。」他说。安全屋的梁笔直得像一句反驳。','lit');
+  }
+  /* 潜行 */
+  await N('深处。要穿过主考场,你必须避开<b class="violetglow">评分员</b>——答题卡脸的巡考者。被它们逮住的人,会被当场化简成一个百分位数。','veil');
+  await SYS('潜行:扫描光束过境时,按住「保持不动」。手别抖。');
+  const stB=E.mini('<div class="beamfield" id="bf6"><div class="rubeam" id="beam6" style="left:-70px"></div><div class="moyidot" id="md6"></div><button class="stillbtn" id="still6">按住 · 保持不动</button></div>');
+  await new Promise(res=>{
+    const beam=U.qs('#beam6',stB), btn=U.qs('#still6',stB), dot=U.qs('#md6',stB);
+    let holding=false, pass=0, x=-70, caught=0;
+    btn.addEventListener('pointerdown',e=>{e.preventDefault();holding=true;btn.classList.add('holding');});
+    const up=()=>{holding=false;btn.classList.remove('holding');};
+    window.addEventListener('pointerup',up);
+    const fw=stB.querySelector('.beamfield');
+    const loop=()=>{
+      const W=fw.clientWidth;
+      x+=2.6; if(x>W+70){ x=-70; pass++; dot.style.left=(12+pass*26)+'%'; if(pass>=3){ btn.style.display='none'; res(); return; } }
+      beam.style.left=x+'px';
+      const dotX=fw.clientWidth*(0.12+pass*0.26);
+      const overlap=Math.abs((x+32)-dotX)<46;
+      if(overlap && !holding){
+        caught++; AU.fx.statics(.4); FX.shake(stB); SAVE.luc(-3);
+        FX.toast(caught<2?'光束扫到了你的动静!它折回来重新扫描。':'「检测到:不专心。」——你听见红笔逼近的沙沙声。','bad');
+        x=-70;
+      }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  });
+  if(S.woken.includes('teacher')){
+    await N('最后一道关卡前,一个熟悉的声音响起:韦老师——醒着的那位——不知何时跟了进来。她拦住巡考的评分员,举手问了一个<b>没有标准答案的问题</b>。三台评分员当场死机重启。','lit');
+    await D('other','(回头对你眨眼)文学的用处,同学们。快走。',{name:'韦老师'});
+  }
+  /* 中心 */
+  await N('迷宫中心不是王座,是一张<b>普通的课桌</b>。阿莎坐在那里,笔速稳定,呼吸均匀,正在做一份她已经做了三天的卷子。做完,交卷,卷子重新出现,再做。','veil');
+  await D('asha','别打断我。这次能上98。');
+  await D('moyi','阿莎,面试是后天。你妈妈在家里把你的西装熨了第四遍了。');
+  await D('asha','所以呢?(她翻过一页。)只要我还在考,<b>我就还没失败。</b>停下来才会有结果。结果才会有「不够好」。这里没有结果。这里很安全。');
+  await N('她身后的监考席上,坐着一个三十岁的女人。同一张脸,熨平了所有犹豫:套装,胸卡,一支永远不会写错字的笔。<b>投影未来</b>,这座迷宫雇佣的、用她自己的恐惧批改她的人。','dim');
+  await SYS('对峙:投影未来 THE PROJECTED FUTURE<br>三句判词。三种回应:论证 · 歌声 · 拆解。每种只有一次,用对位置。','bad');
+  const verbs={argue:'论证',sing:'歌声',crack:'拆解'};
+  const used={argue:false,sing:false,crack:false};
+  const rounds=[
+    {st:'「我是她唯一可接受的结局。其余的人生,都是不及格的支线。」', ok:'crack',
+      okT:'帕里斯眯起眼,伸手往判词正中一点——「结构性谎言。」他说。「『唯一可接受』是一个<b>假设</b>,把自己粉刷成了<b>判决</b>。承重的是恐惧,不是事实。」判词当场裂成两半。',
+      noT:{argue:'你列举了三种别的人生。她微笑:「都不及格。」论证撞在判决上,弹了回来——这句不是用逻辑砌的。', sing:'你唱了一小节。判词纹丝不动——它不怕温柔,它自认就是温柔。'}},
+    {st:'「她一停下来就会坠落。去看看她父母眼睛里的账本。」', ok:'argue',
+      okT:'「反证。」帕里斯举起自己,「我,无成绩单,无一贯表现,十年换了七所学校——按你的物理,我应该已经落地。可这座迷宫连扫描我都做不到。<b>停下来的人没有坠落。他站在你面前。</b>」',
+      noT:{sing:'歌声让判词软了一瞬,又弹回原状。它要的不是安抚,是反例。', crack:'这句的结构居然是稳的——父母的眼睛里确实有账本。裂缝不在这。你需要别的武器。'}},
+    {st:'「没有我,她不记得自己是谁。」', ok:'sing',
+      okT:'你闭上眼,唱了「醒」。考卷的边缘,一幅十岁的涂鸦亮了起来:歪歪扭扭的马,马背上一个写着「阿莎」的小人,正在大笑。阿莎的笔,十年来第一次,停了。',
+      noT:{argue:'你说「她当然记得」。投影未来温和地问:「举证呢?」你哑住了。论证需要的证据,正埋在记忆里。', crack:'这句没有裂——对阿莎来说它此刻是真的。你不能拆一句真话。但你可以让它<b>过期</b>。'}},
+  ];
+  for(const r of rounds){
+    await D('other', r.st, {name:'投影未来'});
+    let done=false;
+    while(!done){
+      const opts=Object.keys(verbs).filter(v=>!used[v]).map(v=>({t:verbs[v], v}));
+      const pick=await PK(opts);
+      if(pick===r.ok){ used[pick]=true; done=true; AU.fx.chime(); await N(r.okT,'lit'); }
+      else { AU.fx.statics(.3); SAVE.luc(-2); await N(r.noT[pick]||'不对。','dim'); }
+    }
+  }
+  await N('投影未来低头看了看自己,像第一次注意到自己是半透明的。');
+  await D('other','……那我是什么?',{name:'投影未来'});
+  await D('asha','(站起来,声音抖,但很清楚)你是一个<b>假设</b>。我提出的。我现在,修正你。');
+  AU.melody('pure');
+  await N('三十岁的女人没有惨叫,没有崩解。她只是变回了她本来的样子:一张白纸,第一行写着「假设:」,其余空白。阿莎把它对折,放进了书包。<b>带走,而不是撕掉。</b>','lit');
+  E.veil(false);
+  await N('出口的路上,阿莎走在你们中间,劫后余生的人特有的话痨。听到「两个声音的和声」时,她猛地站住了。');
+  await D('asha','等等。二重唱?灰谷镇?——我帮图书馆数字化过镇志!1987年,广播塔停用前最后一档节目,本地的一对双人组合:<b>一个唱歌的,一个搭布景的</b>。节目停播那周,塔就关了。两个人的名字……被人从存档里裁掉了。物理意义上,剪刀,裁掉。');
+  await D('paris','(很慢地)1987。我家车库那台收音机,就是1987年的。我祖父留下来的——祖父从来不肯说它是谁的。');
+  await N('那天深夜,阿莎拉着你们去了镇上唯一通宵的餐车,点了三份「庆祝套餐」——其实就是薯饼加双蛋。她说她要练习「做没有意义但很高兴的事」。你们吃得很慢。','lit');
+  SAVE.luc(+12);
+  await SYS('清醒值 +12 —— 真实世界的锚点:和阿莎吃一顿故意没有意义的饭。','',{noWait:true});
+  await E.endcard(6, [
+    '阿莎加入了。第三个伙伴:典籍管理员,前「第一名」,假设而非判决。',
+    '「寂」曾是<b>1987年的一对二重唱:一个唱歌的,一个搭台的。</b>一个莫依和一个帕里斯。',
+    (S.cracks.includes('ck_safehouse')? '安全屋的梁上多了一道 D+ 形状的暗裂。':'帕里斯把随机的红章揭下来装进了口袋。「证物。」'),
+  ]);
+};
+
+/* ============================================================
+   第七章 · 取消关注
+   ============================================================ */
+CHAPTERS[7] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(7);
+  await N('阿莎只用了两天,就把1987年的线索钉在了治安官的悬案墙上。卷宗最后一页,她贴了一张便签:<i>「问题:他们是被带走的,还是申请离开的?——去查薄暮的档案馆。」</i>','',{amb:true});
+  E.veil(true);
+  SAVE.luc(-12);
+  await SYS('潜暮中 · 清醒值 −12');
+  await N('薄暮深处有一座你们从没见过的建筑:灰白,对称,安静得像一座法院。门楣上刻着一行字。','veil');
+  await N('<b>「撤回同意之厅」HALL OF WITHDRAWN CONSENT</b>','center lit');
+  await N('里面没有牢房。没有锁。只有一望无际的、薄荷绿的档案柜。每一格抽屉,是一个「不被记得」的人——和他们<b>亲手签下的申请表</b>。','veil',{amb:true});
+  if(S.woken.includes('librarian')){
+    await N('程阿姨给你们的借书卡在这里派上了用场:卡号就是索引号。九年三班,那张「怎么都对不上名字」的卡,直接指向了三排七柜。','lit');
+    SAVE.luc(+4);
+  }
+  await N('三排,七柜,第二格。标签上的名字,八个月来第一次,完完整整地印在公文纸上:<b>森娜。</b>');
+  await D('moyi','(你的手停在抽屉把手上,很久。)帕里斯,如果里面是申请表,我——');
+  await D('paris','无论里面是什么,它都已经在里面八个月了。你多看一秒,它都不会变得更坏。打开吧。');
+  await N('抽屉滑出来,没有一点声音。里面是一份三页的表格,字迹是你认了十年的那一种。第三页,「申请理由」,她写了四条。','dim');
+  await N('第一条:<i>「我撑不住『被需要』了。」</i><br>第二条:<i>「我撑不住『被失望』了。」</i><br>第三条:<i>「我想知道没有观众的时候,我是谁。」</i>','dim');
+  await N('第四条:<i>「莫依。她那么爱我。我是她的整个世界——这句话听起来是礼物,扛起来是行星。我累了。这不是她的错。请务必,务必,不要让这变成她的错。」</i>');
+  await N('<b>她不是被带走的。她是申请离开的。</b>','center');
+  await N('而游戏从第一章就埋着的那个问题,现在拆开了引线,放在桌上:<br><b>把一个自己选择离开的人找回来——是爱,还是占有?</b>','center lit');
+  /* 帕里斯的动摇 */
+  await D('paris','(他靠在档案柜上,声音很低。)莫依。问你一个不该问的。我们一路在做的事——把人从安静里拽出来——和「寂」做的事,<b>方向相反,手法是不是同一种?</b>都是替别人决定他们该感受什么。');
+  await N('他的稳定值在你眼前往下走。你的指尖还记得「眠」的音高——一小节就能抚平他。<b>抚平</b>。这个词在你嘴里突然有了重量。','dim');
+  const cl=await PK([
+    {t:'唱「眠」。轻轻把他的怀疑抚平。', sub:'高效。温柔。而且是一种管理。', v:'lull'},
+    {t:'不唱。听他说完。哪怕说完的地方没有答案。', sub:'慢。共鸣会暂时熄灭。但他将被「听见」而不是被「处理」。', v:'listen'},
+  ]);
+  S.lullParis=cl; SAVE.save();
+  if(cl==='lull'){
+    AU.lull(); SAVE.sta(+4);
+    await N('你唱了。两小节。他的肩线松下来,眉头展开,怀疑像潮水一样退走了。','dim');
+    await N('退潮之后他看着你,目光清澈,平静——然后有半秒,<b>只有半秒</b>,你看见那目光里闪过一丝核对:<i>刚才那阵平静,是我的,还是你给的?</i>','dim');
+    await SYS('已记录:你对队友使用了「眠」。他注意到了。','ghost');
+  } else {
+    SAVE.sta(-3);
+    await SYS('共鸣 · 暂时熄灭','ghost',{noWait:true});
+    await N('你把那一小节咽了回去。然后你们在档案馆冰凉的地板上坐了很久,他把「同一种手法」这个怀疑,从头到尾、磕磕绊绊地说完了。你没有反驳。','dim');
+    await N('说完,他长长地呼出一口气,像放下了一件搬了很多年的家具。「谢谢你没修我。」他说。共鸣重新亮起的时候,比之前<b>沉了一度,稳了三分</b>。','lit');
+    SAVE.sta(+8);
+  }
+  /* 「寂」的馈赠 */
+  await N('就在这时,整座大厅的灯,同时温柔了一档。');
+  await D('quiet','孩子们。看档案看累了吧。',{});
+  await N('声音来自所有方向,两个声部,咬字完全同步:一高一低,像一对练了一辈子的二重唱。档案柜的尽头,空气叠出两个并肩的剪影,手牵着手,嘴角缝着安详的微笑。','veil');
+  await D('quiet','我们不拦你们。读吧。这里每一份档案,都是自由意志,都有签名。我们只做一件事——把「不想被感受到」的人,从「必须被感受到」的世界里,<b>接出来</b>。');
+  await D('quiet','你,唱歌的孩子。你的歌有三个声区了。送你第四个,不要钱。它叫——<b>噤</b>。');
+  S.hushKnown=true; SAVE.save();
+  AU.hushFx();
+  await SYS('声区解锁:噤 HUSH<br>效果:让感觉停下。所有冲突中的最优解。无冷却,无消耗。<br>注:每次使用,世界会变得更安静一点。本说明不再重复。','ghost');
+  await D('quiet','不用谢。也不用怕。<b>它真的有用</b>——这才是你们该怕的部分。');
+  /* 演示冲突 */
+  await N('剪影散去。归途的回廊里,一群<b class="violetglow">悔犬</b>嗅到了你们——由「早知道就」凝成的兽群,专咬犹豫的人。','veil');
+  const hd=await PK([
+    {t:'唱「眠」。它们也只是没人认领的后悔。', sub:'清醒值 −4', v:'lull'},
+    {t:'帕里斯,围栏!', sub:'稳定值 −4', v:'fence'},
+    {t:'噤。', hushy:true, v:'hush'},
+  ]);
+  if(hd==='hush'){
+    await N('你只轻轻吐出一个音。悔犬们……<b>停了</b>。不是睡着,不是退散——是它们与你之间所有的「感觉」被掐断了。它们绕开你们走了,像绕开两件家具。','dim');
+    await N('好用。干净。零消耗。回廊安静得完美。<br>你注意到帕里斯没说话。你也注意到,刚才那三秒里,你<b>什么都没感觉到</b>——包括「什么都没感觉到」本身。','dim');
+  } else if(hd==='lull'){
+    SAVE.luc(-4); AU.lull();
+    await N('你唱到第三小节,悔犬们一只接一只地趴下了,下巴搁在前爪上,像终于有人摸了摸它们的头。你出了一身汗。值得。','lit');
+  } else {
+    SAVE.sta(-4);
+    await N('围栏拔地而起。悔犬们隔着栏杆嚎了一阵「早知道」,声音渐渐远了。帕里斯抖了抖手腕:「下次走正门。」','lit');
+  }
+  /* 毯子堡垒 */
+  await N('档案的最后一页写着:<i>「申请人可指定一(1)次告别会面。地点:由申请人的记忆指定。」</i><br>森娜指定的地点,你一秒就认出来了。','dim');
+  await N('客厅地毯上,四把椅子,三床毯子,一串圣诞灯。<b>毯子堡垒。</b>你们十岁那年的整个宇宙。它正在极慢、极慢地解开自己的织线——这次会面有时长,长度是「一床毯子拆完」。','veil',{amb:true});
+  await N('堡垒里,桌子对面,坐着一个轮廓。不是森娜——是她的<b>「撤回」</b>:她那个决定,穿着她的形状。'+(S.faceBurned?'(而你已经想不起那张脸了。逆光。永远的逆光。)':''),'dim');
+  await D('senna','嗨,莫依。');
+  await D('moyi','……嗨。');
+  await D('senna','你长高了。还是说你只是终于挺直背了?两种我都喜欢。');
+  await D('moyi','(一千句质问在你喉咙里排队,挤成一句——)为什么连一句再见都没有?');
+  await D('senna','因为你会挽留。而我撑不住你的挽留——莫依,你的挽留是全世界最重的东西。我撑了很多年了。');
+  await D('senna','申请表你看了。第四条不是写给档案馆的,是写给你的。<b>这不是你的错。</b>这句话我练了八个月,就为了今天不出错地说给你听。');
+  await N('织线又解开了一排。圣诞灯暗了一颗。','dim',{noWait:true});
+  await N('她在等。轮到你说了——而这一句,会刻进接下来发生的一切。','center');
+  const fortOpts=[
+    {t:'「回来。我会改,我会轻,我会把你扛成羽毛——回来好不好?」', sub:'恳求她回来。', v:'back'},
+    {t:'「那……让我去看你。一个月一次,一年一次都行。别把门焊死。」', sub:'请求一个门缝。', v:'visit'},
+    {t:'「教我怎么放手。我不会,一点都不会。但我可以学。」', sub:'学习告别。', v:'letgo'},
+  ];
+  if(SAVE.alive('m_fort')){
+    fortOpts.push({t:'(什么都不说。抬手,在桌沿,敲三短一长。)', sub:'只有你们俩懂的话。', v:'knock'});
+  } else if(S.mems.m_fort==='burned'){
+    fortOpts.push({goneMem:true, goneLabel:'那个暗号', v:'x'});
+  }
+  const fc=await PK(fortOpts);
+  if(fc==='back'){
+    S.sennaChoice='back'; SAVE.save();
+    await D('senna','(她安静了很久。织线解开了三排。)……你知道吗,有那么一秒,我真的想说好。');
+    await D('senna','我会想的。不是敷衍——是真的会想。但莫依,如果有一天我回来,那必须是因为<b>我想回来</b>,而不是因为你扛不住。你能接受这个顺序吗?');
+    await D('moyi','(很久。)……能。');
+  } else if(fc==='visit'){
+    S.sennaChoice='visit'; SAVE.save();
+    await D('senna','门缝。(她笑了,你听出来是真的笑。)好。每个月的第一个星期日,堡垒巷的雾里会有一扇门。敲门暗号你还记得吧。');
+    await D('senna','但是规矩:你来,是来<b>看我</b>的。不是来核对我什么时候回去的。带漫画,带新歌,别带行李箱。');
+  } else if(fc==='letgo'){
+    S.sennaChoice='letgo'; SAVE.save();
+    await D('senna','(她伸出手,隔着桌子,虚虚地碰了碰你的手背。)这是你今晚说的最勇敢的一句话。');
+    await D('senna','第一课:放手不是忘记。放手是——你可以继续爱一个不在场的人,<b>用不需要她回应的方式</b>。你已经在做了:你给陌生人唱的每一首摇篮曲,都是。');
+  } else if(fc==='knock'){
+    S.sennaChoice='letgo'; S.flags.knock=true; SAVE.save();
+    await N('三短,一长。');
+    await N('轮廓静止了。然后,桌子那头,传来了回敲:<b>一长,三短。</b>倒过来的——你们的规矩里,这个意思是:<i>「收到。我也是。」</i>','lit');
+    await D('senna','(声音终于不稳了。)不公平。我练了八个月的台词,你一个字都不用说就……(深吸气)好。这个算「教我放手」,学费我来出:第一课,你刚刚已经会了。');
+  }
+  await N('最后一排织线解开。圣诞灯一颗一颗地熄。堡垒塌成了一块普通的客厅地毯——温柔地,像散场,不像崩塌。','dim');
+  await D('senna','莫依。最后一件事。'+(S.faceBurned?'(逆光里,你听见她在笑。)':'(她在笑。)')+'替我去看看「寂」。它们当年……没有人给它们开这场告别会。');
+  E.veil(false);
+  await E.endcard(7, [
+    '森娜的真相:<b>她申请离开。</b>她留了四条理由,第四条是为了保护你。',
+    '你对她说的话已被记入:'+({back:'「回来」。她说她会想。',visit:'「让我去看你」。每月第一个星期日,雾里有门。',letgo:S.flags.knock?'三短一长。她回了一长三短。':'「教我放手」。第一课已经开始。'}[S.sennaChoice]),
+    (S.lullParis==='lull'?'你用「眠」抚平过帕里斯。他注意到了。这道痕迹通往第八章。':'你听完了帕里斯的怀疑,没有修他。共鸣沉了一度,稳了三分。'),
+    '你获得了「噤」。'+(S.hush>0?'并且已经用过了。':'还没有用。'),
+  ]);
+};
+
+/* ============================================================
+   第八章 · 拆除日
+   ============================================================ */
+CHAPTERS[8] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(8);
+  await N('被曝光的「静水计划」没有收缩。它<b>提速</b>了。','',{amb:true});
+  await N('全镇的电线杆一夜之间挂满了横幅:<b>「安宁节 · 灰谷镇一百年来最平静的一夜」</b>。免费热可可,免费毛毯,免费的、由诊所「友情提供」的助眠广播。日期定在周六——阿莎查了镇志和星图,周六夜里,薄暮潮位将达到八十年一遇的峰值。','dim');
+  await D('asha','合流。潮位峰值+全镇自愿聚集+助眠频率。「寂」要在一夜之内,把整个灰谷镇<b>空心化</b>。这不是阴谋论,这是日程表。');
+  await D('paris','那就建方舟。在薄暮里起草一座<b>庇护所</b>——把全镇还醒着的记忆,装进去,撑过那一夜。我这辈子画过的最大的东西。');
+  await N('计划开始。治安官封路,阿莎排程,朱尼珀负责把「别喝那杯可可」翻译成十六种梗图。而帕里斯——帕里斯走进薄暮,卷起袖子,开始画一座教堂那么大的东西。','lit');
+  E.veil(true);
+  SAVE.luc(-10);
+  await SYS('潜暮中 · 清醒值 −10 · 庇护所:起草中 38%');
+  await N('肋拱一根根落位。你在拱顶唱「醒」,把全镇的记忆一束束引进来:婚礼录像,毕业册,某人冰箱上的便利贴,某人手机里没舍得删的语音。庇护所渐渐有了大教堂的肺活量。','veil',{amb:true});
+  await N('起草到第六个小时,帕里斯说他要去搬最后一批承重梁。他的路线,会经过那栋拆不掉的真房子。','dim');
+  await N('你后来无数次复盘这个瞬间:你看见他拐进那扇虚掩的门,你<b>没有叫住他</b>。');
+  await N('……');
+  await N('真房子的二楼,那个一直在窗帘后面动的东西,不是鬼。是一台<b>玩具录音机</b>。六岁小孩的那种,贴着恐龙贴纸,还有电。','dim');
+  await N('里面是一盘转了无数圈的磁带。他按了播放。');
+  await N('<i>(磁带噪点。一个六岁男孩的声音,藏在被子里,几乎贴着麦克风:)</i><br><i>「消失吧。消失吧。消失吧。让这栋房子消失吧。我不想再听了。」</i><br><i>(楼下,争吵声。然后是那年冬天的风。)</i>','dim');
+  await N('那年冬天,房子真的消失了。电路检修报告写着「车库线路老化」——<b>车库</b>。他放收音机的地方。他许愿的第十一天。','dim');
+  await N('六岁的人不「明白」任何后果。但六岁的人会<b>记账</b>。他记了十年:我的感受=爆破装药。埋好,压实,搬家,再埋。','center');
+  await N('而现在,深埋了十年的那一桶,在一座载着全镇记忆的建筑底下,被一盘磁带点着了。','center lit');
+  FX.flash(.25,140);
+  AU.fx.statics(1);
+  await SYS('稳定值:崩落中 — 41% … 17% … 6% …','bad',{noWait:true});
+  await W8(900);
+  E.removeStaMeter();
+  await SYS('稳定值:<b>不可用</b><br>(仪表已从界面移除。不是清零——是「不再适用」。)','bad');
+  await N('庇护所的灯,从最远的那一盏开始,一排一排地熄。','dim');
+  /* 暗裂结账 */
+  const ckList=S.cracks.slice();
+  if(ckList.length){
+    await N('然后——结账开始了。每一道你替他保管过的暗裂,按入账顺序,逐一兑付:','dim');
+    const colBox=E.mini('<div style="display:flex;flex-direction:column;gap:8px" id="cks"></div>');
+    const wrap=U.qs('#cks',colBox);
+    for(const ck of ckList){
+      const it=U.ce('div','collapse-it',CRACKS[ck]);
+      wrap.appendChild(it); E.scrollEnd();
+      await W8(1300);
+      it.classList.add('falling'); AU.fx.collapse(); FX.shake();
+      await W8(700);
+    }
+    await N('你早就看见它们了。每一道。你是他的否认的保管人——而保管的东西,今天全部到期。','dim');
+  } else {
+    await N('结账开始了——然后,奇异地,<b>停住了</b>。','dim');
+    await N('账本是空的。一到七章,你没有让他在压抑里起草过任何东西。没有一处暗裂。<b>这一次,塌下来的只有今天。</b>','lit');
+    SAVE.sta(+5);
+  }
+  await SYS('庇护所:结构失效 · 崩塌进行中','bad');
+  /* 三选二 */
+  await N('整座建筑还剩最后一口气。你站在拱顶,喉咙只够唱两次「醒」。下面,三样东西正在被吸进塌方:','veil');
+  const tri=[
+    {id:'sheriff', t:'治安官的通话记录', d:'七年道歉融成的、每周一次的简短通话。塌了,他和弟弟回到冰川。'},
+    {id:'juniper', t:'朱尼珀的「你好」', d:'她下播后练习的第一句话。塌了,她回到永不结束的直播。'},
+    {id:'paris',   t:'帕里斯本人', d:'他跪在自己的废墟正中央,没有躲。塌方正在朝他合拢。'},
+  ];
+  let saves=2; const saved=[];
+  const triBox=E.mini('<div class="cardrow" id="tri8"></div><div class="bk-prog" id="tri8p">还能唱 2 次。塌方不等人。</div>');
+  await new Promise(res=>{
+    const wrap=U.qs('#tri8',triBox), prog=U.qs('#tri8p',triBox);
+    tri.forEach(td=>{
+      const c=U.ce('button','pcard');
+      c.innerHTML='<span class="tag">FALLING</span><h4>'+td.t+'</h4><p>'+td.d+'</p>';
+      c.onclick=()=>{
+        if(saves<=0||c.classList.contains('woke'))return;
+        saves--; saved.push(td.id); c.classList.add('woke');
+        AU.wake(); SAVE.luc(-12);
+        prog.textContent='还能唱 '+saves+' 次。';
+        if(saves<=0) setTimeout(res,900);
+      };
+      wrap.appendChild(c);
+    });
+  });
+  U.qa('.pcard',triBox).forEach(c=>{ if(!c.classList.contains('woke')) c.classList.add('spent'); });
+  S.flags.saved8=saved; SAVE.save();
+  const lost=tri.filter(t=>!saved.includes(t.id));
+  const lostItems=lost.filter(t=>t.id!=='paris');
+  if(S.woken.includes('mailman') && lostItems.length){
+    await N('塌方咬住「'+lostItems[0].t+'」的前一秒——一个帆布包从烟尘里横插进来。<b>邮差任叔。</b>醒着的那位。他用三十年投递练出的步法,把它抢出了半数。','lit');
+    S.flags.mailSave=lostItems[0].id; SAVE.save();
+  } else if(lostItems.length){
+    await N('「'+lostItems[0].t+'」——你眼睁睁看着它没进烟尘。歌只有两口气。你数学再好也没用。','dim');
+  }
+  if(!saved.includes('paris')){
+    await N('帕里斯自己从塌方里爬了出来。手是稳的。<b>稳得不对。</b>一个失去全部稳定值的人不会发抖——发抖也是一种感觉。','dim');
+    S.flags.parisAlone=true; SAVE.save();
+  } else {
+    await N('你的第二口气是朝他唱的。歌落在他肩上的时候,他终于——终于——抖了起来。能抖,就还在。','lit');
+  }
+  /* 「寂」登场 */
+  await N('烟尘未落。庇护所的残骸之间,几百束没来得及收容的记忆,像灰烬一样飘起来,往天上去。','veil');
+  await N('两个剪影,手牵着手,从灰烬正中间走过来。嘴角缝着安详的微笑。它们在你们面前停下,看了很久很久那片废墟。','veil');
+  await D('quiet','………');
+  await D('quiet','我们也试着建过一个那样的东西。');
+  await N('就这一句。然后它们继续往前走,走进灰烬深处,像两个下了夜班的人。','dim');
+  /* 道歉 */
+  await N('瓦砾还在落。帕里斯站起来,面对着所有人——治安官,阿莎,朱尼珀,你。他没有等尘埃落定。<b>道歉要在瓦砾落定时说,不是在打扫干净之后。</b>','',{amb:true});
+  await D('paris','是我。结构是我画的,裂是我藏的,埋了十年的东西也是我的。我不请求原谅——我请求一个<b>修复方案</b>。明天天亮,我把我知道的每一道裂,登记造册,一道一道补。');
+  const heldApology = (S.lullParis==='listen') || saved.includes('paris');
+  S.apology = heldApology? 'held':'absorbed'; SAVE.save();
+  if(heldApology){
+    await N('沉默。然后治安官把手里的安全帽扔给了他:「明早六点,登记处见。」阿莎递过去一支笔。朱尼珀拍了张照,配字:<i>「认账的人。」</i>','lit');
+    await N('道歉被<b>接住</b>了。不是被原谅冲走,不是被客气吸收——是被接住,像一根抛过去的梁。','lit');
+  } else {
+    await N('大家都说了「没事」「不怪你」「先休息」。每一句都是好意,每一句都很轻,轻得没有接住任何东西。道歉飘了一会儿,被夜风<b>吸收</b>了。','dim');
+    await N('你看见帕里斯把那句没被接住的话,默默叠好,塞回了原来埋东西的地方。','dim');
+  }
+  /* 清醒归零 */
+  await N('你是最后撑着拱顶唱歌的人。现在歌停了,账单寄到了。','dim');
+  await SYS('清醒值:21% … 13% … 6% …','bad',{noWait:true});
+  await W8(1200);
+  SAVE.S.lucidity=0; SAVE.save(); E.meters();
+  await SYS('清醒值:<b>0%</b>','bad',{noWait:true});
+  await W8(800);
+  await N('屏幕没有变黑。','center');
+  E.deep();
+  await N('它变成了<b class="violetglow">别的地方</b>。','center lit');
+  await E.endcard(8, [
+    '庇护所塌了。'+(ckList.length? '你保管的 '+ckList.length+' 道暗裂,全部到期兑付。':'账本是空的——塌下来的只有今天。'),
+    '帕里斯的道歉,'+(heldApology?'被接住了。':'被「没事」温柔地吸收了。他把它塞回了埋东西的地方。'),
+    '「寂」只说了一句话:<b>「我们也试着建过一个那样的东西。」</b>',
+    '莫依的清醒值归零。屏幕没有变黑——它去了别的地方。',
+  ]);
+};
+
+/* ============================================================
+   第九章 · 睡眠制图师
+   ============================================================ */
+CHAPTERS[9] = async ()=>{
+  E.deep();
+  S.flags.ch9lies=true; SAVE.save();
+  CORRUPT.start(.7);
+  await E.tcard(9);
+  await SYS('正在装载存档…… 玩家:森娜<br>更正:玩家:莫依<br>更正:玩家:<span class="violetglow">(待定)</span>','ghost');
+  await N('你在一个没有底的地方醒来。或者说,你在一个没有「醒来」的地方,做着醒来这个动作。','veil',{amb:true});
+  await N('清醒值:0。从现在起,<b>本界面不再承诺真实。</b>菜单会撒谎。地图上有不存在的房间。目标会自己完成。','dim');
+  await SYS('目标已完成:忘记帕里斯。','ghost',{noWait:true});
+  await W8(700);
+  await SYS('(你没有做过这件事。)','bad',{noWait:true});
+  await W8(700);
+  await SYS('目标已完成:接受静水计划的条款。','ghost',{noWait:true});
+  await W8(700);
+  await SYS('(你也没有做过这件事。<b>别签任何字。</b>)','bad');
+  await N('深暮的雪下得很慢——未发送的消息,飘起来而不是落下去。三扇门在远处缓缓转着,像没人售票的旋转木马。','veil');
+  await N('然后你看见了她们:<b>三个莫依</b>,站在三条岔路口,都穿着你的外套,都用你的声音说「这边」。','veil');
+  await SYS('唯一可用的罗盘:情绪的连续性。<br>哪一个版本,和你<b>实际玩过的</b>那些夜晚,重量吻合?','ghost');
+  /* 三个莫依 */
+  const claimTexts={
+    back:'毯子堡垒里,我求她回来。我说我会把她扛成羽毛。她说她会想——真的会想的那种。',
+    visit:'毯子堡垒里,我求了一条门缝。每个月第一个星期日,堡垒巷的雾里会有一扇门。不带行李箱。',
+    letgo:(S.flags.knock?'毯子堡垒里,我一个字都没说。我敲了三短一长。她回了我一长三短。':'毯子堡垒里,我求她教我放手。第一课:放手不是忘记。'),
+  };
+  const allKeys=['back','visit','letgo'];
+  const trueKey=S.sennaChoice||'letgo';
+  const cardKeys=U.shuffle(allKeys);
+  const m3=E.mini('<div class="moyi3" id="m3"></div>');
+  await new Promise(res=>{
+    const wrap=U.qs('#m3',m3);
+    cardKeys.forEach((k,i)=>{
+      const c=U.ce('div','m3card');
+      c.innerHTML='<h5>莫依 · 版本 '+ (i+1) +'</h5><p>'+claimTexts[k]+'</p>';
+      c.onclick=()=>{
+        if(k===trueKey){ c.classList.add('true'); AU.fx.chime(); U.qa('.m3card',wrap).forEach(x=>{if(x!==c)x.classList.add('wrong');}); setTimeout(res,900); }
+        else { c.classList.add('wrong'); AU.fx.statics(.4); FX.shake(wrap); FX.toast('她笑了笑,散成雪。脚下的地板少了一块。','bad'); }
+      };
+      wrap.appendChild(c);
+    });
+  });
+  await N('两个假莫依散掉的地方,雪积成了小小的两堆。真的那个——你——把外套裹紧了一点。继续走。','dim');
+  /* 记忆试炼之二 */
+  await N('第二道岔路没有人,只有一块考题一样悬着的石碑:<i>「第三章,塔顶。帕里斯为朱尼珀起草的是什么?」</i>','veil');
+  const epAlive=SAVE.alive('m_endscreen');
+  const q2opts = epAlive? [
+    {t:'一面「直播结束了。谢谢你来过。」的关播画面。', v:'ok'},
+    {t:'一面挡住弹幕的盾。', v:'no'},
+    {t:'一座逃下塔的桥。', v:'no'},
+  ]:[
+    {t:'一面挡住弹幕的盾。', v:'no'},
+    {t:'一座逃下塔的桥。', v:'no'},
+    {t:'(……我想不起来。那枚记忆,我亲手烧给了别人。)', sub:'诚实于遗忘', v:'ok'},
+  ];
+  let q2done=false;
+  while(!q2done){
+    const a=await PK(U.shuffle(q2opts.slice()));
+    if(a==='ok'){ q2done=true; AU.fx.chime();
+      await N(epAlive? '石碑融化成水。答对了——但你注意到了吗:这里的考题,只考你<b>真的带在身上</b>的东西。':'石碑融化成水。<b>「想不起来」是这里唯一的真话</b>——在深暮,对遗忘诚实,比假装记得更接近清醒。','lit');
+    } else { AU.fx.statics(.4); SAVE.luc(-0); FX.toast('石碑变重了一吨。这个答案是借来的。','bad'); }
+  }
+  /* 记忆试炼之三 */
+  await N('第三道岔路是一只巨大的、薄暮材质的口袋。碑文:<i>「哪一件未寄出,从第一章起就一直贴着你?」</i>','veil');
+  let q3done=false;
+  while(!q3done){
+    const a3=await PK(U.shuffle([
+      {t:'未署名的草稿——看台缝隙里醒来的那句。', v:'ok'},
+      {t:'治安官的第七年。', v:'no'},
+      {t:'没说出口的喜欢。', v:'no'},
+    ]));
+    if(a3==='ok'){ q3done=true; AU.fx.chime(); await N('口袋翻了个面,放你过去。你摸了摸贴胸的那张草稿——八个月了,它还是很重。也快了。','lit'); }
+    else { AU.fx.statics(.3); FX.toast('口袋收紧了一指。那件不是贴着你的那件。','bad'); }
+  }
+  /* 帕里斯的平行线 */
+  await N('—— 同一时刻,在上面 ——','center',{noWait:true});
+  await N('帕里斯站在薄暮的边缘,手里没有图纸。起草需要稳定值,而他的仪表整个没了。他看着那条通往深暮的、不存在的路。','dim');
+  await D('paris','(对自己)好。不画了。<b>砌。</b>一块一块砌。只砌我百分之百确定的。');
+  await SYS('交互:替他把每一块砖按实。按住一块砖,直到它「咔」地咬住。松早了,它会碎。诚实没有快进。');
+  const bricksData=[
+    '这块砖:治安官的第七年——已送达。',
+    '这块砖:'+(S.cracks.includes('ck_shell')?'回声壳有裂。我认。':'回声壳,无裂。'),
+    '这块砖:'+(S.woken.length?('诊所里,醒了 '+S.woken.length+' 个人。'):'诊所那夜,莫依做了选择。'),
+    '这块砖:'+(S.apology==='held'?'我的道歉被接住了。':'我的道歉,没人接住。这也是真的。'),
+    '这块砖:我现在很害怕。',
+  ];
+  const brBox=E.mini('<div class="bk-prog">诚实之路 · 0 / 5</div><div class="brickrow" id="bricks"></div><div class="hold-cap" id="brickCap">按住第一块</div>');
+  await new Promise(res=>{
+    const row=U.qs('#bricks',brBox), cap=U.qs('#brickCap',brBox), prog=U.qs('.bk-prog',brBox);
+    let laid=0;
+    bricksData.forEach((bd,i)=>{
+      const b=U.ce('button','brick'); b.innerHTML='<span>砖 '+(i+1)+'</span><div class="bp"></div>';
+      let p=0, hold=false, raf;
+      const tick=()=>{
+        p+= hold? 2.2: -6;
+        p=U.clamp(p,0,100);
+        U.qs('.bp',b).style.width=p+'%';
+        if(p>=100){ b.classList.add('laid'); laid++; S.bricks=laid; SAVE.save(); AU.fx.thud(); cap.textContent=bd; prog.textContent='诚实之路 · '+laid+' / 5';
+          if(laid>=5) setTimeout(res,1100); return; }
+        if(hold||p>0) raf=requestAnimationFrame(tick);
+      };
+      b.addEventListener('pointerdown',e=>{ e.preventDefault(); if(b.classList.contains('laid'))return; hold=true; cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); });
+      const up=()=>{ if(hold && p>8 && p<100 && !b.classList.contains('laid')){ b.classList.add('crumble'); AU.fx.statics(.25); setTimeout(()=>b.classList.remove('crumble'),600); cap.textContent='松早了。这一块,重新来。诚实没有快进。'; } hold=false; };
+      window.addEventListener('pointerup',up);
+      row.appendChild(b);
+    });
+  });
+  await N('五块。只有五块,但每一块都咬得死死的。一条一米长的、绝对诚实的路,伸进了深暮。','lit');
+  /* 「寂」的传记 */
+  await N('—— 深暮之底 ——','center',{noWait:true});
+  await N('你走到了地图的尽头。这里安静得有形状。两个剪影坐在一台老收音机前面,像守着炉火。它们朝你拍了拍身边的位置。','veil');
+  await D('quiet','坐吧,唱歌的孩子。不打架。给你看一样东西。');
+  await N('收音机亮起。1987年。两个十六七岁的孩子在灰谷电台录节目:女孩唱歌,男孩在后面搭布景,搭到一半总要探头看她唱。台牌上写着他们的组合名。你认得那种相处——你每天都在过。','dim');
+  await D('quiet','她总往太深的地方潜。为了找「更真的歌」。某个十一月,她潜下去,没有回来——清醒值,你们现在管这个叫清醒值。');
+  await D('quiet','他等了四十天。然后这个搭了一辈子台的孩子,把<b>两个世界之间的承重墙</b>,拆了。');
+  await D('quiet','他在塌方里找到了她。又或者塌方里的两个孩子,找到了彼此剩下的部分。没有人来找过我们。没有告别会,没有命名,没有一个大人问一句「你们俩还好吗」。于是我们想:既然<b>感受</b>会害死人——');
+  await D('quiet','——那就建一座馆,把全镇的感受,<b>都替他们收起来</b>。我们做了八十年的好事。你看出来了吗,孩子:我们真的、真的以为这是好事。');
+  await N('它们说话的时候,你看见收音机后面有一扇新门。门上的名牌喷了一半:<br><b>「莫 ▒」</b>。喷漆罐就放在门边,还温着。','dim');
+  await D('quiet','不急。门给你留着。潜得这么深的孩子,迟早需要一个抽屉。');
+  await N('你看着那扇门。说真的——有那么几秒,它看起来<b>很舒服</b>。','dim');
+  /* 拉回 */
+  await N('然后你听见了那个声音。');
+  await N('跑调的。严重跑调的。节拍像被人踢过的。一个从来没唱过歌的男孩,站在五块砖的尽头,用全部的肺活量,在唱<b>你的摇篮曲</b>。','lit');
+  AU.melody('detuned');
+  await W8(5200);
+  await D('paris','(声音哑的)我不会唱!我知道我不会!但你给别人唱了一整个游戏的歌——总得有人给你唱一次,哪怕唱成这样!');
+  await N('「寂」的两个剪影同时转过头,像被什么很旧很旧的东西,轻轻撞了一下。','veil');
+  await D('quiet','……他唱得真的很糟。');
+  await D('moyi','(你站起来,拍掉膝盖上的雪。)对。糟透了。<b>那是我的。</b>');
+  await N('你把他的五块砖,一块一块,在深暮的尽头<b>码成了一个门框</b>——你这辈子第一次「起草」,用他的材料,他的章法。一人唱,一人建:这一夜,你们把彼此的位置,各站了一遍。','lit');
+  SAVE.S.lucidity=35; SAVE.S.stability=60; SAVE.save(); E.meters();
+  await SYS('清醒值:35% — 被一首跑调的歌锚定。<br>界面真实性:恢复中。');
+  CORRUPT.stop();
+  await D('quiet','(在你跨出门框前,两个声音在你背后,很轻地——)孩子。下次来,能不能……把那场告别会,补给我们?');
+  await E.endcard(9, [
+    '你见过「寂」的全部了:<b>薇丝珀与海勒,1987</b>。一个潜得太深的歌者,一个拆了世界承重墙的建造者。',
+    '把你拉回来的不是路修到了,而是<b>他唱了</b>。跑调的、你的摇篮曲。',
+    '深暮里有一扇门,名牌喷了一半:「莫▒」。喷漆罐还温着。',
+    '它们最后说:「把那场告别会,补给我们。」——第十章,有人点歌了。',
+  ]);
+};
+
+/* ============================================================
+   第十章 · 命名之歌
+   ============================================================ */
+CHAPTERS[10] = async ()=>{
+  ATMOS.setMode('dusk');
+  await E.tcard(10);
+  await N('作战会议开在帕里斯家车库,那台1987年的收音机中间。提案只有一页纸,阿莎念的:','',{amb:true});
+  await D('asha','结论先行:「寂」<b>不可摧毁</b>。它是两个孩子,外面包着八十年的、全镇没说出口的感受。拆了它,等于引爆档案——森娜,所有不被记得者,八十年的灰谷镇,一起没。');
+  await D('asha','所以我们不拆。我们做1987年没有人做的事:<b>把它当人看一次。</b>办告别会。点名,命名,让它们被看见。完毕。');
+  await D('paris','需要两样东西。一,它们的<b>真名</b>——「寂」是病历号,不是名字。二,一个让「被看见」不致命的地方。不是庇护所,不是武器——是一座<b>舞台</b>。我的能力从来不是为这个设计的。所以正好。');
+  /* 真名 */
+  await N('真名找了一夜。结果它们一直就在你们手里。','dim');
+  await N('帕里斯把收音机翻过来修第十二遍的时候,在机壳内侧,看见了一行铅笔小字,大半个童年他都摸着它睡着:<i>「本机属于 海勒——别动,会修不回来。」</i>祖父从不解释这台机器是谁的。家族里也有一个不被提起的人。<b>原来不被记得,是会遗传的。</b>','lit');
+  await N('而你——你哼了一辈子的那首摇篮曲,阿莎在镇志的电台歌单存根里找到了它的登记页:<i>《给睡不着的镇子》,词曲:<b>薇丝珀</b>,1987,只播过一次。</i>你妈妈是听着它长大的。她哼给你,你哼给森娜,你哼给十一个陌生人。','lit');
+  await N('<b>薇丝珀。海勒。</b>他的名字在他的机器里,她的名字在她的歌里——你们一个修了十年,一个唱了十年。','center lit');
+  /* 未署名的草稿 */
+  await N('出发前,你贴胸口袋里那张「未署名的草稿」,忽然热了一下。八个月来第一次,字迹浮了上来。','dim');
+  await N('<i>「今晚能陪我走一段吗。就到桥那边。我有点撑不住了。」</i>','center');
+  await N('森娜删掉的那句话。你从看台的缝隙里把它拾回来,贴身带了十章。现在它问你:要怎么处置它。','dim');
+  const sk=await PK([
+    {t:'今晚,把它唱出来。唱给全镇。', sub:'送达它——让所有人知道:开口求陪伴,是被允许的。', v:'sing'},
+    {t:'还给森娜。这句话是她的,处置权也是。', sub:'持有它,完璧归还。', v:'keep'},
+  ]);
+  S.sendKept = sk==='sing'? 'delivered':'kept';
+  if(sk==='sing'){ SAVE.addUnd('u_send'); SAVE.deliver('u_send'); }
+  SAVE.save();
+  /* 审计 */
+  await N('安宁节之后的第七天,黄昏。广播塔下。治安官接通了塔的旧电闸,朱尼珀架起转播,阿莎握着场记板。帕里斯深吸一口气,抬手——','',{amb:true});
+  await SYS('终章机制:审计 THE AUDIT<br>你这一局攒下的一切,现在成为字面意义上的<b>建材</b>。');
+  const aliveMems=Object.keys(MEMS).filter(id=>SAVE.alive(id));
+  const burned=Object.values(S.mems).filter(v=>v==='burned').length;
+  const delivered=Object.keys(S.und).filter(k=>S.und[k]==='delivered');
+  const choir=S.woken.length + (S.juniper?1:0) + (S.motherWoken?1:0);
+  const audit=E.mini('<div class="audit">'+
+    '<div class="audit-row"><b>'+aliveMems.length+'</b><span>幸存的记忆 → 舞台的<b>梁</b></span><em>'+(burned?('(另有 '+burned+' 枚已燃尽——梁上留了它们的卯眼,空着,算一种纪念)'):'(无一燃尽)')+'</em></div>'+
+    '<div class="audit-row"><b>'+delivered.length+'</b><span>送达的未寄出 → 歌的<b>主歌段</b></span><em>每一件,一段词</em></div>'+
+    '<div class="audit-row"><b>'+choir+'</b><span>被叫醒的人 → <b>和声</b></span><em>'+(choir?'他们今晚全部到场':'今晚和声稀薄——但稀薄的歌也是歌')+'</em></div>'+
+    '<div class="audit-row"><b>'+(S.bricks||5)+'</b><span>诚实之砖 → <b>地基</b></span><em>深暮里砌的那五块</em></div>'+
+    '<div class="audit-row"><b>'+S.hush+'</b><span>「噤」的使用次数 → 歌里的<b>休止符</b></span><em>'+(S.hush===0?'零。整首歌没有一处失色':'它们也会被如实唱进去')+'</em></div>'+
+  '</div>');
+  await E.tap();
+  const rich = aliveMems.length + delivered.length + choir + (S.bricks||5);
+  if(rich>=14) await N('材料在暮色里升起来,咬合,发光——一座<b class="amberglow">大教堂规格的舞台</b>,梁是记忆,地基是诚实,幕布是几百句终于送达的话。你们这一路省下的、修好的、没舍得麻木掉的一切,全在这了。','lit');
+  else await N('材料升起来:不多。几根梁,五块砖,一面薄幕。一座<b>清瘦的舞台</b>——但每一根料都是真的,没有一根是装出来的。瘦的舞台配勇敢的歌,写出来,同样成立。','lit');
+  await N('薄暮自己降了下来。今夜不用潜暮——<b>两个世界第一次出现在同一个镜头里</b>:塔下是小镇,塔上是倒悬的小镇,中间是舞台。','veil');
+  document.body.classList.add('veil');
+  await N('「寂」来了。两个剪影,手牵手,在台下唯一一排座位坐下,像两个被班主任叫来开家长会的孩子。','veil');
+  await D('moyi','(你走到台中央。麦克风是1987年的,治安官修的。你看着台下。)今晚不驱魔,不战斗。今晚是补办的告别会——补了八十年的那场。');
+  await D('moyi','请允许我,叫你们的名字。');
+  /* 命名 */
+  await HOLD({label:'按住 · 命名', ico:'✶', cap:'两个名字。八十年没人叫过。', dur:3800, doneCap:'——薇丝珀。海勒。'});
+  AU.melody('full');
+  await N('<b>「薇丝珀。海勒。」</b>','center lit');
+  await N('名字落地的瞬间,两个剪影的轮廓,像蒙了八十年的玻璃被擦了一道。缝着的微笑松开了线。它们没有哭——它们只是终于<b>停止了微笑</b>,这比哭更接近哭。','veil');
+  await D('quiet','(两个声部,第一次,微微地错开了——变回了两个各自的声音。)<br>「……到。」<br>「……到。」');
+  if(S.sendKept==='delivered'){
+    await N('然后你唱了那句草稿。<i>「今晚能陪我走一段吗。就到桥那边。我有点撑不住了。」</i>全镇通过电台听见了它。你听见塔下,此起彼伏地,有人开始打电话:「喂?没事,就是……陪我走一段?」','lit');
+  }
+  await N('歌进入副歌之前,薇丝珀——歌者的那半——抬起头,问了八十年来的第一个问题:');
+  await D('quiet','「档案……怎么办。里面有这么多人。我们收得好好的。」');
+  await D('moyi','开馆。不销毁,不没收——<b>开馆</b>。想出来的,今晚跟我们回家。想多睡一会儿的,你们继续守着,但从今往后,门口要挂营业时间,要让人探视。归档可以,失踪不行。');
+  await N('海勒——建造者的那半——看了帕里斯很久。然后他抬手,在空气里画了一个改良的榫卯,推给他,像递了一张名片。两代起草人,工法交接。','lit');
+  await N('档案馆的门,从里面开了。','center');
+  await N('不被记得者,一个一个,走出来,走进自己八个月、两年、十几年没人留的灯里。镇子在塔下嗡的一声<b>全部想起来了</b>——你听见几百声同时响起的、哽住的「啊」。','lit');
+  if(S.motherWoken===false){
+    await N('静水诊所的方向,助眠广播停了。第二天清晨,妈妈自己走出来,在门口站了很久,然后往家走——越走越快,最后是跑着的。她醒来的第一句话,是你的名字。','lit');
+  }
+  const sennaBack = S.sennaChoice==='back';
+  if(sennaBack) await N('人群的最末尾,一个拎着行李箱的影子在巷口站住了。'+(S.faceBurned?'你认不出那张脸——你像第一次见到她的人那样,看见了她。也许这也是一种礼物:她终于可以不做你的整个世界,而只做一个崭新的人。':'你认得那个轮廓。十年了,你认得。')+'她没有走过来。她在等你<b>不跑过去</b>。你们隔着一条街,同时举起手。这就够了,今晚。','lit');
+  else if(S.sennaChoice==='visit') await N('堡垒巷的雾里,那扇门提前到了。门没开——但门缝底下,推出来一张纸条:<i>「下个月第一个星期日。带新歌。——S」</i>'+(S.faceBurned?'字迹你认得。脸想不起来了。但字迹你认得。':''),'lit');
+  else await N('档案馆门口的人潮里,没有那个身影。但你的手机震了一下:一个陌生号码,发来一张照片——别的城市,別的黄昏,一盏路灯。配字:<i>「我这边也亮着。第一课,你及格了。——S」</i>','lit');
+  /* FEEL IT */
+  await N('副歌来了。','center');
+  await N('这是整场告别会最后一个环节,也是这部游戏的最后一个交互。歌的后半段<b>不好听</b>——里面有森娜删消息的声音,有磁带里六岁的愿望,有静水诊所的完美齐唱。按住,听完。<b>松开也没关系——歌会停在原地等你。它不数你松手的次数。</b>','dim');
+  await runFeelIt();
+};
+
+/* —— FEEL IT 终幕 —— */
+async function runFeelIt(){
+  const wrap=U.ce('div','feelwrap');
+  wrap.innerHTML='<div class="feelcap" id="fcap">(准备好了就按住)</div>'+
+    '<div class="holdbtn feel" id="feelBtn"><div class="hb-ring"></div><div class="hb-ico">♥</div><div class="hb-tx">FEEL IT<br>按住 · 去感受</div></div>';
+  document.body.appendChild(wrap);
+  const btn=U.qs('#feelBtn'), cap=U.qs('#fcap');
+  const DURATION=52000;
+  const SEGS=[
+    [0,  '歌从你留下的东西里长出来。', 0],
+    [10, '这一段的词,是你送达过的每一句。', 0],
+    [24, '——难听的部分,到了。', 1],
+    [27, '这是她删掉那条消息的声音。<b>不要松手。</b>', 1],
+    [33, '这是六岁的他,在被子里许的愿。<b>还在,继续。</b>', 1],
+    [40, '这是三十一个人的完美齐唱,少了两个声部。', 1],
+    [46, '……过去了。你听,过去了。', 0],
+    [52, '薇丝珀。海勒。森娜。以及每一个名字。', 0],
+  ];
+  let p=0, holding=false, segIdx=-1, lastNote=0, noteI=0, done=false;
+  const SCALE=['D4','F4','A4','C5','A4','F4','E4','D4'];
+  await new Promise(res=>{
+    const tick=()=>{
+      if(done) return;
+      if(holding){
+        p+=16.7/DURATION*100;
+        const now=performance.now();
+        const sec=p/100*52;
+        const hard = sec>=24 && sec<46;
+        if(AU.on && now-lastNote> (hard? 460: 620)){
+          lastNote=now;
+          const n=SCALE[noteI%SCALE.length]; noteI++;
+          AU.tone(AU.n(n),{dur:.4,attack:.06,release:.5,gain:.09,bus:'mus'});
+          if(hard){ AU.tone(AU.n(n)*Math.pow(2,6/12),{dur:.3,attack:.05,release:.3,gain:.045,bus:'mus'}); if(Math.random()<.3) AU.noiseBurst({dur:.18,freq:1800,gain:.05}); }
+          else if(noteI%4===0){ AU.tone(AU.n(n)/2,{dur:.6,attack:.1,release:.6,gain:.05,bus:'mus'}); }
+        }
+        const si=SEGS.reduce((a,s,i)=> sec>=s[0]? i:a, 0);
+        if(si!==segIdx){ segIdx=si; cap.innerHTML=SEGS[si][1]; cap.classList.toggle('hard', !!SEGS[si][2]); }
+      }
+      p=U.clamp(p,0,100);
+      btn.style.setProperty('--p',p);
+      if(p>=100){ done=true; res(); return; }
+      requestAnimationFrame(tick);
+    };
+    btn.addEventListener('pointerdown',e=>{ e.preventDefault(); holding=true; btn.classList.add('singing'); ATMOS.singing=true; });
+    const up=()=>{ if(!holding||done) return; holding=false; btn.classList.remove('singing'); ATMOS.singing=false;
+      if(p>1&&p<100){ AU.tapeStop(); cap.classList.remove('hard'); cap.innerHTML='歌停在原处等你。它不数你松手的次数。<br><span class="eyebrow">(随时按回来)</span>'; setTimeout(()=>AU.duck(1,2),1200); } };
+    window.addEventListener('pointerup',up);
+    requestAnimationFrame(tick);
+  });
+  ATMOS.singing=false;
+  AU.melody('full',{beat:.8});
+  cap.innerHTML='你听完了。<b>全部。</b>';
+  await U.sleep(2600);
+  wrap.style.transition='opacity 2s'; wrap.style.opacity=0;
+  setTimeout(()=>wrap.remove(),2100);
+  /* 结局结算 */
+  S.post=true; S.flags.ch9lies=false;
+  S.ending=[S.sennaChoice||'letgo', S.apology||'held', S.hush===0?'h0':(S.hush<4?'h1':'h2')].join('-');
+  SAVE.save();
+  ENGINE.finish(10);
+  ATMOS.post=true;
+  document.body.classList.remove('veil','deep');
+  E.clearBeats();
+  await N('—— 尾声 ——','center',{noWait:true});
+  await N('灰谷镇现在记得每一个人。','center');
+  await N('这意味着:灰谷镇现在<b>悲伤</b>得多了。葬礼补办了十一场,道歉电话打爆了两个基站,镇报头版连登一个月的「寻人启事(为道歉)」。镇子哭起来了——并且,肉眼可见地,<b>活</b>起来了。','',{amb:true});
+  await N({back:'森娜回来了。自己想回来的那种回来。她在你家门廊放下行李箱,第一句话是:「先说好,我还是会需要消失几天的那种朋友。」你说:「成交。」',
+           visit:'每个月第一个星期日,堡垒巷的雾里有一扇门。你带漫画,带新歌,从不带行李箱。上个月,是她先敲的三短一长。',
+           letgo:'毕业册上,你在森娜该在的位置画了一扇门,门是虚掩的。审稿的韦老师看了很久,什么也没改。'}[S.sennaChoice||'letgo'],'lit');
+  await N(S.apology==='held'? '帕里斯在灰谷镇买了人生第一张<b>不是折叠的</b>桌子。他和海勒每周通一次「电台会诊」,两代起草人,在修同一批旧裂缝。':'帕里斯留下来了。床底有一只他始终没拆的纸箱——也许明年。海勒说:不急。这一行,工期都很长。','lit');
+  await N(S.hush===0? '你从头到尾,没有用过一次「噤」。世界保有它全部的颜色,和全部的疼。你全要了。':(S.hush<4?'你用过 '+S.hush+' 次「噤」。世界淡了一点点,你知道是哪几块。歌里那几个休止符,你唱得很诚实。':'你常常选择「噤」。世界很安静,很灰。但最后那首歌,你按住了,从头到尾。这,也算数。'),'lit');
+  await N('莫依的电台,在那个周末更新了。没有变声器,没有匿名。标题只有一行:','dim');
+  await N('<b>《给睡不着的镇子》——翻唱自薇丝珀(1987)。演唱:莫依。</b><br>第一条评论来自一个陌生号码:「主播,能不能点一首,明天的。」','lit');
+  await runCredits();
+}
+async function runCredits(){
+  E.clearBeats();
+  const sc=U.qs('#bscroll');
+  const cr=U.ce('div','credits');
+  cr.innerHTML=
+    '<div><div class="cr-k">A Weird-Fiction Mystery in Ten Chapters</div><div class="cr-v" style="font-size:26px;letter-spacing:.3em">未被记得者</div><div class="cr-k" style="margin-top:6px">THE UNREMEMBERED</div></div>'+
+    '<div><div class="cr-k">原案 · 叙事设计文档</div><div class="cr-v">pariskang</div></div>'+
+    '<div><div class="cr-k">为</div><div class="cr-v">灰谷镇全体未被记得者 而作</div></div>'+
+    '<div><div class="cr-k">机制即隐喻</div><div class="cr-v" style="font-size:14px;color:var(--paper-dim)">清醒值 · 稳定值 · 共鸣 · 未寄出 · 燃忆 · 噤</div></div>'+
+    '<div><div class="cr-k">以及谢谢</div><div class="cr-v">愿意按住 FEEL IT 的你</div></div>'+
+    '<hr class="sep" style="width:40%">'+
+    '<div style="height:26vh"></div>'+
+    '<div class="lamp"></div>'+
+    '<div class="cr-v" style="font-size:15px;letter-spacing:.2em">在很远的地方,<br>另一座小镇的路灯,嗡了一声。</div>'+
+    '<div class="cr-k" style="margin-top:4vh">—— 完 ——</div>';
+  U.qs('#beats').appendChild(cr);
+  AU.drone('dusk');
+  if(AU.on){ AU.tone(100,{dur:2,attack:.8,release:2,gain:.04}); }
+  E.scrollEnd();
+  await E.tap();
+  const row=U.ce('div','choices');
+  const b1=U.ce('button','btn','回到标题 · 镇子记得你了');
+  b1.onclick=()=>go('title');
+  row.appendChild(b1);
+  U.qs('#beats').appendChild(row);
+  E.scrollEnd();
+}
+ENGINE.epilogueSting = async function(){
+  E.mount(10);
+  document.body.classList.remove('veil','deep');
+  ATMOS.setMode('deep');
+  await SYS('FM 107.3 —— 信号很远。');
+  await N('静电。然后,在噪点底下:一条没人走过的主街,一排刚刚开始发烫的钠灯。','dim');
+  await N('一盏路灯,嗡了一声。像谁清了清嗓子。','veil');
+  await N('(而你现在知道,该怎么找到他们了。)','center lit');
+  const row=U.ce('div','choices');
+  const b=U.ce('button','btn','—— 调回 88.7');
+  b.onclick=()=>{ ATMOS.setMode('menu'); go('dial'); };
+  row.appendChild(b);
+  U.qs('#beats').appendChild(row);
+  E.scrollEnd();
+};
+
+/* ---------- INIT ---------- */
+S = SAVE.load();
+applyHushTint();
+if(!S.set.fx){ document.body.classList.add('calm'); document.body.classList.remove('flicker'); }
+ATMOS.init();
+ATMOS.post = !!S.post;
+GRAIN.init();
+go('boot');
+</script>
+</body>
+</html>
